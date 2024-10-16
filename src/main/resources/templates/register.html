@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/base.css">
+    <link rel="stylesheet" href="./assets/css/main.css">
+    <link rel="stylesheet" href="./assets/css/register.css">
+    <link rel="stylesheet" href="./assets/fontawesome-free-6.6.0-web/css/all.min.css">
+    <title>Đăng ký</title>
+</head>
+
+<body>
+    <div class="app">
+        <div class="header">
+            <div class="header-elements">
+                <div class="header__logo">
+                    <a href="index.html" class="header__logo-link">
+                        <img class="header__logo-img" src="./assets/img/logo.png" alt="Logo">
+                    </a>
+                </div>
+                <nav class="header__nav">
+                    <ul class="header__nav-list">
+                        <li class="header__nav-item">
+                            <a href="" class="header__nav-item-link">Trang chủ</a>
+                        </li>
+                        <li class="header__nav-item">
+                            <a href="" class="header__nav-item-link">Về LOOKBOOK</a>
+                        </li>
+                        <li class="header__nav-item">
+                            <a href="" class="header__nav-item-link">
+                                <span>Tủ sách</span>
+                                <i class="header_search-select-icon fa-solid fa-chevron-down"></i>
+                            </a>
+                            <ul class="header__nav-list-small">
+                                <li class="header__nav-list-small-item">
+                                    <a href="" class="header__nav-list-small-item-link">
+                                        <span>Harvard Business Review</span>
+                                    </a>
+                                </li>
+                                <li class="header__nav-list-small-item">
+                                    <a href="" class="header__nav-list-small-item-link">
+                                        <span>Alpha Lead</span>
+                                    </a>
+                                </li>
+                                <li class="header__nav-list-small-item">
+                                    <a href="" class="header__nav-list-small-item-link">
+                                        <span>Quản trị doanh nghiệp</span>
+                                    </a>
+                                </li>
+                                <li class="header__nav-list-small-item">
+                                    <a href="" class="header__nav-list-small-item-link">
+                                        <span>Tài chính - Đầu tư - Chứng khoán</span>
+                                    </a>
+                                </li>
+                                <li class="header__nav-list-small-item">
+                                    <a href="" class="header__nav-list-small-item-link">
+                                        <span>Công nghệ & Chuyển đổi số</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="header__nav-item">
+                            <a href="" class="header__nav-item-link">Dịch vụ HTXB</a>
+                        </li>
+                        <li class="header__nav-item">
+                            <a href="" class="header__nav-item-link">
+                                <span>Tin tức và sự kiện</span>
+                                <i class="header_search-select-icon fa-solid fa-chevron-down"></i>
+                            </a>
+                            <ul class="header__nav-list-small">
+                                <li class="header__nav-list-small-item">
+                                    <a href="" class="header__nav-list-small-item-link">
+                                        <span>Thể loại 1</span>
+                                    </a>
+                                </li>
+                                <li class="header__nav-list-small-item">
+                                    <a href="" class="header__nav-list-small-item-link">
+                                        <span>Thể loại 2</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="header__nav-item">
+                            <a href="" class="header__nav-item-link">Liên hệ</a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="header__actions">
+                    <div class="header__actions-search">
+                        <i class="fa-solid fa-magnifying-glass" style="color: #616161;"></i>
+                        <form action="" class="header__actions-text">
+                            <input class="header__actions-input" type="text" placeholder="Tìm kiếm sản phẩm...">
+                            <i class="header__actions-text-icon fa-solid fa-magnifying-glass"
+                                style="color: #616161;"></i>
+                        </form>
+
+                    </div>
+                    <div class="header__actions-account">
+                        <i class="fa-solid fa-user" style="color: #616161;"></i>
+                        <ul class="header__actions-account-list">
+                            <li class="header__actions-account-list-item">
+                                <a href="" class="header__actions-account-link">
+                                    <span>Đăng nhập</span>
+                                </a>
+                            </li>
+                            <li class="header__actions-account-list-item">
+                                <a href="" class="header__actions-account-link">
+                                    <span>Đăng ký</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="header__actions-cart">
+                        <i class="fa-solid fa-cart-shopping" style="color: #616161;"></i>
+                        <span class="header__actions-cart-count">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="location">
+            <a href="" class="location-link">
+                Trang chủ
+            </a>
+            <p class="location-text">Đăng ký tài khoản</p>
+        </div>
+        <div class="container">
+            <div class="body">
+                <div class="body__left">
+                    <h1>Đăng ký tài khoản</h1>
+                    <div th:if="${param.success}">
+                        <span>Đăng ký thành công</span>
+                    </div>
+                    <div class="body__left__form">
+                        <form th:action="@{/register}" method="post" th:object="${user}">
+                            <div class="form__group">
+                                <span class="form__group-title">Họ Tên</span>
+                                <input type="text" class="form__group-input" th:field="*{full_name}"
+                                    placeholder="Họ Tên"></input>
+                            </div>
+                            <div class="form__group">
+                                <span class="form__group-title">Địa chỉ</span>
+                                <input type="text" class="form__group-input" th:field="*{address}"
+                                    placeholder="Địa chỉ"></input>
+                            </div>
+                            <div class="form__group">
+                                <span class="form__group-title">Ngày sinh</span>
+                                <input type="date" class="form__group-input" th:field="*{birth_date}"
+                                    placeholder="Ngày sinh"></input>
+                            </div>
+                            <div class="form__group">
+                                <span class="form__group-title">Số điện thoại</span>
+                                <input type="text" class="form__group-input" th:field="*{phone_number}"
+                                    placeholder="Số điện thoại"></input>
+                            </div>
+                            <div class="form__group">
+                                <span class="form__group-title">Giới tính</span>
+                                <div>
+                                    <div th:each="gender : ${genders}">
+                                        <label>
+                                            <input type="radio" th:name="'gender'" th:value="${gender.name()}"
+                                                required></input>
+                                            <span th:text="${gender.name()}"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form__group">
+                                <span class="form__group-title">Email</span>
+                                <input type="text" class="form__group-input" th:field="*{email}"
+                                    placeholder="Email"></input>
+                            </div>
+                            <div class="form__group">
+                                <span class="form__group-title">Mật khẩu</span>
+                                <input type="text" class="form__group-input" th:field="*{password}"
+                                    placeholder="Mật khẩu"></input>
+                            </div>
+                        </form>
+                        <button class="btn" type="submit">
+                            <a href="">Đăng ký</a>
+                        </button>
+                        <h2 class="form__heading">
+                            <span class="form__text">Hoặc đăng nhập bằng</span>
+                        </h2>
+                        <div class="form__social">
+                            <a href="" class="btn-facebook btn--with--icon">
+                                <i class="fa-brands fa-square-facebook"></i>
+                                Facebook
+                            </a>
+                            <a href="" class="btn-google btn--with--icon google">
+                                <i class="fa-brands fa-square-google-plus"></i>
+                                Google
+                            </a>
+                        </div>
+                        <h2>
+                            <span>Bạn quên mật khẩu bấm vào</span>
+                            <a href="">vào đây</a>
+                        </h2>
+                    </div>
+                </div>
+                <div class="body__right">
+                    <h1>Quyền lợi và thành viên</h1>
+                    <div class="body__right-text">
+                        <p>Vận chuyển siêu tốc</p>
+                        <p>Sản phẩm đa dạng </p>
+                        <p>Đổi trả dễ dàng</p>
+                        <p>Tích điểm đổi quà</p>
+                        <p>Được giảm giá cho lần mua tiếp theo lên đến 10% </p>
+                    </div>
+                    <button class="btn">
+                        <a href="login.html">Đăng nhập</a>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="grid">
+                <div class="grid__row">
+                    <div class="grid__column-3">
+                        <div class="footer__img">
+                            <a href="" class="footer__link">
+                                <img src="./assets/img/logo.png" alt="" class="footer__img-logo">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid__column-3">
+                        <h3 class="footer__heading">Chăm sóc khách hàng</h3>
+                        <ul class="footer-list">
+                            <li class="footer-item">
+                                <a href="" class="footer-link">Trung tâm trợ giúp</a>
+                            </li>
+                            <li class="footer-item">
+                                <a href="" class="footer-link">Shop Mall</a>
+                            </li>
+                            <li class="footer-item">
+                                <a href="" class="footer-link">Hướng dẫn mua hàng</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="grid__column-3">
+                        <h3 class="footer__heading">Về LOOKBOOK</h3>
+                        <ul class="footer-list">
+                            <li class="footer-item">
+                                <a href="" class="footer-link">Giới thiệu về LOOKBOOK</a>
+                            </li>
+                            <li class="footer-item">
+                                <a href="" class="footer-link">Tuyển dụng</a>
+                            </li>
+                            <li class="footer-item">
+                                <a href="" class="footer-link">Điều khoản</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="grid__column-3">
+                        <h3 class="footer__heading">Theo dõi</h3>
+                        <ul class="footer-list">
+                            <li class="footer-item">
+                                <a href="" class="footer-link">
+                                    <i class="fa-brands fa-square-facebook"></i>
+                                    Facebook
+                                </a>
+                            </li>
+                            <li class="footer-item">
+                                <a href="" class="footer-link">
+                                    <i class="fa-brands fa-square-instagram"></i>
+                                    Instagram
+                                </a>
+                            </li>
+                            <li class="footer-item">
+                                <a href="" class="footer-link">
+                                    <i class="fa-brands fa-linkedin"></i>
+                                    Linkedin
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,117 @@
+:root {
+    --white-color: #fff;
+    --black-color: #000;
+    --text-color: #616170;
+    --primary-color: #1151B2;
+    --border-color: #dbdbdb;
+    --hover-color: #0f5aca;
+    --header-height: 110px;
+
+}
+
+* {
+    box-sizing: inherit;
+    /* các phần tử có tính kế thừa giá trị box-sizing của phần tử cha */
+}
+
+html {
+    font-size: 62.5%;
+    line-height: 1.6rem;
+    /*độ cao chữ */
+    font-family: "Mulish", sans-serif;
+    /* font chữ */
+    box-sizing: border-box;
+    /* kích thước của phần tử dựa trên nội dung */
+}
+
+body {
+    margin: auto;
+}
+
+/* Responsive */
+.grid {
+    width: 1200px;
+    /* với màn hình lớn hơn 1200 kích thước hiển thị của grid là 1200 */
+    max-width: 100%;
+    /* với kích thước lớn hơn 1200 giảm kích thước của grid bằng với kích thước màn hình  */
+    margin: 0 auto;
+    /* hỗ trợ căn giữa các khối */
+}
+
+.grid__full-width {
+    width: 100%;
+}
+
+.grid__row {
+    display: flex;
+    /* các thẻ nằm trong grid__row hiển thị cùng trên 1 hàng ngang */
+    flex-wrap: wrap;
+    /* nếu tổng độ dài những thẻ con > grid__row thì các thẻ con tự động xuống hàng */
+    margin-left: -12px;
+    margin-right: -12px;
+}
+
+/* TEST */
+.grid__column-3 {
+    padding-left: 12px;
+    padding-right: 12px;
+    width: 25%;
+}
+
+.grid__column-9 {
+    padding-left: 12px;
+    padding-right: 12px;
+    width: 75%;
+}
+
+/* pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+}
+
+.pagination-item--active .pagination-item__link {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+}
+
+.pagination-item--active .pagination-item__link:hover {
+    background-color: var(--hover-color);
+}
+
+.pagination-item__link {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 1.6rem;
+    font-weight: 300;
+    color: #616161;
+    width: 40px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 2px;
+}
+
+/* button */
+
+.btn {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn a {
+    text-decoration: none;
+    color: var(--white-color);
+}
+
+.btn:hover {
+    background-color: var(--hover-color);
+}
