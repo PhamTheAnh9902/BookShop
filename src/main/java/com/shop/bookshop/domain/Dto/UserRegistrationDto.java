@@ -2,9 +2,10 @@ package com.shop.bookshop.domain.Dto;
 
 import java.sql.Date;
 
+import com.shop.bookshop.services.validator.RegisterChecked;
 import com.shop.bookshop.util.constant.GenderEnum;
 
-
+@RegisterChecked
 public class UserRegistrationDto {
 
     private String full_name;
@@ -15,16 +16,7 @@ public class UserRegistrationDto {
     private String phone_number;
     private GenderEnum gender;
 
-    public UserRegistrationDto(String full_name, String address, Date birth_date, String email, String password,
-            String phone_number, GenderEnum gender) {
-        this.full_name = full_name;
-        this.address = address;
-        this.birth_date = birth_date;
-        this.email = email;
-        this.password = password;
-        this.phone_number = phone_number;
-        this.gender = gender;
-    }
+
     
 
     public UserRegistrationDto() {

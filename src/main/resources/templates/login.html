@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 
 <head th:replace="/layout/head :: head"></head>
 
@@ -112,82 +112,50 @@
             </div>
         </div>
         <div class="location">
-            <a href="" class="location-link">
+            <a href="index.html" class="location-link">
                 Trang chủ
             </a>
-            <p class="location-text">Đăng ký tài khoản</p>
+            <p class="location-text">Đăng nhập tài khoản</p>
         </div>
         <div class="container">
             <div class="body">
                 <div class="body__left">
-                    <h1>Đăng ký tài khoản</h1>
-                    <div class="body__left__form">
-                        <form th:action="@{/register}" method="post" th:object="${userRegistrationDto}">
-                            <div class="form__group">
-                                <span class="form__group-title">Họ Tên</span>
-                                <input type="text" class="form__group-input" th:field="*{full_name}"
-                                    placeholder="Họ Tên"></input>
-                            </div>
-                            <div class="form__group">
-                                <span class="form__group-title">Địa chỉ</span>
-                                <input type="text" class="form__group-input" th:field="*{address}"
-                                    placeholder="Địa chỉ"></input>
-                            </div>
-                            <div class="form__group">
-                                <span class="form__group-title">Ngày sinh</span>
-                                <input type="date" class="form__group-input" th:field="*{birth_date}"
-                                    placeholder="Ngày sinh"></input>
-                            </div>
-                            <div class="form__group">
-                                <span class="form__group-title">Số điện thoại</span>
-                                <input type="text" class="form__group-input" th:field="*{phone_number}"
-                                    placeholder="Số điện thoại"></input>
-                            </div>
-                            <!-- <div class="form__group">
-                                <span class="form__group-title">Giới tính</span>
-                                <div>
-                                    <div th:each="gender : ${genders}">
-                                        <label>
-                                            <input type="radio" th:name="'gender'" th:value="${gender.name()}"
-                                                required></input>
-                                            <span th:text="${gender.name()}"></span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div> -->
+                    <h1>Đăng nhập tài khoản</h1>
+                    <form th:action="@{/login}" method="post">
+                        <div class="body__left__form">
                             <div class="form__group">
                                 <span class="form__group-title">Email</span>
-                                <input type="text" class="form__group-input" th:field="*{email}"
-                                    placeholder="Email"></input>
+                                <input type="text" class="form__group-input" placeholder="Email">
                             </div>
                             <div class="form__group">
                                 <span class="form__group-title">Mật khẩu</span>
-                                <input type="text" class="form__group-input" th:field="*{password}"
-                                    placeholder="Mật khẩu"></input>
+                                <input type="text" class="form__group-input" placeholder="Mật khẩu">
+                            </div>
+                            <div th:if="${error}">
+                                <span th:text="${error}"></span>
                             </div>
                             <button class="btn" type="submit">
-                                Đăng ký
+                                Đăng nhập
                             </button>
-                        </form>
-
-                        <h2 class="form__heading">
-                            <span class="form__text">Hoặc đăng nhập bằng</span>
-                        </h2>
-                        <div class="form__social">
-                            <a href="" class="btn-facebook btn--with--icon">
-                                <i class="fa-brands fa-square-facebook"></i>
-                                Facebook
-                            </a>
-                            <a href="" class="btn-google btn--with--icon google">
-                                <i class="fa-brands fa-square-google-plus"></i>
-                                Google
-                            </a>
+                            <h2 class="form__heading">
+                                <span class="form__text">Hoặc đăng nhập bằng</span>
+                            </h2>
+                            <div class="form__social">
+                                <a href="" class="btn-facebook btn--with--icon">
+                                    <i class="fa-brands fa-square-facebook"></i>
+                                    Facebook
+                                </a>
+                                <a href="" class="btn-google btn--with--icon google">
+                                    <i class="fa-brands fa-square-google-plus"></i>
+                                    Google
+                                </a>
+                            </div>
+                            <h2>
+                                <span>Bạn quên mật khẩu bấm vào</span>
+                                <a href="">vào đây</a>
+                            </h2>
                         </div>
-                        <h2>
-                            <span>Bạn quên mật khẩu bấm vào</span>
-                            <a href="">vào đây</a>
-                        </h2>
-                    </div>
+                    </form>
                 </div>
                 <div class="body__right">
                     <h1>Quyền lợi và thành viên</h1>
@@ -199,12 +167,75 @@
                         <p>Được giảm giá cho lần mua tiếp theo lên đến 10% </p>
                     </div>
                     <button class="btn">
-                        <a href="login.html">Đăng nhập</a>
+                        <a href="register.html">Đăng ký</a>
                     </button>
                 </div>
             </div>
         </div>
-        <div th:replace="/layout/footer :: footer"></div>
+        <div class="footer">
+            <div class="grid">
+                <div class="grid__row">
+                    <div class="grid__column-3">
+                        <div class="footer__img">
+                            <a href="" class="footer__link">
+                                <img src="./assets/img/logo.png" alt="" class="footer__img-logo">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid__column-3">
+                        <h3 class="footer__heading">Chăm sóc khách hàng</h3>
+                        <ul class="footer-list">
+                            <li class="footer-item">
+                                <a href="" class="footer-link">Trung tâm trợ giúp</a>
+                            </li>
+                            <li class="footer-item">
+                                <a href="" class="footer-link">Shop Mall</a>
+                            </li>
+                            <li class="footer-item">
+                                <a href="" class="footer-link">Hướng dẫn mua hàng</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="grid__column-3">
+                        <h3 class="footer__heading">Về LOOKBOOK</h3>
+                        <ul class="footer-list">
+                            <li class="footer-item">
+                                <a href="" class="footer-link">Giới thiệu về LOOKBOOK</a>
+                            </li>
+                            <li class="footer-item">
+                                <a href="" class="footer-link">Tuyển dụng</a>
+                            </li>
+                            <li class="footer-item">
+                                <a href="" class="footer-link">Điều khoản</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="grid__column-3">
+                        <h3 class="footer__heading">Theo dõi</h3>
+                        <ul class="footer-list">
+                            <li class="footer-item">
+                                <a href="" class="footer-link">
+                                    <i class="fa-brands fa-square-facebook"></i>
+                                    Facebook
+                                </a>
+                            </li>
+                            <li class="footer-item">
+                                <a href="" class="footer-link">
+                                    <i class="fa-brands fa-square-instagram"></i>
+                                    Instagram
+                                </a>
+                            </li>
+                            <li class="footer-item">
+                                <a href="" class="footer-link">
+                                    <i class="fa-brands fa-linkedin"></i>
+                                    Linkedin
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 

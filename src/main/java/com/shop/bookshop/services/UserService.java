@@ -4,16 +4,25 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.shop.bookshop.domain.Role;
 import com.shop.bookshop.domain.User;
 import com.shop.bookshop.domain.Dto.UserRegistrationDto;
+import com.shop.bookshop.repository.RoleRepository;
 import com.shop.bookshop.repository.UserRepository;
 
 @Service
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     // CREATE
     public User createUser(User user) {
@@ -59,18 +68,29 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    // REGISTRATION
-    public User registerUser(UserRegistrationDto registrationDto) {
+    // REGISTER
+    public User registerDTOtoUser(UserRegistrationDto registrationDto) {
         User user = new User();
 
         user.setFull_name(registrationDto.getFull_name());
         user.setAddress(registrationDto.getAddress());
         user.setBirth_date(registrationDto.getBirth_date());
         user.setEmail(registrationDto.getEmail());
-        user.setPassword(registrationDto.getPassword());
         user.setGender(registrationDto.getGender());
 
-        this.createUser(user);
+        String hashPassword = passwordEncoder.encode(registrationDto.getPassword());
+        user.setPassword(hashPassword);
+
+        Role role = roleRepository.findByName("USER");
+        if (role != null) {
+            user.getRoles().add(role);
+        }
+        userRepository.save(user);
         return user;
+    }
+
+    // LOGIN
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 }
