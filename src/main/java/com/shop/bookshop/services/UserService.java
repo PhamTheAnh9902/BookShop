@@ -89,8 +89,11 @@ public class UserService {
         return user;
     }
 
-    // LOGIN
-    public User findByEmail(String email) {
+    public boolean checkEmailExist(String email){
+        return userRepository.existsByEmail(email);
+    }
+
+    public User getUserByEmail(String email){
         return userRepository.findByEmail(email);
     }
 }

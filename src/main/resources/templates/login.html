@@ -122,17 +122,19 @@
                 <div class="body__left">
                     <h1>Đăng nhập tài khoản</h1>
                     <form th:action="@{/login}" method="post">
+                        <div th:if="${param.error}" style="color: red; font-size: 1.4rem;">
+                            Tài khoản hoặc mật khẩu không chính xác</div>
                         <div class="body__left__form">
                             <div class="form__group">
                                 <span class="form__group-title">Email</span>
-                                <input type="text" class="form__group-input" placeholder="Email">
+                                <input type="text" class="form__group-input" placeholder="Email" name="username">
                             </div>
                             <div class="form__group">
                                 <span class="form__group-title">Mật khẩu</span>
-                                <input type="text" class="form__group-input" placeholder="Mật khẩu">
+                                <input type="password" class="form__group-input" placeholder="Mật khẩu" name="password">
                             </div>
-                            <div th:if="${error}">
-                                <span th:text="${error}"></span>
+                            <div>
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                             </div>
                             <button class="btn" type="submit">
                                 Đăng nhập
@@ -167,7 +169,7 @@
                         <p>Được giảm giá cho lần mua tiếp theo lên đến 10% </p>
                     </div>
                     <button class="btn">
-                        <a href="register.html">Đăng ký</a>
+                        <a th:href="@{/register}">Đăng ký</a>
                     </button>
                 </div>
             </div>

@@ -5,23 +5,33 @@ import java.sql.Date;
 import com.shop.bookshop.services.validator.RegisterChecked;
 import com.shop.bookshop.util.constant.GenderEnum;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 @RegisterChecked
 public class UserRegistrationDto {
 
+    @NotBlank(message = "Không được để trống")
     private String full_name;
+
+    @NotBlank(message = "Không được để trống")
     private String address;
+
     private Date birth_date;
+
+    @NotBlank(message = "Không được để trống")
+    @Email(message = "Email không hợp lệ")
     private String email;
+
+    @NotBlank(message = "Không được để trống")
     private String password;
+
+    @NotBlank(message = "Không được để trống")
     private String phone_number;
     private GenderEnum gender;
 
-
-    
-
     public UserRegistrationDto() {
     }
-
 
     public String getFull_name() {
         return full_name;

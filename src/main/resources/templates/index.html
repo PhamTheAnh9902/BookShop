@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -101,12 +101,12 @@
                         <i class="fa-solid fa-user" style="color: #616161;"></i>
                         <ul class="header__actions-account-list">
                             <li class="header__actions-account-list-item">
-                                <a href="" class="header__actions-account-link">
+                                <a th:href="@{/login}" class="header__actions-account-link">
                                     <span>Đăng nhập</span>
                                 </a>
                             </li>
                             <li class="header__actions-account-list-item">
-                                <a href="" class="header__actions-account-link">
+                                <a th:href="@{/register}" class="header__actions-account-link">
                                     <span>Đăng ký</span>
                                 </a>
                             </li>

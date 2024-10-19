@@ -112,7 +112,7 @@
             </div>
         </div>
         <div class="location">
-            <a href="" class="location-link">
+            <a th:href="@{/}" class="location-link">
                 Trang chủ
             </a>
             <p class="location-text">Đăng ký tài khoản</p>
@@ -127,21 +127,29 @@
                                 <span class="form__group-title">Họ Tên</span>
                                 <input type="text" class="form__group-input" th:field="*{full_name}"
                                     placeholder="Họ Tên"></input>
+                                <p style="color: red; font-size: 1.4rem;" th:if="${#fields.hasErrors('full_name')}"
+                                    th:errors="*{full_name}"></p>
                             </div>
                             <div class="form__group">
                                 <span class="form__group-title">Địa chỉ</span>
                                 <input type="text" class="form__group-input" th:field="*{address}"
                                     placeholder="Địa chỉ"></input>
+                                <p style="color: red; font-size: 1.4rem;" th:if="${#fields.hasErrors('address')}"
+                                    th:errors="*{address}"></p>
                             </div>
                             <div class="form__group">
                                 <span class="form__group-title">Ngày sinh</span>
                                 <input type="date" class="form__group-input" th:field="*{birth_date}"
                                     placeholder="Ngày sinh"></input>
+                                <p style="color: red; font-size: 1.4rem;" th:if="${#fields.hasErrors('birth_date')}"
+                                    th:errors="*{birth_date}"></p>
                             </div>
                             <div class="form__group">
                                 <span class="form__group-title">Số điện thoại</span>
                                 <input type="text" class="form__group-input" th:field="*{phone_number}"
                                     placeholder="Số điện thoại"></input>
+                                <p style="color: red; font-size: 1.4rem;" th:if="${#fields.hasErrors('phone_number')}"
+                                    th:errors="*{phone_number}"></p>
                             </div>
                             <!-- <div class="form__group">
                                 <span class="form__group-title">Giới tính</span>
@@ -159,11 +167,15 @@
                                 <span class="form__group-title">Email</span>
                                 <input type="text" class="form__group-input" th:field="*{email}"
                                     placeholder="Email"></input>
+                                <p style="color: red; font-size: 1.4rem;" th:if="${#fields.hasErrors('email')}"
+                                    th:errors="*{email}"></p>
                             </div>
                             <div class="form__group">
                                 <span class="form__group-title">Mật khẩu</span>
-                                <input type="text" class="form__group-input" th:field="*{password}"
+                                <input type="password" class="form__group-input" th:field="*{password}"
                                     placeholder="Mật khẩu"></input>
+                                <p style="color: red; font-size: 1.4rem;" th:if="${#fields.hasErrors('password')}"
+                                    th:errors="*{password}"></p>
                             </div>
                             <button class="btn" type="submit">
                                 Đăng ký
@@ -199,7 +211,7 @@
                         <p>Được giảm giá cho lần mua tiếp theo lên đến 10% </p>
                     </div>
                     <button class="btn">
-                        <a href="login.html">Đăng nhập</a>
+                        <a th:href="@{/login}">Đăng nhập</a>
                     </button>
                 </div>
             </div>
