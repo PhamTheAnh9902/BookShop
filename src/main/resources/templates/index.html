@@ -1,14 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./assets/css/base.css">
-    <link rel="stylesheet" href="./assets/css/main.css">
-    <link rel="stylesheet" href="./assets/fontawesome-free-6.6.0-web/css/all.min.css">
-    <title>LOOKBOOK</title>
+<head th:replace="/layout/head :: head">
 </head>
 
 <body>
@@ -16,14 +9,14 @@
         <div class="header">
             <div class="header-elements">
                 <div class="header__logo">
-                    <a href="index.html" class="header__logo-link">
+                    <a th:href="@{/}" class="header__logo-link">
                         <img class="header__logo-img" src="./assets/img/logo.png" alt="Logo">
                     </a>
                 </div>
                 <nav class="header__nav">
                     <ul class="header__nav-list">
                         <li class="header__nav-item">
-                            <a href="" class="header__nav-item-link">Trang chủ</a>
+                            <a th:href="@{/}" class="header__nav-item-link">Trang chủ</a>
                         </li>
                         <li class="header__nav-item">
                             <a href="" class="header__nav-item-link">Về LOOKBOOK</a>
@@ -95,19 +88,28 @@
                             <i class="header__actions-text-icon fa-solid fa-magnifying-glass"
                                 style="color: #616161;"></i>
                         </form>
-
                     </div>
                     <div class="header__actions-account">
                         <i class="fa-solid fa-user" style="color: #616161;"></i>
                         <ul class="header__actions-account-list">
-                            <li class="header__actions-account-list-item">
+                            <li  class="header__actions-account-list-item" th:if="${userEmail == null}">
                                 <a th:href="@{/login}" class="header__actions-account-link">
                                     <span>Đăng nhập</span>
                                 </a>
                             </li>
-                            <li class="header__actions-account-list-item">
+                            <li class="header__actions-account-list-item" th:if="${userEmail == null}">
                                 <a th:href="@{/register}" class="header__actions-account-link">
                                     <span>Đăng ký</span>
+                                </a>
+                            </li>
+                            <li  class="header__actions-account-list-item" th:if="${userEmail != null}">
+                                <a href="#" class="header__actions-account-link">
+                                    <span th:text="${userEmail}">Email người dùng</span>
+                                </a>
+                            </li>
+                            <li  class="header__actions-account-list-item" th:if="${userEmail != null}">
+                                <a th:href="@{/logout}" class="header__actions-account-link">
+                                    <span>Đăng xuất</span>
                                 </a>
                             </li>
                         </ul>
@@ -127,7 +129,6 @@
         </div>
         <div class="banner">
         </div>
-
         <div class="container">
             <div class="grid">
                 <div class="grid__row">
@@ -162,10 +163,91 @@
                                 </li>
                             </ul>
                         </nav>
+                        <nav class="category">
+                            <h3 class="category__heading">DANH MỤC BÁN CHẠY</h3>
+                            <ul class="category-list">
+                                <li class="category-item category-item--active">
+                                    <div class="product-item">
+                                        <div class="product-item__container">
+                                            <a href="" class="product-tiem__link">
+                                                <img class="product-item__img"
+                                                    src="https://bizweb.dktcdn.net/100/197/269/products/tam-ly-hoc-thanh-cong-304x472.jpg?v=1516592128997"
+                                                    alt="">
+                                            </a>
+                                        </div>
+                                        <h4 class="product-item__name">Mindset - Tâm Lý Học Thành Công</h4>
+                                        <div class="product-item__price">
+                                            <span class="product-item__price-current">159.200₫</span>
+                                            <span class="product-item__price-old">199.000₫</span>
+                                        </div>
+                                        <div class="product-item__rating"></div>
+                                        <!-- <div class="product-item__rating">
+                                            <i class="fa-regular fa-star" style="color: gold;"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <span class="product-item__rating-count">(0)</span>
+                                        </div> -->
+                                    </div>
+                                </li>
+                                <li class="category-item ">
+                                    <div class="product-item">
+                                        <div class="product-item__container">
+                                            <a href="" class="product-tiem__link">
+                                                <img class="product-item__img"
+                                                    src="https://bizweb.dktcdn.net/100/197/269/products/bi-a-nha-n-to-quye-t-di-nh-ne-n-ngu-o-i-tha-nh-da-t.jpg?v=1721901416223"
+                                                    alt="">
+                                            </a>
+                                        </div>
+                                        <h4 class="product-item__name">Nhân Tố Quyết Định Nên Người Thành Đạt</h4>
+                                        <div class="product-item__price">
+                                            <span class="product-item__price-current">199.000₫</span>
+                                            <span class="product-item__price-old">259.000₫</span>
+                                        </div>
+                                        <div class="product-item__rating"></div>
+                                        <!-- <div class="product-item__rating">
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <span class="product-item__rating-count">(0)</span>
+                                        </div> -->
+                                    </div>
+                                </li>
+                                <li class="category-item">
+                                    <div class="product-item">
+                                        <div class="product-item__container">
+                                            <a href="" class="product-tiem__link">
+                                                <img class="product-item__img"
+                                                    src="https://bizweb.dktcdn.net/100/197/269/products/vn-11134207-7r98o-lxuy40rui1nd40-jpeg.jpg?v=1721728066683"
+                                                    alt="">
+                                            </a>
+                                        </div>
+                                        <h4 class="product-item__name">Marketing Matters - Marketing Có Quan Trọng? Nên
+                                            Làm Marketing Thế Nào?</h4>
+                                        <div class="product-item__price">
+                                            <span class="product-item__price-current">183.200₫</span>
+                                            <span class="product-item__price-old"> 229.000₫</span>
+                                        </div>
+                                        <div class="product-item__rating"></div>
+                                        <!-- <div class="product-item__rating">
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <span class="product-item__rating-count">(0)</span>
+                                        </div> -->
+                                    </div>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                     <div class="grid__column-9">
                         <div class="home-filter">
-                            <span class="home-filter__label">Sắp xếp:</span>
+                            <!-- <span class="home-filter__label">Sắp xếp:</span>
                             <div class="select-input">
                                 <span class="select-input__label">
                                     Mặc định
@@ -191,7 +273,7 @@
                                 <button class="home-filter__search-button">
                                     <i class="home-filter__search-icon fa-solid fa-magnifying-glass"></i>
                                 </button>
-                            </form>
+                            </form> -->
                         </div>
                         <div class="product">
                             <div class="grid__row">
@@ -327,6 +409,196 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="grid__column-3">
+                                    <!-- Product Item -->
+                                    <div class="product-item">
+                                        <div class="product-item__container">
+                                            <a href="" class="product-tiem__link">
+                                                <img class="product-item__img"
+                                                    src="https://bizweb.dktcdn.net/100/197/269/products/3-f9e456e0-3f61-4e72-854b-798028c76b57.png?v=1726824413130"
+                                                    alt="">
+                                            </a>
+                                        </div>
+                                        <h4 class="product-item__name">
+                                            Học chắc - Ngẫm nhanh - Thành sớm
+                                        </h4>
+                                        <div class="product-item__price">
+                                            <span class="product-item__price-current">230.400₫</span>
+                                            <span class="product-item__price-old"> 288.000₫</span>
+                                        </div>
+                                        <div class="product-item__rating">
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <span class="product-item__rating-count">(0)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="grid__column-3">
+                                    <!-- Product Item -->
+                                    <div class="product-item">
+                                        <div class="product-item__container">
+                                            <a href="" class="product-tiem__link">
+                                                <img class="product-item__img"
+                                                    src="https://bizweb.dktcdn.net/100/197/269/products/anh-whatsapp-2024-09-19-luc-14-53-11-b94d4ef7.jpg?v=1726762666640"
+                                                    alt="">
+                                            </a>
+                                        </div>
+                                        <h4 class="product-item__name">
+                                            Cẩm nang đề cử thành viên Hội đồng Quản trị
+                                        </h4>
+                                        <div class="product-item__price">
+                                            <span class="product-item__price-current">329.000₫</span>
+                                            <span class="product-item__price-old"></span>
+                                        </div>
+                                        <div class="product-item__rating">
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <span class="product-item__rating-count">(0)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="grid__column-3">
+                                    <!-- Product Item -->
+                                    <div class="product-item">
+                                        <div class="product-item__container">
+                                            <a href="" class="product-tiem__link">
+                                                <img class="product-item__img"
+                                                    src="https://bizweb.dktcdn.net/100/197/269/products/ban-sao-su-that-tran-trui-ve-thong-ke-2.jpg?v=1725588618177"
+                                                    alt="">
+                                            </a>
+                                        </div>
+                                        <h4 class="product-item__name">
+                                            Sự Thật Trần Trụi Về Thống Kê
+                                        </h4>
+                                        <div class="product-item__price">
+                                            <span class="product-item__price-current">183.200₫</span>
+                                            <span class="product-item__price-old">229.000₫</span>
+                                        </div>
+                                        <div class="product-item__rating">
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <span class="product-item__rating-count">(0)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="grid__column-3">
+                                    <!-- Product Item -->
+                                    <div class="product-item">
+                                        <div class="product-item__container">
+                                            <a href="" class="product-tiem__link">
+                                                <img class="product-item__img"
+                                                    src="https://bizweb.dktcdn.net/100/197/269/products/ban-sao-su-that-tran-trui-ve-tien-2.jpg?v=1725588766707"
+                                                    alt="">
+                                            </a>
+                                        </div>
+                                        <h4 class="product-item__name">
+                                            Sự Thật Trần Trụi Về Tiền
+                                        </h4>
+                                        <div class="product-item__price">
+                                            <span class="product-item__price-current">215.200₫</span>
+                                            <span class="product-item__price-old">269.000₫</span>
+                                        </div>
+                                        <div class="product-item__rating">
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <span class="product-item__rating-count">(0)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="grid__column-3">
+                                    <!-- Product Item -->
+                                    <div class="product-item">
+                                        <div class="product-item__container">
+                                            <a href="" class="product-tiem__link">
+                                                <img class="product-item__img"
+                                                    src="https://bizweb.dktcdn.net/100/197/269/products/10-ebf7ef66-d7ab-4675-ab0b-4045e78c10e4.png?v=1724897528053"
+                                                    alt="">
+                                            </a>
+                                        </div>
+                                        <h4 class="product-item__name">
+                                            Combo Sách Tăng Tốc Bán Hàng
+                                        </h4>
+                                        <div class="product-item__price">
+                                            <span class="product-item__price-current">532.800₫</span>
+                                            <span class="product-item__price-old">666.000₫</span>
+                                        </div>
+                                        <div class="product-item__rating">
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <span class="product-item__rating-count">(0)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="grid__column-3">
+                                    <!-- Product Item -->
+                                    <div class="product-item">
+                                        <div class="product-item__container">
+                                            <a href="" class="product-tiem__link">
+                                                <img class="product-item__img"
+                                                    src="https://bizweb.dktcdn.net/100/197/269/products/img-7286-1.jpg?v=1723602423993"
+                                                    alt="">
+                                            </a>
+                                        </div>
+                                        <h4 class="product-item__name">
+                                            [COMBO] QUẢN TRỊ CHIẾN LƯỢC THỰC CHIẾN
+                                            + BỘ CÔNG CỤ ĐỔI MỚI DOANH NGHIỆP
+                                        </h4>
+                                        <div class="product-item__price">
+                                            <span class="product-item__price-current">471.200₫</span>
+                                            <span class="product-item__price-old">589.000₫</span>
+                                        </div>
+                                        <div class="product-item__rating">
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <span class="product-item__rating-count">(0)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="grid__column-3">
+                                    <!-- Product Item -->
+                                    <div class="product-item">
+                                        <div class="product-item__container">
+                                            <a href="" class="product-tiem__link">
+                                                <img class="product-item__img"
+                                                    src="https://bizweb.dktcdn.net/100/197/269/products/tu-duy-nhanh-va-cham.jpg?v=1528430381547"
+                                                    alt="">
+                                            </a>
+                                        </div>
+                                        <h4 class="product-item__name">
+                                            Tư Duy Nhanh Và Chậm
+                                        </h4>
+                                        <div class="product-item__price">
+                                            <span class="product-item__price-current">215.200₫</span>
+                                            <span class="product-item__price-old">269.000₫</span>
+                                        </div>
+                                        <div class="product-item__rating">
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <span class="product-item__rating-count">(0)</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <ul class="pagination product__pagination">
@@ -366,70 +638,8 @@
                 </div>
             </div>
         </div>
-        <div class="footer">
-            <div class="grid">
-                <div class="grid__row">
-                    <div class="grid__column-3">
-                        <div class="footer__img">
-                            <a href="" class="footer__link">
-                                <img src="./assets/img/logo.png" alt="" class="footer__img-logo">
-                            </a>
-                        </div>
-                    </div>
-                    <div class="grid__column-3">
-                        <h3 class="footer__heading">Chăm sóc khách hàng</h3>
-                        <ul class="footer-list">
-                            <li class="footer-item">
-                                <a href="" class="footer-link">Trung tâm trợ giúp</a>
-                            </li>
-                            <li class="footer-item">
-                                <a href="" class="footer-link">Shop Mall</a>
-                            </li>
-                            <li class="footer-item">
-                                <a href="" class="footer-link">Hướng dẫn mua hàng</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="grid__column-3">
-                        <h3 class="footer__heading">Về LOOKBOOK</h3>
-                        <ul class="footer-list">
-                            <li class="footer-item">
-                                <a href="" class="footer-link">Giới thiệu về LOOKBOOK</a>
-                            </li>
-                            <li class="footer-item">
-                                <a href="" class="footer-link">Tuyển dụng</a>
-                            </li>
-                            <li class="footer-item">
-                                <a href="" class="footer-link">Điều khoản</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="grid__column-3">
-                        <h3 class="footer__heading">Theo dõi</h3>
-                        <ul class="footer-list">
-                            <li class="footer-item">
-                                <a href="" class="footer-link">
-                                    <i class="fa-brands fa-square-facebook"></i>
-                                    Facebook
-                                </a>
-                            </li>
-                            <li class="footer-item">
-                                <a href="" class="footer-link">
-                                    <i class="fa-brands fa-square-instagram"></i>
-                                    Instagram
-                                </a>
-                            </li>
-                            <li class="footer-item">
-                                <a href="" class="footer-link">
-                                    <i class="fa-brands fa-linkedin"></i>
-                                    Linkedin
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="footer" th:replace="/layout/footer :: footer"></div>
+    </div>
 </body>
 
 </html>

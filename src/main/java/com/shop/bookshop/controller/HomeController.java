@@ -1,13 +1,17 @@
 package com.shop.bookshop.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.shop.bookshop.domain.User;
 import com.shop.bookshop.domain.Dto.UserRegistrationDto;
@@ -23,7 +27,12 @@ public class HomeController {
 
     // HOME
     @GetMapping("/")
-    public String homepage() {
+    public String homepage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        if (userDetails != null) {
+            model.addAttribute("userEmail", userDetails.getUsername());
+        } else {
+            model.addAttribute("userEmail", null);
+        }
         return "index";
     }
 
@@ -54,6 +63,18 @@ public class HomeController {
     public String getLoginPage(Model model) {
 
         return "login";
+    }
+
+    //LOGOUT
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        var auth = request.getUserPrincipal();
+
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, null);
+        }
+
+        return "redirect:/login";
     }
 
 }

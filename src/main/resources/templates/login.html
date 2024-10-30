@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="/layout/head :: head"></head>
 
@@ -8,14 +8,14 @@
         <div class="header">
             <div class="header-elements">
                 <div class="header__logo">
-                    <a href="index.html" class="header__logo-link">
+                    <a th:href="@{/}" class="header__logo-link">
                         <img class="header__logo-img" src="./assets/img/logo.png" alt="Logo">
                     </a>
                 </div>
                 <nav class="header__nav">
                     <ul class="header__nav-list">
                         <li class="header__nav-item">
-                            <a href="" class="header__nav-item-link">Trang chủ</a>
+                            <a th:href="@{/}" class="header__nav-item-link">Trang chủ</a>
                         </li>
                         <li class="header__nav-item">
                             <a href="" class="header__nav-item-link">Về LOOKBOOK</a>
@@ -174,70 +174,7 @@
                 </div>
             </div>
         </div>
-        <div class="footer">
-            <div class="grid">
-                <div class="grid__row">
-                    <div class="grid__column-3">
-                        <div class="footer__img">
-                            <a href="" class="footer__link">
-                                <img src="./assets/img/logo.png" alt="" class="footer__img-logo">
-                            </a>
-                        </div>
-                    </div>
-                    <div class="grid__column-3">
-                        <h3 class="footer__heading">Chăm sóc khách hàng</h3>
-                        <ul class="footer-list">
-                            <li class="footer-item">
-                                <a href="" class="footer-link">Trung tâm trợ giúp</a>
-                            </li>
-                            <li class="footer-item">
-                                <a href="" class="footer-link">Shop Mall</a>
-                            </li>
-                            <li class="footer-item">
-                                <a href="" class="footer-link">Hướng dẫn mua hàng</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="grid__column-3">
-                        <h3 class="footer__heading">Về LOOKBOOK</h3>
-                        <ul class="footer-list">
-                            <li class="footer-item">
-                                <a href="" class="footer-link">Giới thiệu về LOOKBOOK</a>
-                            </li>
-                            <li class="footer-item">
-                                <a href="" class="footer-link">Tuyển dụng</a>
-                            </li>
-                            <li class="footer-item">
-                                <a href="" class="footer-link">Điều khoản</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="grid__column-3">
-                        <h3 class="footer__heading">Theo dõi</h3>
-                        <ul class="footer-list">
-                            <li class="footer-item">
-                                <a href="" class="footer-link">
-                                    <i class="fa-brands fa-square-facebook"></i>
-                                    Facebook
-                                </a>
-                            </li>
-                            <li class="footer-item">
-                                <a href="" class="footer-link">
-                                    <i class="fa-brands fa-square-instagram"></i>
-                                    Instagram
-                                </a>
-                            </li>
-                            <li class="footer-item">
-                                <a href="" class="footer-link">
-                                    <i class="fa-brands fa-linkedin"></i>
-                                    Linkedin
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="footer" th:replace="/layout/footer :: footer"></div>
     </div>
 </body>
 

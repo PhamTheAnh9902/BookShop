@@ -2,11 +2,10 @@ package com.shop.bookshop.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -68,12 +67,23 @@ public class SecurityConfiguration {
 
                                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                                 .anyRequest().authenticated())
+                                .sessionManagement((sessionManagement) -> sessionManagement
+                                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                                        .invalidSessionUrl("/logout?expired")
+                                        .maximumSessions(1)
+                                        .maxSessionsPreventsLogin(false))
                                 .formLogin(formLogin -> formLogin
                                                 .loginPage("/login")
                                                 .failureUrl("/login?error")
                                                 .defaultSuccessUrl("/")
                                                 .successHandler(customSuccessHandler())
+                                                .permitAll())
+                                .logout(logout -> logout
+                                                .logoutUrl("/logout")
+                                                .deleteCookies("JSESSIONID")
+                                                .invalidateHttpSession(true)
                                                 .permitAll());
+                ;
                 return http.build();
         }
 
@@ -81,5 +91,7 @@ public class SecurityConfiguration {
         MvcRequestMatcher.Builder mvc(HandlerMappingIntrospector introspector) {
                 return new MvcRequestMatcher.Builder(introspector);
         }
+
+
 
 }
