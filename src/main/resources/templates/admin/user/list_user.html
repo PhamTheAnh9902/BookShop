@@ -39,7 +39,7 @@
                                     <th data-field="id" data-sortable="true">ID</th>
                                     <th>Họ tên</th>
                                     <th>Email</th>
-                                    <th>Password</th>
+                                    <th>Role</th>
                                     <th>Địa chỉ</th>
                                     <th>Ngày sinh</th>
                                     <th>Giới tính</th>
@@ -52,7 +52,9 @@
                                     <td th:text="${user.id}"></td>
                                     <td th:text="${user.full_name}"></td>
                                     <td th:text="${user.email}"></td>
-                                    <td th:text="${user.password}"></td>
+                                    <td>
+                                        <span th:each="role : ${user.roles}" th:text="${role.name}"></span>
+                                    </td>
                                     <td th:text="${user.address}"></td>
                                     <td th:text="${user.birth_date}"></td>
                                     <td th:text="${user.gender}"></td>

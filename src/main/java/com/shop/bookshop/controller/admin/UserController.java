@@ -1,7 +1,9 @@
-package com.shop.bookshop.controller;
+package com.shop.bookshop.controller.admin;
 
 import java.util.List;
 
+import com.shop.bookshop.domain.Role;
+import com.shop.bookshop.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,11 +23,16 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private RoleService roleService;
+
 
     // CREATE
     @GetMapping("/add")
     public String addUserForm(Model model) {
+        List<Role> roles = roleService.getAllRoles();
         model.addAttribute("user", new User());
+        model.addAttribute("roles", roles);
         return "/admin/user/add_user";
     }
 
@@ -55,7 +62,9 @@ public class UserController {
     @GetMapping("/update/{id}")
     public String updateUser(Model model, @PathVariable long id) {
         User user = userService.getUserById(id);
+        List<Role> roles = roleService.getAllRoles();
         model.addAttribute("user", user);
+        model.addAttribute("roles", roles);
         return "admin/user/update_user";
     }
 

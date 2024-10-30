@@ -13,13 +13,13 @@
                 <li><a href="#"><svg class="glyph stroked home">
                             <use xlink:href="#stroked-home"></use>
                         </svg></a></li>
-                <li class="active">Thêm mới người dùng</li>
+                <li class="active">Cập nhật người dùng</li>
 
             </ol>
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Thêm mới người dùng</h1>
+                <h1 class="page-header">Cập nhật người dùng</h1>
             </div>
         </div>
         <div class="row">
@@ -67,10 +67,16 @@
                                     <input required name="prd_name" class="form-control" placeholder="Email"
                                         th:field="*{email}">
                                 </div>
+<!--                                <div class="form-group">-->
+<!--                                    <label>Password</label>-->
+<!--                                    <input required name="prd_name" class="form-control" placeholder="password"-->
+<!--                                        th:field="*{password}">-->
+<!--                                </div>-->
                                 <div class="form-group">
-                                    <label>Password</label>
-                                    <input required name="prd_name" class="form-control" placeholder="password"
-                                        th:field="*{password}">
+                                    <label>Quyền hạn (Role)</label>
+                                    <select id="roles" th:field="*{roles}" class="form-control">
+                                        <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}"></option>
+                                    </select>
                                 </div>
                                 <button name="sbm" type="submit" class="btn btn-success">Cập nhật</button>
                                 <!-- <button type="reset" class="btn btn-default">Làm mới</button> -->
