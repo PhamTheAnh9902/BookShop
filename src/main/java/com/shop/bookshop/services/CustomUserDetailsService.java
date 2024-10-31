@@ -26,7 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         com.shop.bookshop.domain.User user = this.userService.getUserByEmail(username);
         if (user == null) {
-            throw new UsernameNotFoundException("user not found");
+            throw new UsernameNotFoundException("User not authorized.");
         }
 
         Collection<GrantedAuthority> authorities = user.getRoles().stream()

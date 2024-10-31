@@ -27,6 +27,14 @@ public class UserController {
     private RoleService roleService;
 
 
+    // LIST
+    @GetMapping("/user")
+    public String getAllUsers(Model model) {
+        List<User> list = this.userService.getAllUsers();
+        model.addAttribute("users", list);
+        return "admin/user/list_user";
+    }
+
     // CREATE
     @GetMapping("/add")
     public String addUserForm(Model model) {
@@ -68,23 +76,17 @@ public class UserController {
         return "admin/user/update_user";
     }
 
-    @PostMapping("/update")
-    public String updateUser(@ModelAttribute("user") User user) {
-        User createdUser = this.userService.createUser(user);
+    @PostMapping("/update/{id}")
+    public String updateUser(@PathVariable("id") Long userId, @ModelAttribute("user") User user) {
+        User createdUser = userService.updateUser(userId,user);
 
         if (createdUser != null) {
             return "redirect:/admin/user";
         } else {
-            return "admin/user/add_user";
+            return "admin/user/update_user";
         }
     }
 
-    // LIST
-    @GetMapping("/user")
-    public String getAllUsers(Model model) {
-        List<User> list = this.userService.getAllUsers();
-        model.addAttribute("users", list);
-        return "admin/user/list_user";
-    }
+
 
 }

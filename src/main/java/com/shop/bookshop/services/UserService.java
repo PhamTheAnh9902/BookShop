@@ -3,6 +3,7 @@ package com.shop.bookshop.services;
 import java.util.List;
 import java.util.Optional;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,13 +33,15 @@ public class UserService {
     // DELETE
     public boolean deleteUser(long id) {
         try {
+            User user = userRepository.findById(id)
+                    .orElseThrow(() -> new EntityNotFoundException("User not found"));
+            user.getRoles().clear();
             userRepository.deleteById(id);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
-
     }
 
     // UPDATE
@@ -50,8 +53,8 @@ public class UserService {
         return null;
     }
 
-    public User updateUser(User user) {
-        User currentUser = this.getUserById(user.getId());
+    public User updateUser(Long userId, User user) {
+        User currentUser = this.getUserById(userId);
         if (currentUser != null) {
             currentUser.setFull_name(user.getFull_name());
             currentUser.setAddress(user.getAddress());
@@ -60,7 +63,7 @@ public class UserService {
             currentUser.setPassword(user.getPassword());
             currentUser.setPhone_number(user.getPhone_number());
         }
-        return currentUser;
+        return userRepository.save(currentUser);
     }
 
     // LIST

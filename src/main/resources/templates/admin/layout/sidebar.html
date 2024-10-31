@@ -8,12 +8,14 @@
                 Quản lý người dùng
             </a>
         </li>
-        <li><a href="product.html"><svg class="glyph stroked bag">
+        <li><a th:href="@{/admin/book}"><svg class="glyph stroked bag">
                     <use xlink:href="#stroked-bag"></use>
                 </svg>Quản lý sách</a></li>
-        <li><a href="../index.html"><svg class="glyph stroked open folder">
+        <li><a th:href="@{/}"><svg class="glyph stroked open folder">
                     <use xlink:href="#stroked-open-folder" />
                 </svg>Về Lookbook</a></li>
     </ul>
-
+    <script th:src="@{/admin_assets/js/jquery-1.11.1.min.js}"></script>
+    <script th:src="@{/admin_assets/js/bootstrap.min.js}"></script>
+    <script th:src="@{/admin_assets/js/bootstrap-table.js}"></script>
 </div>

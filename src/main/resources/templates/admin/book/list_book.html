@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head th:replace="admin/layout/head :: head"></head>
+
+<body>
+    <nav th:replace="admin/layout/nav :: nav"></nav>
+
+    <div th:replace="admin/layout/sidebar :: sidebar"></div>
+
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+        <div class="row">
+            <ol class="breadcrumb">
+                <li><a href="#"><svg class="glyph stroked home">
+                            <use xlink:href="#stroked-home"></use>
+                        </svg></a></li>
+                <li class="active">Quản lý Sách</li>
+            </ol>
+        </div><!--/.row-->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Quản lý sách</h1>
+            </div>
+        </div><!--/.row-->
+        <div id="toolbar" class="btn-group">
+            <a th:href="@{/admin/book/add}" class="btn btn-success">
+                <i class="glyphicon glyphicon-plus"></i> Thêm Sách
+            </a>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <table data-toolbar="#toolbar" data-toggle="table">
+
+                            <thead>
+                                <tr>
+                                    <th data-field="id" data-sortable="true">ID</th>
+                                    <th>Tên sách</th>
+                                    <th>Giá</th>
+                                    <th>Ảnh</th>
+                                    <th>Số lượng tồn</th>
+                                    <th>Thể loại</th>
+                                    <th>Tác giả</th>
+                                    <th>Nhà xuất bản</th>
+                                    <th>Mô tả</th>
+                                    <th>Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="book : ${books}">
+                                    <td th:text="${book.getBookId()}">id</td>
+                                    <td th:text="${book.title}">Tên sách</td>
+                                    <td th:text="${book.price}">giá</td>
+                                    <td><img width="130px" height="180px"  th:src="@{${book.img}}" alt="Ảnh sách"/></td>
+                                    <td th:text="${book.quantityInStock}">số lượng tồn</td>
+                                    <td th:text="${book.category.categoryName}">thể loại</td>
+                                    <td>
+                                        <span th:each="author : ${book.authors}" th:text="${author.authorName}"></span>
+                                    </td>
+                                    <td th:text="${book.publisher.publisherName}">tác giả</td>
+                                    <td th:text="${book.description}">Mô tả</td>
+                                    <td class="form-group">
+                                        <a th:href="@{/admin/book/update/{id}(id=${book.getBookId()})}" class="btn btn-primary">
+                                            <i class="glyphicon glyphicon-pencil"></i>
+                                        </a>
+                                        <a th:href="@{/admin/book/delete/{id}(id=${book.getBookId()})}"
+                                            onclick="return confirm('Bạn chắc chắn không?')" class="btn btn-danger">
+                                            <i class="glyphicon glyphicon-remove"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="panel-footer">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div><!--/.row-->
+    </div> <!--/.main-->
+
+    <script th:src="@{/admin_assets/js/jquery-1.11.1.min.js}"></script>
+    <script th:src="@{/admin_assets/js/bootstrap.min.js}"></script>
+    <script th:src="@{/admin_assets/js/bootstrap-table.js}"></script>
+</body>
+
+</html>
