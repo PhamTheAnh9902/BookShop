@@ -5,6 +5,7 @@ import java.util.List;
 import com.shop.bookshop.domain.Role;
 import com.shop.bookshop.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,12 +29,23 @@ public class UserController {
 
 
     // LIST
-    @GetMapping("/user")
-    public String getAllUsers(Model model) {
-        List<User> list = this.userService.getAllUsers();
+    //        @GetMapping("/user")
+    //        public String getAllUsers(Model model) {
+    //            List<User> list = this.userService.getAllUsers();
+    //            model.addAttribute("users", list);
+    //            return "admin/user/list_user";
+    //        }
+    @GetMapping("/user/{pageNum}")
+    public String getAllUsers(Model model, @PathVariable("pageNum") int pageNum) {
+        Page<User> page = userService.getAllUsersPaging(pageNum);
+        List<User> list = page.getContent();
+        model.addAttribute("currentPage", pageNum);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
         model.addAttribute("users", list);
         return "admin/user/list_user";
     }
+
 
     // CREATE
     @GetMapping("/add")

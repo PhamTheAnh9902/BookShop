@@ -6,6 +6,7 @@ import com.shop.bookshop.services.BookService;
 import com.shop.bookshop.services.CategoryService;
 import com.shop.bookshop.services.PublisherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,9 +30,19 @@ public class BookController {
     AuthorService authorService;
 
     //LIST
-    @RequestMapping("/book")
-    public String getAllBooks(Model model) {
-        List<Book> books = bookService.getAllBook();
+    //    @RequestMapping("/book")
+    //    public String getAllBooks(Model model) {
+    //        List<Book> books = bookService.getAllBook();
+    //        model.addAttribute("books", books);
+    //        return "admin/book/list_book";
+    //    }
+    @RequestMapping("/book/{pageNum}")
+    public String getAllBookPaging(Model model, @PathVariable("pageNum") int pageNum) {
+
+        Page<Book> page = bookService.getAllBookPaging(pageNum);
+        List<Book> books = page.getContent();
+        model.addAttribute("currentPage", pageNum);
+        model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("books", books);
         return "admin/book/list_book";
     }

@@ -75,11 +75,20 @@
                     <div class="panel-footer">
                         <nav aria-label="Page navigation example">
                             <ul class="pagination">
-                                <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                                <li class="page-item">
+                                    <a th:if="${currentPage > 1 }" th:href="@{'/admin/user/'+${currentPage - 1}}" class="page-link">&laquo;</a>
+                                    <span th:unless="${currentPage > 1 }">&laquo;</span>
+                                </li>
+                                <li class="page-item">
+                                    <span th:each=" i : ${#numbers.sequence(1,totalPages)}">
+                                        <a th:if="${currentPage != i}" th:href="@{'/admin/user/' + ${i}}" class="page-link">[[${i}]]</a>
+                                        <span th:unless="${currentPage != i }">[[${i}]]</span>
+                                    </span>
+                                </li>
+                                <li class="page-item">
+                                    <a th:if="${currentPage < totalPages }" th:href="@{'/admin/user/'+${totalPages}}" class="page-link">&raquo;</a>
+                                    <span th:unless="${currentPage < totalPages }">&raquo;</span>
+                                </li>
                             </ul>
                         </nav>
                     </div>

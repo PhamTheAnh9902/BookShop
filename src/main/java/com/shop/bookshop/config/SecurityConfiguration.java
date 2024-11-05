@@ -63,7 +63,9 @@ public class SecurityConfiguration {
                                                                 "/admin_assets/img/**",
                                                                 "/admin_assets/js/**")
                                                 .permitAll()
-                                                .requestMatchers("/assets/css/**", "/assets/img/**")
+                                                .requestMatchers("/assets/css/**",
+                                                                "/assets/fontawesome-free-6.6.0-web/**",
+                                                                "/assets/img/**")
                                                 .permitAll()
 
                                                 .requestMatchers("/admin/**").hasRole("ADMIN")

@@ -28,7 +28,7 @@ public class Book {
     @Column(name = "image")
     private String img;
 
-    private double price;
+    private int price;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="/layout/head :: head">
+</head>
+
+<body>
+    <div class="app">
+        <div class="header">
+            <div class="header-elements">
+                <div class="header__logo">
+                    <a th:href="@{/}" class="header__logo-link">
+                        <img class="header__logo-img" th:src="@{/assets/img/logo.png}" alt="Logo">
+                    </a>
+                </div>
+                <nav class="header__nav">
+                    <ul class="header__nav-list">
+                        <li class="header__nav-item">
+                            <a th:href="@{/}" class="header__nav-item-link">Trang chủ</a>
+                        </li>
+                        <li class="header__nav-item">
+                            <a href="" class="header__nav-item-link">Về LOOKBOOK</a>
+                        </li>
+                        <li class="header__nav-item">
+                            <a th:href="@{/books}" class="header__nav-item-link">
+                                <span>Tủ sách</span>
+                                <i class="header_search-select-icon fa-solid fa-chevron-down"></i>
+                            </a>
+                            <ul class="header__nav-list-small">
+                                <li class="header__nav-list-small-item">
+                                    <a href="" class="header__nav-list-small-item-link">
+                                        <span>Harvard Business Review</span>
+                                    </a>
+                                </li>
+                                <li class="header__nav-list-small-item">
+                                    <a href="" class="header__nav-list-small-item-link">
+                                        <span>Alpha Lead</span>
+                                    </a>
+                                </li>
+                                <li class="header__nav-list-small-item">
+                                    <a href="" class="header__nav-list-small-item-link">
+                                        <span>Quản trị doanh nghiệp</span>
+                                    </a>
+                                </li>
+                                <li class="header__nav-list-small-item">
+                                    <a href="" class="header__nav-list-small-item-link">
+                                        <span>Tài chính - Đầu tư - Chứng khoán</span>
+                                    </a>
+                                </li>
+                                <li class="header__nav-list-small-item">
+                                    <a href="" class="header__nav-list-small-item-link">
+                                        <span>Công nghệ & Chuyển đổi số</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="header__nav-item">
+                            <a href="" class="header__nav-item-link">Dịch vụ HTXB</a>
+                        </li>
+                        <li class="header__nav-item">
+                            <a href="" class="header__nav-item-link">
+                                <span>Tin tức và sự kiện</span>
+                                <i class="header_search-select-icon fa-solid fa-chevron-down"></i>
+                            </a>
+                            <ul class="header__nav-list-small">
+                                <li class="header__nav-list-small-item">
+                                    <a href="" class="header__nav-list-small-item-link">
+                                        <span>Thể loại 1</span>
+                                    </a>
+                                </li>
+                                <li class="header__nav-list-small-item">
+                                    <a href="" class="header__nav-list-small-item-link">
+                                        <span>Thể loại 2</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="header__nav-item">
+                            <a href="" class="header__nav-item-link">Liên hệ</a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="header__actions">
+                    <div class="header__actions-search">
+                        <i class="fa-solid fa-magnifying-glass" style="color: #616161;"></i>
+                        <form action="" class="header__actions-text">
+                            <input class="header__actions-input" type="text" placeholder="Tìm kiếm sản phẩm...">
+                            <i class="header__actions-text-icon fa-solid fa-magnifying-glass"
+                                style="color: #616161;"></i>
+                        </form>
+                    </div>
+                    <div class="header__actions-account">
+                        <i class="fa-solid fa-user" style="color: #616161;"></i>
+                        <ul class="header__actions-account-list">
+                            <li  class="header__actions-account-list-item" th:if="${userEmail == null}">
+                                <a th:href="@{/login}" class="header__actions-account-link">
+                                    <span>Đăng nhập</span>
+                                </a>
+                            </li>
+                            <li class="header__actions-account-list-item" th:if="${userEmail == null}">
+                                <a th:href="@{/register}" class="header__actions-account-link">
+                                    <span>Đăng ký</span>
+                                </a>
+                            </li>
+                            <li  class="header__actions-account-list-item" th:if="${userEmail != null}">
+                                <a href="#" class="header__actions-account-link">
+                                    <span th:text="${userEmail}">Email người dùng</span>
+                                </a>
+                            </li>
+                            <li  class="header__actions-account-list-item" th:if="${userEmail != null}">
+                                <a th:href="@{/logout}" class="header__actions-account-link">
+                                    <span>Đăng xuất</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="header__actions-cart">
+                        <i class="fa-solid fa-cart-shopping" style="color: #616161;"></i>
+                        <span class="header__actions-cart-count">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="location">
+            <a th:href="@{/}" class="location-link">
+                Trang chủ
+            </a>
+            <p class="location-text">Tất cả sản phẩm</p>
+        </div>
+        <div class="container">
+            <div class="grid">
+                <div class="grid__row">
+                    <div class="grid__column-3">
+                        <nav class="category">
+                            <h3 class="category__heading">DANH MỤC SÁCH</h3>
+                            <ul class="category-list" th:each="category : ${categories}">
+                                <li class="category-item category-item--active">
+                                    <a href="#" class="category-item__link " th:text="${category.categoryName}">
+                                        Harvard Business Review
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <nav class="category">
+                            <h3 class="category__heading">DANH MỤC BÁN CHẠY</h3>
+                            <ul class="category-list">
+                                <li class="category-item category-item--active">
+                                    <div class="product-item">
+                                        <div class="product-item__container">
+                                            <a href="" class="product-tiem__link">
+                                                <img class="product-item__img"
+                                                    src="https://bizweb.dktcdn.net/100/197/269/products/tam-ly-hoc-thanh-cong-304x472.jpg?v=1516592128997"
+                                                    alt="">
+                                            </a>
+                                        </div>
+                                        <h4 class="product-item__name">Mindset - Tâm Lý Học Thành Công</h4>
+                                        <div class="product-item__price">
+                                            <span class="product-item__price-current">159.200₫</span>
+                                            <span class="product-item__price-old">199.000₫</span>
+                                        </div>
+                                        <div class="product-item__rating"></div>
+                                        <!-- <div class="product-item__rating">
+                                            <i class="fa-regular fa-star" style="color: gold;"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <span class="product-item__rating-count">(0)</span>
+                                        </div> -->
+                                    </div>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="grid__column-9">
+                        <div class="home-filter">
+                             <span class="home-filter__label">Sắp xếp:</span>
+                            <div class="select-input">
+                                <span class="select-input__label">
+                                    Mặc định
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </span>
+                                <ul class="select-input__list">
+                                    <li class="select-input__item">
+                                        <a th:href="@{/books/sorted(sortBy='titleAsc')}" class="select-input__link">Tên A-Z</a>
+                                    </li>
+                                    <li class="select-input__item">
+                                        <a th:href="@{/books/sorted(sortBy='titleDesc')}" class="select-input__link">Tên Z-A</a>
+                                    </li>
+                                    <li class="select-input__item">
+                                        <a th:href="@{/books/sorted(sortBy='priceAsc')}" class="select-input__link">Giá tăng dần</a>
+                                    </li>
+                                    <li class="select-input__item">
+                                        <a th:href="@{/books/sorted(sortBy='priceDesc')}" class="select-input__link">Giá giảm dần</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <form class="home-filter__search" th:action="@{/books/search}" method="get">
+                                <input type="text" name="query"  class="home-filter__search-text" placeholder="Nhập tên sản phẩm..." required>
+                                <button class="home-filter__search-button" type="submit">
+                                    <i class="home-filter__search-icon fa-solid fa-magnifying-glass"></i>
+                                </button>
+                            </form>
+                        </div>
+                        <!--BOOK-->
+                        <div class="product">
+                            <div class="grid__row" >
+                                <div class="grid__column-3" th:each="book : ${books}">
+                                    <!-- Product Item -->
+                                    <div class="product-item">
+                                        <div class="product-item__container">
+                                            <a th:href="@{/detail/{id}(id=${book.bookId})}" class="product-tiem__link">
+                                                <img class="product-item__img"
+                                                    th:src="${book.img}"
+                                                    alt="">
+                                            </a>
+                                        </div>
+                                        <a th:href="@{/detail/{id}(id=${book.getBookId()})}" style="text-decoration: none">
+                                            <h4 class="product-item__name" th:text="${book.title}"></h4>
+                                        </a>
+                                        <div class="product-item__price">
+                                            <span class="product-item__price-current" th:text="${book.price} +' VNĐ'"></span>
+                                            <span class="product-item__price-old"></span>
+                                        </div>
+                                        <div class="product-item__rating">
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <span class="product-item__rating-count">(0)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="pagination product__pagination">
+                            <li class="pagination-item">
+                                <a href="" class="pagination-item__link">
+                                    <i class="pagination-item__icon fa-solid fa-angle-left"></i>
+                                </a>
+                            </li>
+                            <li class="pagination-item pagination-item--active">
+                                <a href="" class="pagination-item__link ">1</a>
+                            </li>
+                            <li class="pagination-item">
+                                <a href="" class="pagination-item__link">2</a>
+                            </li>
+                            <li class="pagination-item">
+                                <a href="" class="pagination-item__link">3</a>
+                            </li>
+                            <li class="pagination-item">
+                                <a href="" class="pagination-item__link">4</a>
+                            </li>
+                            <li class="pagination-item">
+                                <a href="" class="pagination-item__link">5</a>
+                            </li>
+                            <li class="pagination-item">
+                                <a href="" class="pagination-item__link">...</a>
+                            </li>
+                            <li class="pagination-item">
+                                <a href="" class="pagination-item__link">14</a>
+                            </li>
+                            <li class="pagination-item">
+                                <a href="" class="pagination-item__link">
+                                    <i class="pagination-item__icon fa-solid fa-angle-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer" th:replace="/layout/footer :: footer"></div>
+    </div>
+</body>
+
+</html>

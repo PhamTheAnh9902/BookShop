@@ -5,6 +5,9 @@ import java.util.Optional;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +28,16 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+
+    // LIST
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+    public Page<User> getAllUsersPaging(int pageNum){
+        int pageSize = 2;
+        Pageable pageable = PageRequest.of(pageNum-1,pageSize);
+        return userRepository.findAll(pageable);
+    }
     // CREATE
     public User createUser(User user) {
         return userRepository.save(user);
@@ -66,10 +79,7 @@ public class UserService {
         return userRepository.save(currentUser);
     }
 
-    // LIST
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
+
 
     // REGISTER
     public User registerDTOtoUser(UserRegistrationDto registrationDto) {

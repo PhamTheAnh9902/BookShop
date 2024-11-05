@@ -1,10 +1,13 @@
 package com.shop.bookshop.services;
 
 import com.shop.bookshop.domain.Book;
-import com.shop.bookshop.domain.User;
 import com.shop.bookshop.repository.BookRespository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +21,12 @@ public class BookService {
 
     public List<Book> getAllBook(){
         return bookRespository.findAll();
+    }
+    public Page<Book> getAllBookPaging(int pageNum){
+        int pageSize = 2;
+
+        Pageable pageable = PageRequest.of(pageNum-1,pageSize);
+        return bookRespository.findAll(pageable);
     }
 
     public Book createBook(Book book) {
@@ -58,5 +67,14 @@ public class BookService {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public List<Book> searchBookByName(String query) {
+        return bookRespository.findBookByTitleContainingIgnoreCase(query);
+    }
+
+    //Sort
+    public List<Book> getAllBooksSorted(Sort sort) {
+        return bookRespository.findAll(sort);
     }
 }

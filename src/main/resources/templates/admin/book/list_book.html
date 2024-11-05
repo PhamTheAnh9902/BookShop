@@ -52,7 +52,7 @@
                                 <tr th:each="book : ${books}">
                                     <td th:text="${book.getBookId()}">id</td>
                                     <td th:text="${book.title}">Tên sách</td>
-                                    <td th:text="${book.price}">giá</td>
+                                    <td th:text="${book.price} + ' VNĐ'">giá</td>
                                     <td><img width="130px" height="180px"  th:src="@{${book.img}}" alt="Ảnh sách"/></td>
                                     <td th:text="${book.quantityInStock}">số lượng tồn</td>
                                     <td th:text="${book.category.categoryName}">thể loại</td>
@@ -77,11 +77,20 @@
                     <div class="panel-footer">
                         <nav aria-label="Page navigation example">
                             <ul class="pagination">
-                                <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                                <li class="page-item">
+                                    <a th:if="${currentPage > 1 }" th:href="@{'/admin/book/'+${currentPage - 1}}" class="page-link">&laquo;</a>
+                                    <span th:unless="${currentPage > 1 }">&laquo;</span>
+                                </li>
+                                <li class="page-item">
+                                    <span th:each=" i : ${#numbers.sequence(1,totalPages)}">
+                                        <a th:if="${currentPage != i}" th:href="@{'/admin/book/' + ${i}}" class="page-link">[[${i}]]</a>
+                                        <span th:unless="${currentPage != i }">[[${i}]]</span>
+                                    </span>
+                                </li>
+                                <li class="page-item">
+                                    <a th:if="${currentPage < totalPages }" th:href="@{'/admin/book/'+${totalPages}}" class="page-link">&raquo;</a>
+                                    <span th:unless="${currentPage < totalPages }">&raquo;</span>
+                                </li>
                             </ul>
                         </nav>
                     </div>
