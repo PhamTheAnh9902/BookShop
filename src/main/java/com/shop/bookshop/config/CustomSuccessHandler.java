@@ -5,6 +5,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+
+import com.shop.bookshop.domain.Cart;
+import com.shop.bookshop.domain.User;
+import com.shop.bookshop.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -16,10 +23,16 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.stereotype.Component;
 
+@Component("customSuccessHandlerV2")
 public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 
+    @Autowired
+    private UserService userService;
+
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+
 
     protected String determineTargetUrl(final Authentication authentication) {
 
@@ -38,12 +51,24 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         throw new IllegalStateException();
     }
 
-    protected void clearAuthenticationAttributes(HttpServletRequest request) {
+    protected void clearAuthenticationAttributes(HttpServletRequest request, Authentication authentication) {
         HttpSession session = request.getSession(false);
         if (session == null) {
             return;
         }
         session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+        String email = authentication.getName();
+        User user = userService.getUserByEmail(email);
+        if(user != null){
+            session.setAttribute("id",user.getId());
+            Cart cart = user.getCart();
+            if (cart != null) {
+                int sum = cart.getSum();
+                session.setAttribute("sum", sum);
+            } else {
+                session.setAttribute("sum", 0);
+            }
+        }
     }
 
     @Override
@@ -57,7 +82,7 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         }
 
         redirectStrategy.sendRedirect(request, response, targetUrl);
-        clearAuthenticationAttributes(request);
+        clearAuthenticationAttributes(request,authentication);
     }
 
 }

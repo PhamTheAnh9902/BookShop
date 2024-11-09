@@ -4,6 +4,7 @@ import com.shop.bookshop.domain.Book;
 import com.shop.bookshop.domain.Category;
 import com.shop.bookshop.services.BookService;
 import com.shop.bookshop.services.CategoryService;
+import com.shop.bookshop.util.constant.FormatterUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,6 +25,8 @@ public class BooksController {
 
     @Autowired
     CategoryService categoryService;
+    @Autowired
+    private FormatterUtil formatterUtil;
 
     //GET PAGE
     @GetMapping("/books")
@@ -34,6 +37,7 @@ public class BooksController {
             model.addAttribute("userEmail", userDetails.getUsername());
             model.addAttribute("books", books);
             model.addAttribute("categories",categories);
+            model.addAttribute("formatter", formatterUtil);
         } else {
             model.addAttribute("userEmail", null);
         }

@@ -4,10 +4,13 @@
 <head th:replace="admin/layout/head :: head"></head>
 
 <body>
+    <!-- nav -->
     <nav th:replace="admin/layout/nav :: nav"></nav>
-
+    <!-- nav -->
+    <!-- sidebar -->
     <div th:replace="admin/layout/sidebar :: sidebar"></div>
-
+    <!-- sidebar -->
+    <!-- container -->
     <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
         <div class="row">
             <ol class="breadcrumb">
@@ -52,7 +55,7 @@
                                 <tr th:each="book : ${books}">
                                     <td th:text="${book.getBookId()}">id</td>
                                     <td th:text="${book.title}">Tên sách</td>
-                                    <td th:text="${book.price} + ' VNĐ'">giá</td>
+                                    <td th:text="${formatter.formatCurrency(book.price)}">giá</td>
                                     <td><img width="130px" height="180px"  th:src="@{${book.img}}" alt="Ảnh sách"/></td>
                                     <td th:text="${book.quantityInStock}">số lượng tồn</td>
                                     <td th:text="${book.category.categoryName}">thể loại</td>
@@ -97,11 +100,13 @@
                 </div>
             </div>
         </div><!--/.row-->
-    </div> <!--/.main-->
-
+    </div>
+    <!-- container -->
+    <!-- script -->
     <script th:src="@{/admin_assets/js/jquery-1.11.1.min.js}"></script>
     <script th:src="@{/admin_assets/js/bootstrap.min.js}"></script>
     <script th:src="@{/admin_assets/js/bootstrap-table.js}"></script>
+    <!-- script -->
 </body>
 
 </html>

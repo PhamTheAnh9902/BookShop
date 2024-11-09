@@ -1,0 +1,117 @@
+<div class="header" th:fragment="header">
+    <div class="header-elements">
+        <div class="header__logo">
+            <a th:href="@{/}" class="header__logo-link">
+                <img class="header__logo-img" th:src="@{/assets/img/logo.png}" alt="Logo">
+            </a>
+        </div>
+        <nav class="header__nav">
+            <ul class="header__nav-list">
+                <li class="header__nav-item">
+                    <a th:href="@{/}" class="header__nav-item-link">Trang chủ</a>
+                </li>
+                <li class="header__nav-item">
+                    <a href="" class="header__nav-item-link">Về LOOKBOOK</a>
+                </li>
+                <li class="header__nav-item">
+                    <a th:href="@{/books}" class="header__nav-item-link">
+                        <span>Tủ sách</span>
+                        <i class="header_search-select-icon fa-solid fa-chevron-down"></i>
+                    </a>
+                    <ul class="header__nav-list-small">
+                        <li class="header__nav-list-small-item">
+                            <a href="" class="header__nav-list-small-item-link">
+                                <span>Harvard Business Review</span>
+                            </a>
+                        </li>
+                        <li class="header__nav-list-small-item">
+                            <a href="" class="header__nav-list-small-item-link">
+                                <span>Alpha Lead</span>
+                            </a>
+                        </li>
+                        <li class="header__nav-list-small-item">
+                            <a href="" class="header__nav-list-small-item-link">
+                                <span>Quản trị doanh nghiệp</span>
+                            </a>
+                        </li>
+                        <li class="header__nav-list-small-item">
+                            <a href="" class="header__nav-list-small-item-link">
+                                <span>Tài chính - Đầu tư - Chứng khoán</span>
+                            </a>
+                        </li>
+                        <li class="header__nav-list-small-item">
+                            <a href="" class="header__nav-list-small-item-link">
+                                <span>Công nghệ & Chuyển đổi số</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="header__nav-item">
+                    <a href="" class="header__nav-item-link">Dịch vụ HTXB</a>
+                </li>
+                <li class="header__nav-item">
+                    <a href="" class="header__nav-item-link">
+                        <span>Tin tức và sự kiện</span>
+                        <i class="header_search-select-icon fa-solid fa-chevron-down"></i>
+                    </a>
+                    <ul class="header__nav-list-small">
+                        <li class="header__nav-list-small-item">
+                            <a href="" class="header__nav-list-small-item-link">
+                                <span>Thể loại 1</span>
+                            </a>
+                        </li>
+                        <li class="header__nav-list-small-item">
+                            <a href="" class="header__nav-list-small-item-link">
+                                <span>Thể loại 2</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="header__nav-item">
+                    <a href="" class="header__nav-item-link">Liên hệ</a>
+                </li>
+            </ul>
+        </nav>
+        <div class="header__actions">
+            <div class="header__actions-search">
+                <i class="fa-solid fa-magnifying-glass" style="color: #616161;"></i>
+                <form action="" class="header__actions-text">
+                    <input class="header__actions-input" type="text" placeholder="Tìm kiếm sản phẩm...">
+                    <i class="header__actions-text-icon fa-solid fa-magnifying-glass"
+                       style="color: #616161;"></i>
+                </form>
+            </div>
+            <div class="header__actions-account">
+                <i class="fa-solid fa-user" style="color: #616161;"></i>
+                <ul class="header__actions-account-list">
+                    <li  class="header__actions-account-list-item" th:if="${userEmail == null}">
+                        <a th:href="@{/login}" class="header__actions-account-link">
+                            <span>Đăng nhập</span>
+                        </a>
+                    </li>
+                    <li class="header__actions-account-list-item" th:if="${userEmail == null}">
+                        <a th:href="@{/register}" class="header__actions-account-link">
+                            <span>Đăng ký</span>
+                        </a>
+                    </li>
+                    <li  class="header__actions-account-list-item" th:if="${userEmail != null}">
+                        <a href="#" class="header__actions-account-link">
+                            <span th:text="${userEmail}">Email người dùng</span>
+                        </a>
+                    </li>
+                    <li  class="header__actions-account-list-item" th:if="${userEmail != null}">
+                        <a th:href="@{/logout}" class="header__actions-account-link">
+                            <span>Đăng xuất</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="header__actions-cart">
+                <a th:href="@{/cart}">
+                    <i class="fa-solid fa-cart-shopping" style="color: #616161;"></i>
+                    <span class="header__actions-cart-count" th:text="${session.sum}">0</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

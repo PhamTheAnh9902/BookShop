@@ -5,6 +5,7 @@
 
 <body>
     <div class="app">
+        <!-- header -->
         <div class="header">
             <div class="header-elements">
                 <div class="header__logo">
@@ -111,12 +112,16 @@
                 </div>
             </div>
         </div>
+        <!-- header -->
+        <!-- location -->
         <div class="location">
             <a th:href="@{/}" class="location-link">
                 Trang chủ
             </a>
             <p class="location-text">Đăng ký tài khoản</p>
         </div>
+        <!-- location -->
+        <!-- container -->
         <div class="container">
             <div class="body">
                 <div class="body__left">
@@ -216,7 +221,10 @@
                 </div>
             </div>
         </div>
+        <!-- container -->
+        <!-- footer -->
         <div th:replace="/layout/footer :: footer"></div>
+        <!-- footer -->
     </div>
 </body>
 

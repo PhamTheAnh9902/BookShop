@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script th:src="@{/assets/js/jquery-3.3.1.js}"></script>
+    <script th:src="@{/assets/js/bootstrap.min.js}"></script>
+    <script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js}"></script>
+
+    <!--CART-->
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/fonts/fontawesome/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/cart.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/base.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/main.css}">
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-free-6.6.0-web/css/all.min.css}">
+
+</head>
+<body>
+    <!-- header -->
+    <div th:replace="/layout/header :: header"></div>
+    <!-- header -->
+    <!-- location -->
+    <div class="location">
+        <a th:href="@{/}" class="location-link">
+            Trang chủ
+        </a>
+        <p class="location-text">Giỏ hàng</p>
+    </div>
+    <!-- location -->
+    <!-- score-top-->
+    <button onclick="topFunction()" id="myBtn-scroll" title="Go to top"><i class="fas fa-chevron-down"></i></button>
+    <!-- cart -->
+    <section class="cart">
+        <div class="container">
+            <article class="row cart__head pc">
+                <div class="col-3 cart__head-name">
+                    Thông tin sản phẩm
+                </div>
+                <div class="col-3 cart__head-name">
+                    Giá tiền
+                </div>
+                <div class="col-3 cart__head-quantity">
+                    Số lượng
+                </div>
+                <div class="col-3 cart__head-price">
+                    Thành tiền
+                </div>
+            </article>
+
+            <div th:each="cd : ${cartDetails}">
+                <article class="row cart__body">
+                    <div class="col-3 cart__body-name">
+                        <div class="cart__body-name-img">
+                            <img th:src="@{${cd.book.img}}">
+                        </div>
+                        <a th:href="@{/detail/{id}(id=${cd.book.getBookId()})}" class="cart__body-name-title">
+                            <span th:text="${cd.book.title}"></span>
+                        </a>
+                    </div>
+                    <div class="col-3 " style="font-weight: 500; font-size: 1.8rem">
+                        <span
+                                class="price"
+                                th:text="${formatter.formatCurrency(cd.book.price)}">
+                        </span>
+                    </div>
+                    <div class="col-3 cart__body-quantity">
+                        <input type="button"
+                               value="-"
+                               class="cart__body-quantity-minus"
+                               >
+                        <input type="number"
+                               class="cart__body-quantity-total"
+                               th:value="${cd.quantity}"
+                               th:data-cart-detail-id="${cd.cartDetailId}"
+                               th:data-cart-detail-price="${cd.book.price}"
+                               min="1">
+                        <input type="button"
+                               value="+"
+                               class="cart__body-quantity-plus"
+                               >
+                    </div>
+                    <div class="col-3 cart__body-price">
+                        <span
+                                class="price"
+                                th:data-cart-detail-id="${cd.cartDetailId}"
+                                th:text="${formatter.formatCurrency(cd.book.price * cd.quantity)}">
+                        </span>
+                        <a th:href="@{/delete-book-from-cart/{id}(id=${cd.cartDetailId})}">Xóa</a>
+                    </div>
+                </article>
+            </div>
+            <article class="row cart__foot">
+                <div class="col-6 col-lg-6 col-sm-6 cart__foot-update">
+                    <!--<button class="cart__foot-update-btn">Cập nhật giỏ hàng</button>-->
+                </div>
+
+                <p class="col-3 col-lg-3 col-sm-3 cart__foot-total">
+                    Tổng tiền:
+                </p>
+
+                <span class="col-3 col-lg-3 col-sm-3 cart__foot-price" >
+                    <span  class="total-price"
+                           th:data-cart-total-price="${totalPrice}"
+                           th:text="${formatter.formatCurrency(totalPrice)}">0 VNĐ</span>
+                    <br>
+					<button class="cart__foot-price-btn">Mua hàng</button>
+				</span>
+            </article>
+        </div>
+    </section>
+    <!-- cart -->
+    <!-- footer -->
+    <div class="footer" th:replace="/layout/footer :: footer"></div>
+    <!-- footer -->
+    <!-- script -->
+    <script th:src="@{/assets/js/jq.js}"></script>
+    <script th:src="@{https://code.jquery.com/jquery-3.6.0.min.js}"></script>
+    <!-- script -->
+</body>
+</html>

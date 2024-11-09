@@ -1,8 +1,14 @@
 package com.shop.bookshop.services;
 
 import com.shop.bookshop.domain.Book;
+import com.shop.bookshop.domain.Cart;
+import com.shop.bookshop.domain.CartDetail;
+import com.shop.bookshop.domain.User;
 import com.shop.bookshop.repository.BookRespository;
+import com.shop.bookshop.repository.CartDetailRepository;
+import com.shop.bookshop.repository.CartRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +24,15 @@ public class BookService {
 
     @Autowired
     BookRespository bookRespository;
+
+    @Autowired
+    CartRepository cartRepository;
+
+    @Autowired
+    CartDetailRepository cartDetailRepository;
+
+    @Autowired
+    private UserService userService;
 
     public List<Book> getAllBook(){
         return bookRespository.findAll();
@@ -76,5 +91,80 @@ public class BookService {
     //Sort
     public List<Book> getAllBooksSorted(Sort sort) {
         return bookRespository.findAll(sort);
+    }
+
+    //CART
+    public void addBookToCart(String email, long bookId, HttpSession session){
+
+        User user = userService.getUserByEmail(email);
+        if (user != null){
+            // check user da co cart ?
+            Cart cart = cartRepository.findByUser(user);
+            if (cart == null){
+                //tao moi
+                Cart otherCart = new Cart();
+                otherCart.setUser(user);
+                otherCart.setSum(0);
+
+                cart = cartRepository.save(otherCart);
+            }
+
+            //save cart_detail
+            // find book by id
+            Optional<Book> book = bookRespository.findById(bookId);
+            if (book.isPresent()){
+                Book currentBook = book.get();
+
+                //check san pham da tung duoc them
+                CartDetail  oldDetail = cartDetailRepository.findByCartAndBook(cart, currentBook);
+
+                if(oldDetail == null){
+                    CartDetail cartDetail = new CartDetail();
+                    cartDetail.setCart(cart);
+                    cartDetail.setBook(currentBook);
+                    cartDetail.setPrice(currentBook.getPrice());
+                    cartDetail.setQuantity(1);
+                    cartDetailRepository.save(cartDetail);
+
+                    //update sum
+                    int s = cart.getSum() + 1;
+                    cart.setSum(s);
+                    cartRepository.save(cart);
+                    session.setAttribute("sum",s);
+                }
+                else {
+                    oldDetail.setQuantity(oldDetail.getQuantity()+1);
+                    cartDetailRepository.save(oldDetail);
+                }
+
+            }
+        }
+    }
+
+    public Cart findByUser(User currentUser) {
+        return cartRepository.findByUser(currentUser);
+    }
+
+    public void removeCartDetail(long cartDetailId, HttpSession session) {
+        Optional<CartDetail> cartDetailOptional = cartDetailRepository.findById(cartDetailId);
+        if (cartDetailOptional != null){
+            CartDetail cartDetail = cartDetailOptional.get();
+
+            Cart currentCart = cartDetail.getCart();
+
+            //delete cart-detail
+            cartDetailRepository.deleteById(cartDetailId);
+
+            //update cart
+            if (currentCart.getSum() > 1){
+                int s = currentCart.getSum() - 1;
+                session.setAttribute("sum", s);
+                cartRepository.save(currentCart);
+            } else {
+                // delete cart (sum =1)
+                cartRepository.deleteById(currentCart.getCartId());
+                session.setAttribute("sum", 0);
+            }
+        }
     }
 }

@@ -5,6 +5,7 @@ import com.shop.bookshop.services.AuthorService;
 import com.shop.bookshop.services.BookService;
 import com.shop.bookshop.services.CategoryService;
 import com.shop.bookshop.services.PublisherService;
+import com.shop.bookshop.util.constant.FormatterUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,8 @@ public class BookController {
 
     @Autowired
     AuthorService authorService;
+    @Autowired
+    private FormatterUtil formatterUtil;
 
     //LIST
     //    @RequestMapping("/book")
@@ -44,6 +47,7 @@ public class BookController {
         model.addAttribute("currentPage", pageNum);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("books", books);
+        model.addAttribute("formatter", formatterUtil);
         return "admin/book/list_book";
     }
 
