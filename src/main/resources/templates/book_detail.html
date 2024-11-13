@@ -65,7 +65,7 @@
                             </div>
 
                             <div class="product__main-info-price">
-                                <span class="product__main-info-price-current" th:text="${book.price}" ></span>
+                                <span class="product__main-info-price-current" th:text="${formatter.formatCurrency(book.price)}" ></span>
                             </div>
 
                             <div class="product__main-info-description">
@@ -79,28 +79,10 @@
                                     </button>
                                 </div>
                             </form>
+                            <div class="product__main-content-wrap">
+                                <p th:text="${book.description}"> </p>
 
-                            <div class="product__main-info-contact">
-                                <a href="#" class="product__main-info-contact-fb">
-                                    <i class="fab fa-facebook-f"></i>
-                                    Chat Facebook
-                                </a>
-                                <div class="product__main-info-contact-phone-wrap">
-                                    <div class="product__main-info-contact-phone-icon">
-                                        <i class="fas fa-phone-alt "></i>
-                                    </div>
-
-                                    <div class="product__main-info-contact-phone">
-                                        <div class="product__main-info-contact-phone-title">
-                                            Gọi điện tư vấn
-                                        </div>
-                                        <div class="product__main-info-contact-phone-number">
-                                            ( 0352.860.701)
-                                        </div>
-                                    </div>
-
-                                </div>
-
+                                <p>Trân trọng giới thiệu cùng bạn đọc.</p>
                             </div>
                         </div>
                     </div>
@@ -108,21 +90,13 @@
                     <div class="row bg-white">
                         <div class="col-12 product__main-tab">
                             <a href="#" class="product__main-tab-link product__main-tab-link--active">
-                                Mô tả
-                            </a>
-                            <a href="#" class="product__main-tab-link">
                                 Đánh giá
                             </a>
                         </div>
 
                         <div class="col-12 product__main-content-wrap">
-                            <h2 class="product__main-content-heading" th:text="${book.title}"></h2>
-
-                            <p th:text="${book.description}"> </p>
-
-                            <p>Trân trọng giới thiệu cùng bạn đọc.</p>
-
-                            <h2 class="thongtin">    <span>Thông tin chi tiết</span>
+                            <h2 class="thongtin">
+                                <span>Thông tin chi tiết</span>
                             </h2>
                             <div class="table-responsive">
                                 <table class="table table-bordered">
@@ -166,8 +140,6 @@
                             <div class="comment-item">
                                 <ul class="item-reviewer">
                                     <div class="comment-item-user">
-                                        <img src="images/img/1.png" alt="" class="comment-item-user-img">
-
                                         <li><b>Nguyễn Nhung</b></li>
                                     </div>
 
@@ -223,14 +195,15 @@
                             Có thể bạn thích
                         </h3>
 
-                        <div class="product__aside-list">
+                        <div class="product__aside-list" th:each="suggest : ${suggestBooks}">
                             <div class="product__aside-item product__aside-item--border">
                                 <div class="product__aside-img-wrap">
-                                    <img th:src="@{/assets/images1/product/image_227958.jpg}" class="product__aside-img">
+                                    <img th:src="@{${suggest.img}}" class="product__aside-img">
                                 </div>
                                 <div class="product__aside-title">
-                                    <a href="#" class="product__aside-link">
-                                        <h4 class="product__aside-link-heading"> Giáo Dục Stem/Steam : Từ Trải Nghiệm Thực Hành Đến Tư Duy</h4>
+                                    <a th:href="@{/detail/{id}(id=${suggest.getBookId()})}" class="product__aside-link">
+                                        <h4 class="product__aside-link-heading"
+                                            th:text="${suggest.title}"></h4>
                                     </a>
 
                                     <div class="product__aside-rate-wrap">
@@ -242,34 +215,8 @@
                                     </div>
 
                                     <div class="product__aside-price">
-                                        <span class="product__aside-price-current">
-                                            72.250
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="product__aside-item">
-                                <div class="product__aside-img-wrap">
-                                    <img th:src="@{/assets/images1/product/untitled-1_9_25_1.jpg}" class="product__aside-img">
-                                </div>
-                                <div class="product__aside-title">
-                                    <a href="#" class="product__aside-link">
-                                        <h4 class="product__aside-link-heading">Tôi Thích Bản Thân Nỗ Lực Hơn ( Tái bản 2019)</h4>
-                                    </a>
-
-                                    <div class="product__aside-rate-wrap">
-                                        <i class="fas fa-star product__aside-rate"></i>
-                                        <i class="fas fa-star product__aside-rate"></i>
-                                        <i class="fas fa-star product__aside-rate"></i>
-                                        <i class="fas fa-star product__aside-rate"></i>
-                                        <i class="fas fa-star product__aside-rate"></i>
-                                    </div>
-
-                                    <div class="product__aside-price">
-                                        <span class="product__aside-price-current">
-                                            76.800đ
-                                        </span>
+                                        <span class="product__aside-price-current"
+                                              th:text="${formatter.formatCurrency(suggest.price)}"></span>
                                     </div>
                                 </div>
                             </div>

@@ -62,30 +62,29 @@
                     </div>
                     <div class="col-3 " style="font-weight: 500; font-size: 1.8rem">
                         <span
-                                class="price"
+                                class="book-price"
                                 th:text="${formatter.formatCurrency(cd.book.price)}">
                         </span>
                     </div>
                     <div class="col-3 cart__body-quantity">
-                        <input type="button"
-                               value="-"
-                               class="cart__body-quantity-minus"
-                               >
-                        <input type="number"
-                               class="cart__body-quantity-total"
-                               th:value="${cd.quantity}"
-                               th:data-cart-detail-id="${cd.cartDetailId}"
-                               th:data-cart-detail-price="${cd.book.price}"
-                               min="1">
-                        <input type="button"
-                               value="+"
-                               class="cart__body-quantity-plus"
-                               >
+<!--                        <input type="button"-->
+<!--                               value="-"-->
+<!--                               class="cart__body-quantity-minus"-->
+<!--                               >-->
+                        <p th:text="${cd.quantity}"
+                           style="font-size: 1.8rem; padding-left: 24px"></p>
+<!--                        <input type="text"-->
+<!--                               class="cart__body-quantity-total"-->
+<!--                               th:value="${cd.quantity}"-->
+<!--                               min="1">-->
+<!--                        <input type="button"-->
+<!--                               value="+"-->
+<!--                               class="cart__body-quantity-plus"-->
+<!--                               >-->
                     </div>
                     <div class="col-3 cart__body-price">
                         <span
                                 class="price"
-                                th:data-cart-detail-id="${cd.cartDetailId}"
                                 th:text="${formatter.formatCurrency(cd.book.price * cd.quantity)}">
                         </span>
                         <a th:href="@{/delete-book-from-cart/{id}(id=${cd.cartDetailId})}">Xóa</a>
@@ -100,13 +99,15 @@
                 <p class="col-3 col-lg-3 col-sm-3 cart__foot-total">
                     Tổng tiền:
                 </p>
-
                 <span class="col-3 col-lg-3 col-sm-3 cart__foot-price" >
                     <span  class="total-price"
-                           th:data-cart-total-price="${totalPrice}"
                            th:text="${formatter.formatCurrency(totalPrice)}">0 VNĐ</span>
                     <br>
-					<button class="cart__foot-price-btn">Mua hàng</button>
+                    <button class="cart__foot-price-btn">
+                        <a th:href="@{/order}" style="color: white">
+                            Mua hàng
+                        </a>
+                        </button>
 				</span>
             </article>
         </div>

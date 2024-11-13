@@ -59,6 +59,10 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
         String email = authentication.getName();
         User user = userService.getUserByEmail(email);
+        session.setAttribute("email",user.getEmail());
+        session.setAttribute("address",user.getAddress());
+        session.setAttribute("phone",user.getPhone_number());
+        session.setAttribute("name",user.getFull_name());
         if(user != null){
             session.setAttribute("id",user.getId());
             Cart cart = user.getCart();

@@ -28,7 +28,6 @@ public class BooksController {
     @Autowired
     private FormatterUtil formatterUtil;
 
-    //GET PAGE
     @GetMapping("/books")
     public String getBookPage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         List<Book> books = bookService.getAllBook();
@@ -47,25 +46,29 @@ public class BooksController {
     @GetMapping("/detail/{id}")
     public String getBookDetailPage(@AuthenticationPrincipal UserDetails userDetails,@PathVariable Long id, Model model){
         Book book = bookService.getBookById(id);
+        List<Book> suggestBooks = bookService.getAllBook().subList(0,5);
         if (userDetails != null) {
             model.addAttribute("userEmail", userDetails.getUsername());
             model.addAttribute("book", book);
+            model.addAttribute("suggestBooks", suggestBooks);
+            model.addAttribute("formatter", formatterUtil);
         } else {
             model.addAttribute("userEmail", null);
         }
         return "book_detail";
     }
 
-
-    //REQUEST
     //SEARCH
     @GetMapping("/books/search")
     public String searchBookByName(@AuthenticationPrincipal UserDetails userDetails,@RequestParam("query") String query, Model model) {
         List<Book> books = bookService.searchBookByName(query);
+        List<Category> categories =  categoryService.getAllCategory();
         if (userDetails != null) {
             model.addAttribute("userEmail", userDetails.getUsername());
             model.addAttribute("books", books);
             model.addAttribute("query", query);
+            model.addAttribute("categories",categories);
+            model.addAttribute("formatter", formatterUtil);
         } else {
             model.addAttribute("userEmail", null);
         }
@@ -99,6 +102,7 @@ public class BooksController {
             model.addAttribute("userEmail", userDetails.getUsername());
             model.addAttribute("books", books);
             model.addAttribute("categories",categories);
+            model.addAttribute("formatter", formatterUtil);
         } else {
             model.addAttribute("userEmail", null);
         }

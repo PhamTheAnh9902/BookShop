@@ -1,0 +1,126 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script th:src="@{/assets/js/jquery-3.3.1.js}"></script>
+    <script th:src="@{/assets/js/bootstrap.min.js}"></script>
+    <script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js}"></script>
+
+    <!--CART-->
+    <link rel="stylesheet" th:href="@{/assets/fonts/fontawesome/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/base.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/main.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-free-6.6.0-web/css/all.min.css}">
+</head>
+<body>
+    <!-- header -->
+    <div th:replace="/layout/header :: header"></div>
+    <!-- header -->
+    <!-- location -->
+    <div class="location">
+        <a th:href="@{/}" class="location-link">
+            Trang chủ
+        </a>
+        <p class="location-text">Đơn hàng</p>
+    </div>
+    <!-- location -->
+    <!-- order -->
+    <div class="container mt-5">
+        <form th:action="@{/place-order}" method="post">
+            <div class="row" style="font-size: 1.5rem">
+                <div class="col-md-6">
+                    <h2>Thông Tin Đơn Hàng</h2>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <h3><label for="name">Tên người nhận</label></h3>
+                                <input type="text" class="form-control"
+                                       id="name" name="receiverName" required
+                                       th:value="${session.name}">
+                            </div>
+                            <div class="form-group">
+                                <h3><label for="email">Email</label></h3>
+                                <input type="email" class="form-control"
+                                       id="email" name="receiverEmail" required
+                                       th:value="${session.email}">
+                            </div>
+                            <div class="form-group">
+                                <h3><label for="address">Địa chỉ</label></h3>
+                                <input type="text" class="form-control"
+                                       id="address" name="receiverAdress" required
+                                       th:value="${session.address}">
+                            </div>
+                            <div class="form-group">
+                                <h3><label for="phone">Số điện thoại</label></h3>
+                                <input type="tel" class="form-control"
+                                       id="phone" name="receiverPhone" required
+                                       th:value="${session.phone}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h2>Thông Tin Thanh Toán</h2>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <h3><label>Mặt hàng:</label></h3>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Tên mặt hàng</th>
+                                        <th>Giá</th>
+                                        <th>Số lượng</th>
+                                        <th>Thành tiền</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody th:each="cd : ${cartDetails}">
+                                    <tr>
+                                        <td th:text="${cd.book.title}"></td>
+                                        <td th:text="${formatter.formatCurrency(cd.price)}"></td>
+                                        <td th:text="${cd.quantity}"></td>
+                                        <td th:text="${formatter.formatCurrency(cd.book.price * cd.quantity)}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="form-group">
+                                <table class="table">
+                                    <tr>
+                                        <th>Chi phí</th>
+                                        <th>Giá</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Tổng số tiền:</td>
+                                        <td th:text="${formatter.formatCurrency(totalPrice)}"></td>
+                                    </tr>
+                                    <!--                                <tr>-->
+                                    <!--                                    <td>Phí vận chuyển:</td>-->
+                                    <!--                                    <td>0 VNĐ</td>-->
+                                    <!--                                </tr>-->
+                                </table>
+                            </div>
+                            <!--                        <div class="form-group">-->
+                            <!--                            <label for="payment-method">Hình thức thanh toán</label>-->
+                            <!--                            <select class="form-control" id="payment-method" required>-->
+                            <!--                                <option value="credit-card">Thẻ tín dụng</option>-->
+                            <!--                                <option value="paypal">PayPal</option>-->
+                            <!--                                <option value="cash">Tiền mặt</option>-->
+                            <!--                            </select>-->
+                            <!--                        </div>-->
+                            <button type="submit" class="btn btn-primary">Xác nhận thanh toán</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- order -->
+    <!-- footer -->
+    <div class="footer" th:replace="/layout/footer :: footer"></div>
+    <!-- footer -->
+</body>
+</html>

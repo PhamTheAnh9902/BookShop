@@ -10,12 +10,6 @@
         <div th:replace="/layout/header :: header"></div>
         <!-- header -->
         <!-- location -->
-        <div class="location">
-            <a href="" class="location-link">
-                Trang chủ
-            </a>
-            <p class="location-text">Tất cả sản phẩm</p>
-        </div>
         <!-- location -->
         <!-- banner -->
         <div class="banner">
@@ -29,29 +23,9 @@
                         <nav class="category">
                             <h3 class="category__heading">DANH MỤC SÁCH</h3>
                             <ul class="category-list">
-                                <li class="category-item category-item--active">
+                                <li class="category-item category-item--active" th:each="category : ${categories}">
                                     <a href="#" class="category-item__link ">
-                                        Harvard Business Review
-                                    </a>
-                                </li>
-                                <li class="category-item ">
-                                    <a href="#" class="category-item__link">
-                                        Alpha Lead
-                                    </a>
-                                </li>
-                                <li class="category-item">
-                                    <a href="#" class="category-item__link">
-                                        Tài chính - Đầu tư - Chứng khoán
-                                    </a>
-                                </li>
-                                <li class="category-item">
-                                    <a href="#" class="category-item__link">
-                                        Công nghệ & Chuyển đổi số
-                                    </a>
-                                </li>
-                                <li class="category-item">
-                                    <a href="#" class="category-item__link">
-                                        Marketing & Bán hàng
+                                        <span th:text="${category.categoryName}"></span>
                                     </a>
                                 </li>
                             </ul>

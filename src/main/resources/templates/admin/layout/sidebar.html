@@ -8,9 +8,18 @@
                 Quản lý người dùng
             </a>
         </li>
-        <li><a th:href="@{/admin/book/1}"><svg class="glyph stroked bag">
+        <li>
+            <a th:href="@{/admin/book/1}">
+                <svg class="glyph stroked bag">
                     <use xlink:href="#stroked-bag"></use>
-                </svg>Quản lý sách</a></li>
+                </svg>Quản lý sách</a>
+        </li>
+        <li class="active">
+            <a th:href="@{/admin/order/1}">
+                <svg class="glyph stroked bag">
+                    <use xlink:href="#stroked-bag"></use>
+                </svg>Quản lý đơn hàng</a>
+        </li>
         <li><a th:href="@{/}"><svg class="glyph stroked open folder">
                     <use xlink:href="#stroked-open-folder" />
                 </svg>Về Lookbook</a></li>

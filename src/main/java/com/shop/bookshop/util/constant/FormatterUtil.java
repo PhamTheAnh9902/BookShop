@@ -8,6 +8,7 @@ import java.text.DecimalFormat;
 public class FormatterUtil {
     public String formatCurrency(Double amount) {
         DecimalFormat df = new DecimalFormat("#,###");
+
         return df.format(amount) + " VNĐ";
     }
 }

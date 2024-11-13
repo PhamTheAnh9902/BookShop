@@ -19,29 +19,9 @@
                         <i class="header_search-select-icon fa-solid fa-chevron-down"></i>
                     </a>
                     <ul class="header__nav-list-small">
-                        <li class="header__nav-list-small-item">
+                        <li class="header__nav-list-small-item" th:each="category : ${categories}" >
                             <a href="" class="header__nav-list-small-item-link">
-                                <span>Harvard Business Review</span>
-                            </a>
-                        </li>
-                        <li class="header__nav-list-small-item">
-                            <a href="" class="header__nav-list-small-item-link">
-                                <span>Alpha Lead</span>
-                            </a>
-                        </li>
-                        <li class="header__nav-list-small-item">
-                            <a href="" class="header__nav-list-small-item-link">
-                                <span>Quản trị doanh nghiệp</span>
-                            </a>
-                        </li>
-                        <li class="header__nav-list-small-item">
-                            <a href="" class="header__nav-list-small-item-link">
-                                <span>Tài chính - Đầu tư - Chứng khoán</span>
-                            </a>
-                        </li>
-                        <li class="header__nav-list-small-item">
-                            <a href="" class="header__nav-list-small-item-link">
-                                <span>Công nghệ & Chuyển đổi số</span>
+                                <span th:text="${category.categoryName}"></span>
                             </a>
                         </li>
                     </ul>

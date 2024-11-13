@@ -1,12 +1,8 @@
 package com.shop.bookshop.services;
 
-import com.shop.bookshop.domain.Book;
-import com.shop.bookshop.domain.Cart;
-import com.shop.bookshop.domain.CartDetail;
-import com.shop.bookshop.domain.User;
-import com.shop.bookshop.repository.BookRespository;
-import com.shop.bookshop.repository.CartDetailRepository;
-import com.shop.bookshop.repository.CartRepository;
+import com.shop.bookshop.domain.*;
+import com.shop.bookshop.repository.*;
+import com.shop.bookshop.util.constant.StatusEnum;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +26,12 @@ public class BookService {
 
     @Autowired
     CartDetailRepository cartDetailRepository;
+
+    @Autowired
+    OrderRepository orderRepository;
+
+    @Autowired
+    OrderDetailRepository orderDetailRepository;
 
     @Autowired
     private UserService userService;
@@ -158,6 +160,7 @@ public class BookService {
             //update cart
             if (currentCart.getSum() > 1){
                 int s = currentCart.getSum() - 1;
+                currentCart.setSum(s);
                 session.setAttribute("sum", s);
                 cartRepository.save(currentCart);
             } else {
@@ -167,4 +170,56 @@ public class BookService {
             }
         }
     }
+
+
+    //ORDER
+    public void placeOrder(User user, HttpSession session,
+                           String receiverName, String receiverAdress,
+                           String receiverEmail, String receiverPhone){
+        //create orderDetail
+        Cart cart = cartRepository.findByUser(user);
+        if(cart != null){
+            List<CartDetail> cartDetails = cart.getCartDetails();
+
+            if(cartDetails != null){
+                //create order
+                Order order = new Order();
+                order.setUser(user);
+                order.setReceiverName(receiverName);
+                order.setReceiverAddress(receiverAdress);
+                order.setReceiverPhone(receiverPhone);
+                order.setReceiverEmail(receiverEmail);
+                order.setStatus(StatusEnum.PENDING);
+                double sum = 0;
+                for (CartDetail cartDetail : cartDetails){
+                    sum += cartDetail.getPrice();
+                }
+                order.setTotalPrice(sum);
+                orderRepository.save(order);
+
+                for (CartDetail cd : cartDetails ){
+                    OrderDetail orderDetail = new OrderDetail();
+                    orderDetail.setOrder(order);
+                    orderDetail.setBook(cd.getBook());
+                    orderDetail.setPrice(cd.getPrice());
+                    orderDetail.setQuantity(cd.getQuantity());
+                    orderDetailRepository.save(orderDetail);
+                }
+            }
+
+            //delete cart_detail and cart
+            for (CartDetail cd : cartDetails){
+                cartDetailRepository.deleteById(cd.getCartDetailId());
+            }
+
+            cartRepository.deleteById(cart.getCartId());
+
+            // update session
+            session.setAttribute("sum", 0);
+        }
+
+
+    }
+
+
 }

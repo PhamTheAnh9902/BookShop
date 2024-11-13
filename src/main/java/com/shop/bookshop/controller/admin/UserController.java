@@ -61,7 +61,7 @@ public class UserController {
         User createdUser = this.userService.createUser(user);
 
         if (createdUser != null) {
-            return "redirect:/admin/user";
+            return "redirect:/admin/user/1";
         } else {
             return "admin/user/add_user";
         }

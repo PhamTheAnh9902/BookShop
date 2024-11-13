@@ -14,27 +14,26 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Controller
-public class CartController {
+public class OrderController {
 
     @Autowired
     BookService bookService;
     @Autowired
     private FormatterUtil formatterUtil;
-
     @Autowired
     private CategoryService categoryService;
 
-
-    @GetMapping("/cart")
-    public String getCartPage(@AuthenticationPrincipal UserDetails userDetails,
-                              Model model, HttpServletRequest request){
+    @GetMapping("/order")
+    public String getOrderPage(@AuthenticationPrincipal UserDetails userDetails,
+                               Model model, HttpServletRequest request){
         List<Category> categories =  categoryService.getAllCategory();
         User currentUser = new User();
         HttpSession session = request.getSession();
@@ -58,31 +57,24 @@ public class CartController {
         } else {
             model.addAttribute("userEmail", null);
         }
-        return "cart";
+        return "order";
     }
 
-    @PostMapping("/add-book-to-cart/{id}")
-    public String addBooktoCart(@AuthenticationPrincipal UserDetails userDetails,
-                                @PathVariable long id, Model model, HttpServletRequest request){
-        HttpSession session = request.getSession(false);
+    @PostMapping("/place-order")
+    String placeOrder(@AuthenticationPrincipal UserDetails userDetails,
+                      HttpServletRequest request,
+                      @RequestParam("receiverName") String receiverName,
+                      @RequestParam("receiverEmail") String receiverEmail,
+                      @RequestParam("receiverAdress") String receiverAdress,
+                      @RequestParam("receiverPhone") String receiverPhone){
 
-        long bookId = id;
-        String email = userDetails.getUsername();
-            bookService.addBookToCart(email, bookId, session);
-        if (userDetails != null) {
-            model.addAttribute("userEmail", userDetails.getUsername());
-        } else {
-            model.addAttribute("userEmail", null);
-        }
-        return "redirect:/books";
+        User currentUser = new User();
+        HttpSession session = request.getSession();
+        long id = (Long) session.getAttribute("id");
+        currentUser.setId(id);
+
+        bookService.placeOrder(currentUser,session, receiverName,receiverAdress,receiverEmail,receiverPhone);
+
+        return "redirect:/";
     }
-
-    @GetMapping("/delete-book-from-cart/{id}")
-    public String deleteBookFromCart(@PathVariable long id, HttpServletRequest request){
-        HttpSession session = request.getSession(false);
-        long cartDetailId = id;
-        bookService.removeCartDetail(cartDetailId,session);
-        return "redirect:/cart";
-    }
-
 }

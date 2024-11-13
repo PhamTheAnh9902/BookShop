@@ -1,5 +1,7 @@
 package com.shop.bookshop.controller.client;
 
+import com.shop.bookshop.domain.Category;
+import com.shop.bookshop.services.CategoryService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,17 +21,24 @@ import com.shop.bookshop.services.UserService;
 
 import jakarta.validation.Valid;
 
+import java.util.List;
+
 @Controller
 public class HomeController {
 
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CategoryService categoryService;
+
     // HOME
     @GetMapping("/")
     public String homepage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        List<Category> categories =  categoryService.getAllCategory();
         if (userDetails != null) {
             model.addAttribute("userEmail", userDetails.getUsername());
+            model.addAttribute("categories",categories);
         } else {
             model.addAttribute("userEmail", null);
         }

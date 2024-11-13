@@ -69,7 +69,7 @@ public class BookController {
         Book createdBook = bookService.createBook(book);
 
         if (createdBook != null) {
-            return "redirect:/admin/book";
+            return "redirect:/admin/book/1";
         } else {
             return "admin/book/add_book";
         }
