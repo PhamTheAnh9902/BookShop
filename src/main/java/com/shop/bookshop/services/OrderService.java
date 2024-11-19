@@ -31,7 +31,7 @@ public class OrderService {
     public Page<Order> getAllOrderPaging(int pageNum) {
         int pageSize = 5;
 
-        Pageable pageable = PageRequest.of(pageNum-1,pageSize);
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
         return orderRepository.findAll(pageable);
     }
 

@@ -94,7 +94,7 @@ public class BookController {
         Book createdBook = bookService.updateUser(id,book);
 
         if (createdBook != null) {
-            return "redirect:/admin/book";
+            return "redirect:/admin/book/1";
         } else {
             return "admin/book/update_book";
         }
@@ -104,9 +104,9 @@ public class BookController {
     @GetMapping("/book/delete/{id}")
     public String deleteBook(@PathVariable long id) {
         if (bookService.deleteUser(id)) {
-            return "redirect:/admin/book";
+            return "redirect:/admin/book/1";
         } else {
-            return "redirect:/admin/book";
+            return "redirect:/admin/book/1";
         }
     }
 

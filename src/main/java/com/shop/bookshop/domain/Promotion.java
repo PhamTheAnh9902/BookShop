@@ -26,4 +26,5 @@ public class Promotion {
 
     @OneToMany(mappedBy = "promotion")
     private List<Order> orders;
+
 }
