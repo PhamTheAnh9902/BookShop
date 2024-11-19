@@ -68,9 +68,9 @@
                                 <span class="product__main-info-price-current" th:text="${formatter.formatCurrency(book.price)}" ></span>
                             </div>
 
-                            <div class="product__main-info-description">
-                                <span th:text="${book.description}"></span>
-                            </div>
+<!--                            <div class="product__main-info-description">-->
+<!--                                <span th:text="${book.description}"></span>-->
+<!--                            </div>-->
 
                             <form th:action="@{/add-book-to-cart/{id}(id=${book.bookId})}" method="post">
                                 <div class="product__main-info-cart">

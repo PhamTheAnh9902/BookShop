@@ -42,15 +42,19 @@ public class CartController {
         currentUser.setId(id);
 
         Cart cart = bookService.findByUser(currentUser);
-
-        List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
-
+//        List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
+        if (cart == null){
+            cart = new Cart();
+            model.addAttribute("message","Chưa có sách nào trong giỏ hàng.");
+        }
+        List<CartDetail> cartDetails = cart.getCartDetails() != null ? cart.getCartDetails() : new ArrayList<>();
         double totalPrice = 0;
         for(CartDetail cd : cartDetails){
             totalPrice += cd.getPrice() * cd.getQuantity();
         }
         if (userDetails != null) {
             model.addAttribute("userEmail", userDetails.getUsername());
+            model.addAttribute("cart", cart);
             model.addAttribute("cartDetails", cartDetails);
             model.addAttribute("totalPrice", totalPrice);
             model.addAttribute("categories",categories);
@@ -62,7 +66,7 @@ public class CartController {
     }
 
     @PostMapping("/add-book-to-cart/{id}")
-    public String addBooktoCart(@AuthenticationPrincipal UserDetails userDetails,
+    public String addBookToCart(@AuthenticationPrincipal UserDetails userDetails,
                                 @PathVariable long id, Model model, HttpServletRequest request){
         HttpSession session = request.getSession(false);
 
@@ -85,4 +89,12 @@ public class CartController {
         return "redirect:/cart";
     }
 
+
+    @PostMapping("/confirm-order")
+    public String updateCartBeforeOrder(@ModelAttribute("cart") Cart cart){
+
+        List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
+        bookService.updateCartBeforeOrder(cartDetails);
+        return "redirect:/order";
+    }
 }

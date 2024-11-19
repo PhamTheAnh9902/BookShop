@@ -1,11 +1,10 @@
 package com.shop.bookshop.controller.client;
 
-import com.shop.bookshop.domain.Cart;
-import com.shop.bookshop.domain.CartDetail;
-import com.shop.bookshop.domain.Category;
-import com.shop.bookshop.domain.User;
+import com.shop.bookshop.domain.*;
 import com.shop.bookshop.services.BookService;
 import com.shop.bookshop.services.CategoryService;
+import com.shop.bookshop.services.OrderService;
+import com.shop.bookshop.services.PromotionService;
 import com.shop.bookshop.util.constant.FormatterUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -30,20 +29,23 @@ public class OrderController {
     private FormatterUtil formatterUtil;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private OrderService orderService;
+    @Autowired
+    private PromotionService promotionService;
 
     @GetMapping("/order")
     public String getOrderPage(@AuthenticationPrincipal UserDetails userDetails,
                                Model model, HttpServletRequest request){
-        List<Category> categories =  categoryService.getAllCategory();
+
         User currentUser = new User();
         HttpSession session = request.getSession();
         long id = (Long) session.getAttribute("id");
         currentUser.setId(id);
 
+        List<Category> categories =  categoryService.getAllCategory();
         Cart cart = bookService.findByUser(currentUser);
-
-        List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
-
+        List<CartDetail> cartDetails = cart.getCartDetails();
         double totalPrice = 0;
         for(CartDetail cd : cartDetails){
             totalPrice += cd.getPrice() * cd.getQuantity();
@@ -54,6 +56,7 @@ public class OrderController {
             model.addAttribute("totalPrice", totalPrice);
             model.addAttribute("categories",categories);
             model.addAttribute("formatter", formatterUtil);
+            model.addAttribute("errorMessage", null);
         } else {
             model.addAttribute("userEmail", null);
         }
@@ -62,19 +65,36 @@ public class OrderController {
 
     @PostMapping("/place-order")
     String placeOrder(@AuthenticationPrincipal UserDetails userDetails,
-                      HttpServletRequest request,
+                      HttpServletRequest request, Model model,
                       @RequestParam("receiverName") String receiverName,
                       @RequestParam("receiverEmail") String receiverEmail,
                       @RequestParam("receiverAdress") String receiverAdress,
-                      @RequestParam("receiverPhone") String receiverPhone){
+                      @RequestParam("receiverPhone") String receiverPhone,
+                      @RequestParam(value = "promoCode", required = false) String promoCode){
 
         User currentUser = new User();
         HttpSession session = request.getSession();
         long id = (Long) session.getAttribute("id");
         currentUser.setId(id);
 
-        bookService.placeOrder(currentUser,session, receiverName,receiverAdress,receiverEmail,receiverPhone);
+        Promotion promotion = null;
 
-        return "redirect:/";
+        if (promoCode != null && !promoCode.isEmpty()){
+            promotion = promotionService.applyPromotion(promoCode);
+            if (promotion == null) {
+                session.setAttribute("errorMessage", "Mã giảm giá không hợp lệ.");
+                return "redirect:/order";
+            }
+        }
+            boolean check = bookService.placeOrder(currentUser,session,
+                    receiverName,receiverAdress,
+                    receiverEmail,receiverPhone,
+                    promotion);
+        if (check) {
+            return "redirect:/";
+        } else {
+            session.setAttribute("errorMessage", "Mã giảm giá không hợp lệ với điều kiện đơn hàng.");
+            return "redirect:/order";
+        }
     }
 }

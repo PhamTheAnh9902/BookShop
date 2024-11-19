@@ -1,7 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="/layout/head :: head">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-free-6.6.0-web/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/home.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/base.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/main.css}">
+    <!--script-->
+    <script th:src="@{/assets/js/jquery-3.3.1.js}"></script>
+    <script th:src="@{/assets/js/bootstrap.min.js}"></script>
 </head>
 
 <body>
@@ -15,6 +27,58 @@
         <div class="banner">
         </div>
         <!-- banner -->
+        <section class="bestselling">
+            <div class="container">
+                <div class="row">
+                    <div class="bestselling__heading-wrap">
+                        <div class="bestselling__heading">Top bán chạy nhất </div>
+                    </div>
+                </div>
+
+                <section class="row">
+                    <div class="bestselling__product col-lg-4 col-md-6 col-sm-12" th:each="book : ${bestSellerBooks}">
+                        <div class="bestselling__product-img-box">
+                            <img th:src="${book.img}" th:alt="img" class="bestselling__product-img">
+                        </div>
+                        <div class="bestselling__product-text">
+                            <h3 class="bestselling__product-title">
+                                <a th:href="@{/detail/{id}(id=${book.getBookId()})}" class="bestselling__product-link"
+                                   th:text="${book.title}"></a>
+                            </h3>
+
+                            <div class="bestselling__product-rate-wrap">
+                                <i class="fas fa-star bestselling__product-rate"></i>
+                                <i class="fas fa-star bestselling__product-rate"></i>
+                                <i class="fas fa-star bestselling__product-rate"></i>
+                                <i class="fas fa-star bestselling__product-rate"></i>
+                                <i class="fas fa-star bestselling__product-rate"></i>
+                            </div>
+
+                            <span class="bestselling__product-price"
+                                  th:text="${formatter.formatCurrency(book.price)}"></span>
+
+                            <div class="bestselling__product-btn-wrap">
+                                <button class="bestselling__product-btn">
+                                    <a th:href="@{/detail/{id}(id=${book.bookId})}" style="color: white">
+                                        Xem hàng
+                                    </a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="row bestselling__banner">
+
+                    <div class="bestselling__banner-left col-lg-6">
+                        <img th:src="@{/assets/img/banner3.png}" alt="Banner quảng cáo" class="bestselling__banner-left-img">
+                    </div>
+                    <div class="bestselling__banner-right col-lg-6">
+                        <img th:src="@{/assets/img/banner4.jpg}" alt="Banner quảng cáo" class="bestselling__banner-right-img">
+                    </div>
+                </div>
+            </div>
+        </section>
         <!-- container -->
         <div class="container">
             <div class="grid">
@@ -24,483 +88,95 @@
                             <h3 class="category__heading">DANH MỤC SÁCH</h3>
                             <ul class="category-list">
                                 <li class="category-item category-item--active" th:each="category : ${categories}">
-                                    <a href="#" class="category-item__link ">
+                                    <a th:href="@{/books/{id}(id = ${category.getCategoryId()})}" class="category-item__link ">
                                         <span th:text="${category.categoryName}"></span>
                                     </a>
                                 </li>
                             </ul>
                         </nav>
                         <nav class="category">
-                            <h3 class="category__heading">DANH MỤC BÁN CHẠY</h3>
+                            <h3 class="category__heading">CÓ THỂ BẠN SẼ THÍCH</h3>
                             <ul class="category-list">
-                                <li class="category-item category-item--active">
+                                <li class="category-item" th:each="book : ${suggestBook}">
                                     <div class="product-item">
                                         <div class="product-item__container">
-                                            <a href="" class="product-tiem__link">
-                                                <img class="product-item__img"
-                                                    src="https://bizweb.dktcdn.net/100/197/269/products/tam-ly-hoc-thanh-cong-304x472.jpg?v=1516592128997"
-                                                    alt="">
+                                            <a th:href="@{/detail/{id}(id=${book.getBookId()})}" class="product-tiem__link">
+                                                <img class="product-item__img product-item__img--like"
+                                                     th:src="${book.img}"
+                                                     alt="img">
                                             </a>
                                         </div>
-                                        <h4 class="product-item__name">Mindset - Tâm Lý Học Thành Công</h4>
+                                        <a th:href="@{/detail/{id}(id=${book.getBookId()})}">
+                                            <h4 class="product-item__name"
+                                                th:text="${book.title}"></h4>
+                                        </a>
                                         <div class="product-item__price">
-                                            <span class="product-item__price-current">159.200₫</span>
-                                            <span class="product-item__price-old">199.000₫</span>
+                                            <span class="product-item__price-current"
+                                                  th:text="${formatter.formatCurrency(book.price)}"></span>
+                                            <!--  <span class="product-item__price-old">199.000₫</span>-->
+                                            <div class="product-item__rating">
+                                                <i class="fas fa-star bestselling__product-rate"></i>
+                                                <i class="fas fa-star bestselling__product-rate"></i>
+                                                <i class="fas fa-star bestselling__product-rate"></i>
+                                                <i class="fas fa-star bestselling__product-rate"></i>
+                                                <i class="fas fa-star bestselling__product-rate"></i>
+                                            </div>
                                         </div>
-                                        <div class="product-item__rating"></div>
-                                        <!-- <div class="product-item__rating">
-                                            <i class="fa-regular fa-star" style="color: gold;"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <span class="product-item__rating-count">(0)</span>
-                                        </div> -->
-                                    </div>
-                                </li>
-                                <li class="category-item ">
-                                    <div class="product-item">
-                                        <div class="product-item__container">
-                                            <a href="" class="product-tiem__link">
-                                                <img class="product-item__img"
-                                                    src="https://bizweb.dktcdn.net/100/197/269/products/bi-a-nha-n-to-quye-t-di-nh-ne-n-ngu-o-i-tha-nh-da-t.jpg?v=1721901416223"
-                                                    alt="">
-                                            </a>
-                                        </div>
-                                        <h4 class="product-item__name">Nhân Tố Quyết Định Nên Người Thành Đạt</h4>
-                                        <div class="product-item__price">
-                                            <span class="product-item__price-current">199.000₫</span>
-                                            <span class="product-item__price-old">259.000₫</span>
-                                        </div>
-                                        <div class="product-item__rating"></div>
-                                        <!-- <div class="product-item__rating">
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <span class="product-item__rating-count">(0)</span>
-                                        </div> -->
-                                    </div>
-                                </li>
-                                <li class="category-item">
-                                    <div class="product-item">
-                                        <div class="product-item__container">
-                                            <a href="" class="product-tiem__link">
-                                                <img class="product-item__img"
-                                                    src="https://bizweb.dktcdn.net/100/197/269/products/vn-11134207-7r98o-lxuy40rui1nd40-jpeg.jpg?v=1721728066683"
-                                                    alt="">
-                                            </a>
-                                        </div>
-                                        <h4 class="product-item__name">Marketing Matters - Marketing Có Quan Trọng? Nên
-                                            Làm Marketing Thế Nào?</h4>
-                                        <div class="product-item__price">
-                                            <span class="product-item__price-current">183.200₫</span>
-                                            <span class="product-item__price-old"> 229.000₫</span>
-                                        </div>
-                                        <div class="product-item__rating"></div>
-                                        <!-- <div class="product-item__rating">
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <span class="product-item__rating-count">(0)</span>
-                                        </div> -->
                                     </div>
                                 </li>
                             </ul>
                         </nav>
                     </div>
                     <div class="grid__column-9">
-                        <div class="home-filter">
-                            <!-- <span class="home-filter__label">Sắp xếp:</span>
-                            <div class="select-input">
-                                <span class="select-input__label">
-                                    Mặc định
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </span>
-                                <ul class="select-input__list">
-                                    <li class="select-input__item">
-                                        <a href="#" class="select-input__link">Tên A-Z</a>
-                                    </li>
-                                    <li class="select-input__item">
-                                        <a href="#" class="select-input__link">Tên Z-A</a>
-                                    </li>
-                                    <li class="select-input__item">
-                                        <a href="#" class="select-input__link">Giá tăng dần</a>
-                                    </li>
-                                    <li class="select-input__item">
-                                        <a href="#" class="select-input__link">Giá giảm dần</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <form class="home-filter__search" action="">
-                                <input type="text" class="home-filter__search-text" placeholder="Nhập tên sản phẩm...">
-                                <button class="home-filter__search-button">
-                                    <i class="home-filter__search-icon fa-solid fa-magnifying-glass"></i>
-                                </button>
-                            </form> -->
-                        </div>
                         <div class="product">
                             <div class="grid__row">
-                                <div class="grid__column-3">
+                                <div class="grid__column-3" th:each="book : ${books}">
                                     <!-- Product Item -->
                                     <div class="product-item">
                                         <div class="product-item__container">
-                                            <a href="" class="product-tiem__link">
+                                            <a th:href="@{/detail/{id}(id=${book.getBookId()})}" class="product-tiem__link">
                                                 <img class="product-item__img"
-                                                    src="https://bizweb.dktcdn.net/100/197/269/products/ban-sao-bat-dong-san-thuc-chien-30-8-2024-outline-01-1.jpg?v=1728293569103"
-                                                    alt="">
+                                                    th:src="${book.img}"
+                                                    alt="img">
                                             </a>
                                         </div>
-                                        <h4 class="product-item__name">Bất Động Sản Thực Chiến</h4>
+                                        <a th:href="@{/detail/{id}(id=${book.getBookId()})}">
+                                            <h4 class="product-item__name"
+                                                th:text="${book.title}"></h4>
+                                        </a>
                                         <div class="product-item__price">
-                                            <span class="product-item__price-current">196.150đ</span>
-                                            <span class="product-item__price-old">199.000đ</span>
+                                            <span class="product-item__price-current"
+                                                  th:text="${formatter.formatCurrency(book.price)}"></span>
+<!--                                            <span class="product-item__price-old">199.000đ</span>-->
                                         </div>
-                                        <div class="product-item__rating">
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <span class="product-item__rating-count">(0)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="grid__column-3">
-                                    <!-- Product Item -->
-                                    <div class="product-item">
-                                        <div class="product-item__container">
-                                            <a href="" class="product-tiem__link">
-                                                <img class="product-item__img"
-                                                    src="https://bizweb.dktcdn.net/100/197/269/products/vhs-01.jpg?v=1727174956620"
-                                                    alt="">
-                                            </a>
-                                        </div>
-                                        <h4 class="product-item__name">Văn Hoá Số - Gỡ bỏ rào cản trong chuyển đổi số -
-                                            TG Lê Quang Vũ (Pre - Order)</h4>
-                                        <div class="product-item__price">
-                                            <span class="product-item__price-current">151.200₫</span>
-                                            <span class="product-item__price-old">189.000₫</span>
-                                        </div>
-                                        <div class="product-item__rating">
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <span class="product-item__rating-count">(0)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="grid__column-3">
-                                    <!-- Product Item -->
-                                    <div class="product-item">
-                                        <div class="product-item__container">
-                                            <a href="" class="product-tiem__link">
-                                                <img class="product-item__img"
-                                                    src="https://bizweb.dktcdn.net/100/197/269/products/untitled-design.png?v=1727321084060"
-                                                    alt="">
-                                            </a>
-                                        </div>
-                                        <h4 class="product-item__name">Chữa Lành Tổn Thương Hậu Thao Túng Tâm Lý</h4>
-                                        <div class="product-item__price">
-                                            <span class="product-item__price-current">111.200₫</span>
-                                            <span class="product-item__price-old">139.000₫</span>
-                                        </div>
-                                        <div class="product-item__rating">
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <span class="product-item__rating-count">(0)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="grid__column-3">
-                                    <!-- Product Item -->
-                                    <div class="product-item">
-                                        <div class="product-item__container">
-                                            <a href="" class="product-tiem__link">
-                                                <img class="product-item__img"
-                                                    src="https://bizweb.dktcdn.net/100/197/269/products/kv-dau-an-tien-phong-01-1-1.jpg?v=1726896459380"
-                                                    alt="">
-                                            </a>
-                                        </div>
-                                        <h4 class="product-item__name">
-                                            Dấu Ấn Tiên Phong - Đổi mới trong Tác động Xã hội tại Việt Nam (Pre - Order
-                                            từ ngày 26/9)
-                                        </h4>
-                                        <div class="product-item__price">
-                                            <span class="product-item__price-current">235.000₫</span>
-                                            <span class="product-item__price-old"></span>
-                                        </div>
-                                        <div class="product-item__rating">
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <span class="product-item__rating-count">(0)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="grid__column-3">
-                                    <!-- Product Item -->
-                                    <div class="product-item">
-                                        <div class="product-item__container">
-                                            <a href="" class="product-tiem__link">
-                                                <img class="product-item__img"
-                                                    src="https://bizweb.dktcdn.net/100/197/269/products/kv-dau-an-tien-phong-01-1-1.jpg?v=1726896459380"
-                                                    alt="">
-                                            </a>
-                                        </div>
-                                        <h4 class="product-item__name">
-                                            Dấu Ấn Tiên Phong - Đổi mới trong Tác động Xã hội tại Việt Nam (Pre - Order
-                                            từ ngày 26/9)
-                                        </h4>
-                                        <div class="product-item__price">
-                                            <span class="product-item__price-current">235.000₫</span>
-                                            <span class="product-item__price-old"></span>
-                                        </div>
-                                        <div class="product-item__rating">
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <span class="product-item__rating-count">(0)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="grid__column-3">
-                                    <!-- Product Item -->
-                                    <div class="product-item">
-                                        <div class="product-item__container">
-                                            <a href="" class="product-tiem__link">
-                                                <img class="product-item__img"
-                                                    src="https://bizweb.dktcdn.net/100/197/269/products/3-f9e456e0-3f61-4e72-854b-798028c76b57.png?v=1726824413130"
-                                                    alt="">
-                                            </a>
-                                        </div>
-                                        <h4 class="product-item__name">
-                                            Học chắc - Ngẫm nhanh - Thành sớm
-                                        </h4>
-                                        <div class="product-item__price">
-                                            <span class="product-item__price-current">230.400₫</span>
-                                            <span class="product-item__price-old"> 288.000₫</span>
-                                        </div>
-                                        <div class="product-item__rating">
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <span class="product-item__rating-count">(0)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="grid__column-3">
-                                    <!-- Product Item -->
-                                    <div class="product-item">
-                                        <div class="product-item__container">
-                                            <a href="" class="product-tiem__link">
-                                                <img class="product-item__img"
-                                                    src="https://bizweb.dktcdn.net/100/197/269/products/anh-whatsapp-2024-09-19-luc-14-53-11-b94d4ef7.jpg?v=1726762666640"
-                                                    alt="">
-                                            </a>
-                                        </div>
-                                        <h4 class="product-item__name">
-                                            Cẩm nang đề cử thành viên Hội đồng Quản trị
-                                        </h4>
-                                        <div class="product-item__price">
-                                            <span class="product-item__price-current">329.000₫</span>
-                                            <span class="product-item__price-old"></span>
-                                        </div>
-                                        <div class="product-item__rating">
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <span class="product-item__rating-count">(0)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="grid__column-3">
-                                    <!-- Product Item -->
-                                    <div class="product-item">
-                                        <div class="product-item__container">
-                                            <a href="" class="product-tiem__link">
-                                                <img class="product-item__img"
-                                                    src="https://bizweb.dktcdn.net/100/197/269/products/ban-sao-su-that-tran-trui-ve-thong-ke-2.jpg?v=1725588618177"
-                                                    alt="">
-                                            </a>
-                                        </div>
-                                        <h4 class="product-item__name">
-                                            Sự Thật Trần Trụi Về Thống Kê
-                                        </h4>
-                                        <div class="product-item__price">
-                                            <span class="product-item__price-current">183.200₫</span>
-                                            <span class="product-item__price-old">229.000₫</span>
-                                        </div>
-                                        <div class="product-item__rating">
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <span class="product-item__rating-count">(0)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="grid__column-3">
-                                    <!-- Product Item -->
-                                    <div class="product-item">
-                                        <div class="product-item__container">
-                                            <a href="" class="product-tiem__link">
-                                                <img class="product-item__img"
-                                                    src="https://bizweb.dktcdn.net/100/197/269/products/ban-sao-su-that-tran-trui-ve-tien-2.jpg?v=1725588766707"
-                                                    alt="">
-                                            </a>
-                                        </div>
-                                        <h4 class="product-item__name">
-                                            Sự Thật Trần Trụi Về Tiền
-                                        </h4>
-                                        <div class="product-item__price">
-                                            <span class="product-item__price-current">215.200₫</span>
-                                            <span class="product-item__price-old">269.000₫</span>
-                                        </div>
-                                        <div class="product-item__rating">
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <span class="product-item__rating-count">(0)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="grid__column-3">
-                                    <!-- Product Item -->
-                                    <div class="product-item">
-                                        <div class="product-item__container">
-                                            <a href="" class="product-tiem__link">
-                                                <img class="product-item__img"
-                                                    src="https://bizweb.dktcdn.net/100/197/269/products/10-ebf7ef66-d7ab-4675-ab0b-4045e78c10e4.png?v=1724897528053"
-                                                    alt="">
-                                            </a>
-                                        </div>
-                                        <h4 class="product-item__name">
-                                            Combo Sách Tăng Tốc Bán Hàng
-                                        </h4>
-                                        <div class="product-item__price">
-                                            <span class="product-item__price-current">532.800₫</span>
-                                            <span class="product-item__price-old">666.000₫</span>
-                                        </div>
-                                        <div class="product-item__rating">
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <span class="product-item__rating-count">(0)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="grid__column-3">
-                                    <!-- Product Item -->
-                                    <div class="product-item">
-                                        <div class="product-item__container">
-                                            <a href="" class="product-tiem__link">
-                                                <img class="product-item__img"
-                                                    src="https://bizweb.dktcdn.net/100/197/269/products/img-7286-1.jpg?v=1723602423993"
-                                                    alt="">
-                                            </a>
-                                        </div>
-                                        <h4 class="product-item__name">
-                                            [COMBO] QUẢN TRỊ CHIẾN LƯỢC THỰC CHIẾN
-                                            + BỘ CÔNG CỤ ĐỔI MỚI DOANH NGHIỆP
-                                        </h4>
-                                        <div class="product-item__price">
-                                            <span class="product-item__price-current">471.200₫</span>
-                                            <span class="product-item__price-old">589.000₫</span>
-                                        </div>
-                                        <div class="product-item__rating">
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <span class="product-item__rating-count">(0)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="grid__column-3">
-                                    <!-- Product Item -->
-                                    <div class="product-item">
-                                        <div class="product-item__container">
-                                            <a href="" class="product-tiem__link">
-                                                <img class="product-item__img"
-                                                    src="https://bizweb.dktcdn.net/100/197/269/products/tu-duy-nhanh-va-cham.jpg?v=1528430381547"
-                                                    alt="">
-                                            </a>
-                                        </div>
-                                        <h4 class="product-item__name">
-                                            Tư Duy Nhanh Và Chậm
-                                        </h4>
-                                        <div class="product-item__price">
-                                            <span class="product-item__price-current">215.200₫</span>
-                                            <span class="product-item__price-old">269.000₫</span>
-                                        </div>
-                                        <div class="product-item__rating">
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
+                                        <div class="product-item__rating" style="    margin-left: -2px;">
+                                            <i class="fas fa-star bestselling__product-rate"></i>
+                                            <i class="fas fa-star bestselling__product-rate"></i>
+                                            <i class="fas fa-star bestselling__product-rate"></i>
+                                            <i class="fas fa-star bestselling__product-rate"></i>
+                                            <i class="fas fa-star bestselling__product-rate"></i>
                                             <span class="product-item__rating-count">(0)</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <ul class="pagination product__pagination">
-                            <li class="pagination-item">
-                                <a href="" class="pagination-item__link">
-                                    <i class="pagination-item__icon fa-solid fa-angle-left"></i>
-                                </a>
-                            </li>
-                            <li class="pagination-item pagination-item--active">
-                                <a href="" class="pagination-item__link ">1</a>
-                            </li>
-                            <li class="pagination-item">
-                                <a href="" class="pagination-item__link">2</a>
-                            </li>
-                            <li class="pagination-item">
-                                <a href="" class="pagination-item__link">3</a>
-                            </li>
-                            <li class="pagination-item">
-                                <a href="" class="pagination-item__link">4</a>
-                            </li>
-                            <li class="pagination-item">
-                                <a href="" class="pagination-item__link">5</a>
-                            </li>
-                            <li class="pagination-item">
-                                <a href="" class="pagination-item__link">...</a>
-                            </li>
-                            <li class="pagination-item">
-                                <a href="" class="pagination-item__link">14</a>
-                            </li>
-                            <li class="pagination-item">
-                                <a href="" class="pagination-item__link">
-                                    <i class="pagination-item__icon fa-solid fa-angle-right"></i>
-                                </a>
-                            </li>
-                        </ul>
+<!--                        <ul class="pagination product__pagination">-->
+<!--                            <li class="pagination-item">-->
+<!--                                <a th:if="${currentPage > 1 }" th:href="@{'/'+${currentPage - 1}}" class="pagination-item__link">&laquo;</a>-->
+<!--                                <span th:unless="${currentPage > 1 }">&laquo;</span>-->
+<!--                            </li>-->
+<!--                            <li class="pagination-item pagination-item&#45;&#45;active">-->
+<!--                                <span th:each=" i : ${#numbers.sequence(1,totalPages)}">-->
+<!--                                        <a th:if="${currentPage != i}" th:href="@{'/' + ${i}}" class="pagination-item__link">[[${i}]]</a>-->
+<!--                                        <span th:unless="${currentPage != i }">[[${i}]]</span>-->
+<!--                                </span>-->
+<!--                            </li>-->
+<!--                            <li class="pagination-item">-->
+<!--                                <a th:if="${currentPage < totalPages }" th:href="@{'/'+${totalPages}}" class="pagination-item__link">&raquo;</a>-->
+<!--                                <span th:unless="${currentPage < totalPages }">&raquo;</span>-->
+<!--                            </li>-->
+<!--                        </ul>-->
                     </div>
                 </div>
             </div>

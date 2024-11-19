@@ -42,7 +42,7 @@ public class BookController {
     @RequestMapping("/book/{pageNum}")
     public String getAllBookPaging(Model model, @PathVariable("pageNum") int pageNum) {
 
-        Page<Book> page = bookService.getAllBookPaging(pageNum);
+        Page<Book> page = bookService.getAllBookPaging(pageNum,4);
         List<Book> books = page.getContent();
         model.addAttribute("currentPage", pageNum);
         model.addAttribute("totalPages", page.getTotalPages());

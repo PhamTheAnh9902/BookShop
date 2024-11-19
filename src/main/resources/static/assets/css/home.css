@@ -159,13 +159,13 @@
 
 .bestselling__product-img-box {
     width: 15rem;
-    height: 16rem;
     margin-right: 1.5rem;
 }
 
 .bestselling__product-img {
     max-width: 100%;
     transition: 0.3s;
+    max-height: 70%;
 }
 
 .bestselling__product-text {
@@ -192,7 +192,7 @@
 }
 
 .bestselling__product-link:hover{
-    color: var(--black-color);
+    color: var(--primary-color);
     text-decoration: none;
 }
 .bestselling__product-rate-wrap {
@@ -201,13 +201,13 @@
 
 .bestselling__product-rate {
     font-size: 1.4rem;
-    color: var(--primary-color);
+    color: gold;
     margin-bottom: 0.8rem;
 }
 
 .bestselling__product-price {
     font-size: 1.8rem;
-    color: var(--primary-color);
+    color: red;
     font-weight: 500;
 }
 
@@ -219,7 +219,7 @@
     width: 10rem;
     height: 3rem;
     border-radius: 0.2rem;
-    background: var(--primary-color);
+    background: red;
     color: var(--white-color);
     display: flex;
     justify-content: center;
@@ -234,7 +234,7 @@
 }
 
 .bestselling__product-btn:hover{
-    background: #ff2014;
+    background: #c20606;
 }
 
 .bestselling__banner {
@@ -263,7 +263,6 @@
 /**/
 
 .product {
-    background: #efefef;
     padding: 3rem 0;
 }
 

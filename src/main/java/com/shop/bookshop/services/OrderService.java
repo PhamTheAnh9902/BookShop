@@ -2,14 +2,17 @@ package com.shop.bookshop.services;
 
 import com.shop.bookshop.domain.Order;
 import com.shop.bookshop.domain.OrderDetail;
+import com.shop.bookshop.domain.Promotion;
 import com.shop.bookshop.repository.OrderDetailRepository;
 import com.shop.bookshop.repository.OrderRepository;
+import com.shop.bookshop.repository.PromotionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,9 +24,12 @@ public class OrderService {
     @Autowired
     OrderDetailRepository orderDetailRepository;
 
+    @Autowired
+    PromotionRepository promotionRepository;
+
 
     public Page<Order> getAllOrderPaging(int pageNum) {
-        int pageSize = 2;
+        int pageSize = 5;
 
         Pageable pageable = PageRequest.of(pageNum-1,pageSize);
         return orderRepository.findAll(pageable);

@@ -20,7 +20,7 @@
                     </a>
                     <ul class="header__nav-list-small">
                         <li class="header__nav-list-small-item" th:each="category : ${categories}" >
-                            <a href="" class="header__nav-list-small-item-link">
+                            <a th:href="@{/books/{id}(id = ${category.getCategoryId()})}" class="header__nav-list-small-item-link">
                                 <span th:text="${category.categoryName}"></span>
                             </a>
                         </li>
@@ -55,10 +55,12 @@
         <div class="header__actions">
             <div class="header__actions-search">
                 <i class="fa-solid fa-magnifying-glass" style="color: #616161;"></i>
-                <form action="" class="header__actions-text">
-                    <input class="header__actions-input" type="text" placeholder="Tìm kiếm sản phẩm...">
-                    <i class="header__actions-text-icon fa-solid fa-magnifying-glass"
-                       style="color: #616161;"></i>
+                <form th:action="@{/books/search}" method="get" class="header__actions-text">
+                    <input class="header__actions-input" type="text" name="query" placeholder="Tìm kiếm sản phẩm...">
+                    <button type="submit" style="background: transparent; border: none; cursor: pointer; color: inherit">
+                        <i class="header__actions-text-icon fa-solid fa-magnifying-glass"
+                           style="color: #616161;"></i>
+                    </button>
                 </form>
             </div>
             <div class="header__actions-account">

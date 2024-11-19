@@ -23,6 +23,7 @@ public class Book {
     @Column(name = "quantity_in_stock")
     private Integer quantityInStock;
 
+    @Column(name = "description", length = 5000)
     private String description;
 
     @Column(name = "image")

@@ -71,9 +71,9 @@ public class UserController {
     @GetMapping("/delete/{id}")
     public String deleteUser(@PathVariable long id) {
         if (userService.deleteUser(id)) {
-            return "redirect:/admin/user";
+            return "redirect:/admin/user/1";
         } else {
-            return "redirect:/admin/user";
+            return "redirect:/admin/user/1";
         }
     }
 
@@ -93,7 +93,7 @@ public class UserController {
         User createdUser = userService.updateUser(userId,user);
 
         if (createdUser != null) {
-            return "redirect:/admin/user";
+            return "redirect:/admin/user/1";
         } else {
             return "admin/user/update_user";
         }

@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class BooksController {
@@ -31,10 +33,13 @@ public class BooksController {
     @GetMapping("/books")
     public String getBookPage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         List<Book> books = bookService.getAllBook();
+        Collections.shuffle(books);
+        List<Book> bestSellerBooks = books.stream().limit(4).collect(Collectors.toList());
         List<Category> categories =  categoryService.getAllCategory();
         if (userDetails != null) {
             model.addAttribute("userEmail", userDetails.getUsername());
             model.addAttribute("books", books);
+            model.addAttribute("bestSellerBooks", bestSellerBooks);
             model.addAttribute("categories",categories);
             model.addAttribute("formatter", formatterUtil);
         } else {
@@ -58,14 +63,19 @@ public class BooksController {
         return "book_detail";
     }
 
+
+
     //SEARCH
     @GetMapping("/books/search")
     public String searchBookByName(@AuthenticationPrincipal UserDetails userDetails,@RequestParam("query") String query, Model model) {
         List<Book> books = bookService.searchBookByName(query);
         List<Category> categories =  categoryService.getAllCategory();
+        Collections.shuffle(bookService.getAllBook());
+        List<Book> bestSellerBooks = books.stream().limit(4).collect(Collectors.toList());
         if (userDetails != null) {
             model.addAttribute("userEmail", userDetails.getUsername());
             model.addAttribute("books", books);
+            model.addAttribute("bestSellerBooks", bestSellerBooks);
             model.addAttribute("query", query);
             model.addAttribute("categories",categories);
             model.addAttribute("formatter", formatterUtil);
@@ -98,9 +108,31 @@ public class BooksController {
         }
         List<Category> categories = categoryService.getAllCategory();
         List<Book> books = bookService.getAllBooksSorted(sort);
+        Collections.shuffle(bookService.getAllBook());
+        List<Book> bestSellerBooks = bookService.getAllBook().stream().limit(4).collect(Collectors.toList());
         if (userDetails != null) {
             model.addAttribute("userEmail", userDetails.getUsername());
             model.addAttribute("books", books);
+            model.addAttribute("bestSellerBooks", bestSellerBooks);
+            model.addAttribute("categories",categories);
+            model.addAttribute("formatter", formatterUtil);
+        } else {
+            model.addAttribute("userEmail", null);
+        }
+        return "books";
+    }
+
+    @GetMapping("/books/{id}")
+    public String getBooksByCategory(@AuthenticationPrincipal UserDetails userDetails, Model model,
+                                     @PathVariable("id") long id){
+        List<Category> categories = categoryService.getAllCategory();
+        List<Book> booksByCategory = bookService.findByCategoryId(id);
+        Collections.shuffle(bookService.getAllBook());
+        List<Book> bestSellerBooks = bookService.getAllBook().stream().limit(4).collect(Collectors.toList());
+        if (userDetails != null) {
+            model.addAttribute("userEmail", userDetails.getUsername());
+            model.addAttribute("books", booksByCategory);
+            model.addAttribute("bestSellerBooks", bestSellerBooks);
             model.addAttribute("categories",categories);
             model.addAttribute("formatter", formatterUtil);
         } else {

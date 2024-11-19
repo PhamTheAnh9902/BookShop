@@ -34,12 +34,14 @@ public class UserService {
         return userRepository.findAll();
     }
     public Page<User> getAllUsersPaging(int pageNum){
-        int pageSize = 2;
+        int pageSize = 4;
         Pageable pageable = PageRequest.of(pageNum-1,pageSize);
         return userRepository.findAll(pageable);
     }
     // CREATE
     public User createUser(User user) {
+        String hashedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(hashedPassword);
         return userRepository.save(user);
     }
 
@@ -73,8 +75,9 @@ public class UserService {
             currentUser.setAddress(user.getAddress());
             currentUser.setBirth_date(user.getBirth_date());
             currentUser.setEmail(user.getEmail());
-            currentUser.setPassword(user.getPassword());
+//            currentUser.setPassword(user.getPassword());
             currentUser.setPhone_number(user.getPhone_number());
+            currentUser.setGender(user.getGender());
         }
         return userRepository.save(currentUser);
     }
@@ -90,6 +93,7 @@ public class UserService {
         user.setBirth_date(registrationDto.getBirth_date());
         user.setEmail(registrationDto.getEmail());
         user.setGender(registrationDto.getGender());
+        user.setPhone_number(registrationDto.getPhone_number());
 
         String hashPassword = passwordEncoder.encode(registrationDto.getPassword());
         user.setPassword(hashPassword);

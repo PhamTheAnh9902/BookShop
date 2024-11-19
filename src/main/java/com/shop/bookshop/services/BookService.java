@@ -39,8 +39,8 @@ public class BookService {
     public List<Book> getAllBook(){
         return bookRespository.findAll();
     }
-    public Page<Book> getAllBookPaging(int pageNum){
-        int pageSize = 2;
+    public Page<Book> getAllBookPaging(int pageNum, int pagesize){
+        int pageSize = pagesize;
 
         Pageable pageable = PageRequest.of(pageNum-1,pageSize);
         return bookRespository.findAll(pageable);
@@ -173,9 +173,10 @@ public class BookService {
 
 
     //ORDER
-    public void placeOrder(User user, HttpSession session,
+    public boolean placeOrder(User user, HttpSession session,
                            String receiverName, String receiverAdress,
-                           String receiverEmail, String receiverPhone){
+                           String receiverEmail, String receiverPhone,
+                           Promotion promotion){
         //create orderDetail
         Cart cart = cartRepository.findByUser(user);
         if(cart != null){
@@ -190,9 +191,30 @@ public class BookService {
                 order.setReceiverPhone(receiverPhone);
                 order.setReceiverEmail(receiverEmail);
                 order.setStatus(StatusEnum.PENDING);
+                order.setDiscountValue(0);
                 double sum = 0;
                 for (CartDetail cartDetail : cartDetails){
-                    sum += cartDetail.getPrice();
+                    sum += (cartDetail.getPrice() * cartDetail.getQuantity());
+                }
+                if (promotion != null) {
+                    System.out.println("Promotion found: " + promotion.getCode());
+
+                    boolean isFirstOrder = orderRepository.countByUser(user) == 0;
+                    boolean isOrderTotalAboveThreshold = sum > 100_000;
+                    if (promotion.getCode().equals("FIRST_ORDER") && isFirstOrder) {
+                        double discountRate = promotion.getDiscountRate() / 100.0;
+                        sum *= (1 - discountRate);
+                    } else if (promotion.getCode().equals("OVER_100K") && isOrderTotalAboveThreshold) {
+                        double discountRate = promotion.getDiscountRate() / 100.0;
+                        sum *= (1 - discountRate);
+                    } else if (promotion.getCode().equals("DISCOUNT10")) {
+                        double discountRate = promotion.getDiscountRate() / 100.0;
+                        sum *= (1 - discountRate);
+                    }
+                    else {
+                        return false;
+                    }
+                    order.setDiscountValue(promotion.getDiscountRate() * 100);
                 }
                 order.setTotalPrice(sum);
                 orderRepository.save(order);
@@ -217,9 +239,23 @@ public class BookService {
             // update session
             session.setAttribute("sum", 0);
         }
-
-
+        return true;
     }
 
 
+    public List<Book> findByCategoryId(long id) {
+        return bookRespository.findBookByCategoryCategoryId(id);
+    }
+
+    public void updateCartBeforeOrder(List<CartDetail> cartDetails) {
+
+        for(CartDetail cartdetail : cartDetails){
+            Optional<CartDetail> cartDetailOptional = cartDetailRepository.findById(cartdetail.getCartDetailId());
+            if (cartDetailOptional.isPresent()){
+                CartDetail currentCartDetail = cartDetailOptional.get();
+                currentCartDetail.setQuantity(cartdetail.getQuantity());
+                cartDetailRepository.save(currentCartDetail);
+            }
+        }
+    }
 }

@@ -14,7 +14,7 @@
     <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
         <div class="row">
             <ol class="breadcrumb">
-                <li><a href="#"><svg class="glyph stroked home">
+                <li><a th:href="@{/admin}"><svg class="glyph stroked home">
                             <use xlink:href="#stroked-home"></use>
                         </svg></a></li>
                 <li class="active">Quản lý Sách</li>
@@ -47,7 +47,6 @@
                                     <th>Thể loại</th>
                                     <th>Tác giả</th>
                                     <th>Nhà xuất bản</th>
-                                    <th>Mô tả</th>
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
@@ -63,7 +62,6 @@
                                         <span th:each="author : ${book.authors}" th:text="${author.authorName}"></span>
                                     </td>
                                     <td th:text="${book.publisher.publisherName}">tác giả</td>
-                                    <td th:text="${book.description}">Mô tả</td>
                                     <td class="form-group">
                                         <a th:href="@{/admin/book/update/{id}(id=${book.getBookId()})}" class="btn btn-primary">
                                             <i class="glyphicon glyphicon-pencil"></i>

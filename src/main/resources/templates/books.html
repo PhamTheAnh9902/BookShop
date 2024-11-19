@@ -1,7 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="/layout/head :: head">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-free-6.6.0-web/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/home.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/base.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/main.css}">
+    <!--script-->
 </head>
 <body>
     <div class="app">
@@ -25,29 +35,39 @@
                             <h3 class="category__heading">DANH MỤC SÁCH</h3>
                             <ul class="category-list" th:each="category : ${categories}">
                                 <li class="category-item category-item--active">
-                                    <a href="#" class="category-item__link " th:text="${category.categoryName}">
+                                    <a th:href="@{/books/{id}(id = ${category.getCategoryId()})}" class="category-item__link " th:text="${category.categoryName}">
                                     </a>
                                 </li>
                             </ul>
                         </nav>
                         <nav class="category">
-                            <h3 class="category__heading">DANH MỤC BÁN CHẠY</h3>
+                            <h3 class="category__heading">CÓ THỂ BẠN SẼ THÍCH</h3>
                             <ul class="category-list">
-                                <li class="category-item category-item--active">
-                                    <div class="product-item">
+                                <li class="category-item">
+                                    <div class="product-item" th:each="book : ${bestSellerBooks}">
                                         <div class="product-item__container">
-                                            <a href="" class="product-tiem__link">
-                                                <img class="product-item__img"
-                                                    src="https://bizweb.dktcdn.net/100/197/269/products/tam-ly-hoc-thanh-cong-304x472.jpg?v=1516592128997"
-                                                    alt="">
+                                            <a th:href="@{/detail/{id}(id = ${book.getBookId()})}" class="product-tiem__link">
+                                                <img class="product-item__img product-item__img--like"
+                                                     th:src="${book.img}"
+                                                     alt="img">
                                             </a>
                                         </div>
-                                        <h4 class="product-item__name">Mindset - Tâm Lý Học Thành Công</h4>
+                                        <a th:href="@{/detail/{id}(id = ${book.getBookId()})}">
+                                            <h4 class="product-item__name"
+                                                th:text="${book.getTitle()}"></h4>
+                                        </a>
                                         <div class="product-item__price">
-                                            <span class="product-item__price-current">159.200₫</span>
-                                            <span class="product-item__price-old">199.000₫</span>
+                                            <span class="product-item__price-current"
+                                                  th:text="${formatter.formatCurrency(book.getPrice())}"></span>
+                                            <!--  <span class="product-item__price-old">199.000₫</span>-->
+                                            <div class="product-item__rating">
+                                                <i class="fas fa-star bestselling__product-rate"></i>
+                                                <i class="fas fa-star bestselling__product-rate"></i>
+                                                <i class="fas fa-star bestselling__product-rate"></i>
+                                                <i class="fas fa-star bestselling__product-rate"></i>
+                                                <i class="fas fa-star bestselling__product-rate"></i>
+                                            </div>
                                         </div>
-                                        <div class="product-item__rating"></div>
                                     </div>
                                 </li>
                             </ul>
@@ -101,14 +121,14 @@
                                         </a>
                                         <div class="product-item__price">
                                             <span class="product-item__price-current" th:text="${formatter.formatCurrency(book.price)}"></span>
-                                            <span class="product-item__price-old"></span>
+<!--                                            <span class="product-item__price-old"></span>-->
                                         </div>
-                                        <div class="product-item__rating">
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
+                                        <div class="product-item__rating" style="margin-left: 0">
+                                            <i class="fas fa-star bestselling__product-rate"></i>
+                                            <i class="fas fa-star bestselling__product-rate"></i>
+                                            <i class="fas fa-star bestselling__product-rate"></i>
+                                            <i class="fas fa-star bestselling__product-rate"></i>
+                                            <i class="fas fa-star bestselling__product-rate"></i>
                                             <span class="product-item__rating-count">(0)</span>
                                         </div>
                                     </div>

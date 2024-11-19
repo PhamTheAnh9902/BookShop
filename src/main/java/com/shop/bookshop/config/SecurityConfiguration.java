@@ -67,9 +67,9 @@ public class SecurityConfiguration {
                                                                 "/assets/fontawesome-free-6.6.0-web/**",
                                                                 "/assets/img/**")
                                                 .permitAll()
-
                                                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                                                .anyRequest().authenticated())
+                                                .anyRequest().authenticated()
+                                )
                                 .sessionManagement((sessionManagement) -> sessionManagement
                                         .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                                         .invalidSessionUrl("/logout?expired")

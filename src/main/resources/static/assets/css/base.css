@@ -55,6 +55,7 @@ body {
 .grid__column-3 {
     padding-left: 12px;
     padding-right: 12px;
+    padding-bottom: 12px;
     width: 25%;
 }
 

@@ -11,4 +11,6 @@ import java.util.List;
 @Repository
 public interface BookRespository extends JpaRepository<Book,Long> {
     List<Book> findBookByTitleContainingIgnoreCase(String query);
+
+    List<Book> findBookByCategoryCategoryId(long id);
 }

@@ -16,11 +16,12 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long orderId;
-    private double totalPrice;
     private String receiverName;
     private String receiverAddress;
     private String receiverPhone;
     private String receiverEmail;
+    private double totalPrice;
+    private double discountValue;
 
     @Enumerated(EnumType.STRING)
     private StatusEnum status;
@@ -31,4 +32,8 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "promotion_id")
+    private Promotion promotion;
 }

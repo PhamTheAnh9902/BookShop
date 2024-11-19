@@ -37,25 +37,25 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <h3><label for="name">Tên người nhận</label></h3>
-                                <input type="text" class="form-control"
+                                <input type="text" class="form-control" style="height: 30px;font-size: 1.6rem;"
                                        id="name" name="receiverName" required
                                        th:value="${session.name}">
                             </div>
                             <div class="form-group">
                                 <h3><label for="email">Email</label></h3>
-                                <input type="email" class="form-control"
+                                <input type="email" class="form-control" style="height: 30px;font-size: 1.6rem;"
                                        id="email" name="receiverEmail" required
                                        th:value="${session.email}">
                             </div>
                             <div class="form-group">
                                 <h3><label for="address">Địa chỉ</label></h3>
-                                <input type="text" class="form-control"
+                                <input type="text" class="form-control" style="height: 30px;font-size: 1.6rem;"
                                        id="address" name="receiverAdress" required
                                        th:value="${session.address}">
                             </div>
                             <div class="form-group">
                                 <h3><label for="phone">Số điện thoại</label></h3>
-                                <input type="tel" class="form-control"
+                                <input type="tel" class="form-control" style="height: 30px;font-size: 1.6rem;"
                                        id="phone" name="receiverPhone" required
                                        th:value="${session.phone}">
                             </div>
@@ -82,35 +82,28 @@
                                         <td th:text="${cd.book.title}"></td>
                                         <td th:text="${formatter.formatCurrency(cd.price)}"></td>
                                         <td th:text="${cd.quantity}"></td>
-                                        <td th:text="${formatter.formatCurrency(cd.book.price * cd.quantity)}"></td>
+                                        <td th:text="${(cd.book.price * cd.quantity) != null ? formatter.formatCurrency(cd.book.price * cd.quantity) : '0'}"></td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
                             <div class="form-group">
+                                <label for="promoCode" class="h4">Mã giảm giá:</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control fs-3" id="promoCode" name="promoCode" placeholder="Nhập mã giảm giá tại đây">
+                                </div>
+                                <div th:if="${session.errorMessage}" class="alert alert-danger">
+                                    <span th:text="${session.errorMessage}"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <table class="table">
                                     <tr>
-                                        <th>Chi phí</th>
-                                        <th>Giá</th>
+                                        <th>Tổng số tiền:</th>
+                                        <th th:text="${totalPrice != null ? formatter.formatCurrency(totalPrice) : '0'}"></th>
                                     </tr>
-                                    <tr>
-                                        <td>Tổng số tiền:</td>
-                                        <td th:text="${formatter.formatCurrency(totalPrice)}"></td>
-                                    </tr>
-                                    <!--                                <tr>-->
-                                    <!--                                    <td>Phí vận chuyển:</td>-->
-                                    <!--                                    <td>0 VNĐ</td>-->
-                                    <!--                                </tr>-->
                                 </table>
                             </div>
-                            <!--                        <div class="form-group">-->
-                            <!--                            <label for="payment-method">Hình thức thanh toán</label>-->
-                            <!--                            <select class="form-control" id="payment-method" required>-->
-                            <!--                                <option value="credit-card">Thẻ tín dụng</option>-->
-                            <!--                                <option value="paypal">PayPal</option>-->
-                            <!--                                <option value="cash">Tiền mặt</option>-->
-                            <!--                            </select>-->
-                            <!--                        </div>-->
                             <button type="submit" class="btn btn-primary">Xác nhận thanh toán</button>
                         </div>
                     </div>
