@@ -45,7 +45,7 @@ public class CartController {
 //        List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
         if (cart == null){
             cart = new Cart();
-            model.addAttribute("message","Chưa có sách nào trong giỏ hàng.");
+            model.addAttribute("message","Chưa có sản phẩm nào trong giỏ hàng.");
         }
         List<CartDetail> cartDetails = cart.getCartDetails() != null ? cart.getCartDetails() : new ArrayList<>();
         double totalPrice = 0;

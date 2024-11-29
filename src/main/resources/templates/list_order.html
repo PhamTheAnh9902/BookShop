@@ -1,0 +1,74 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script th:src="@{/assets/js/jquery-3.3.1.js}"></script>
+    <script th:src="@{/assets/js/bootstrap.min.js}"></script>
+    <script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js}"></script>
+
+    <link rel="stylesheet" th:href="@{/assets/fonts/fontawesome/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/base.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/main.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-free-6.6.0-web/css/all.min.css}">
+</head>
+<body>
+    <!-- header -->
+    <div th:replace="/layout/header :: header"></div>
+    <!-- header -->
+    <!-- location -->
+    <div class="location">
+        <a th:href="@{/}" class="location-link">
+            Trang chủ
+        </a>
+        <p class="location-text">Danh sách đơn hàng</p>
+    </div>
+    <!-- location -->
+    <!-- list_order -->
+    <div class="container" style="font-size: 1.5rem">
+        <h1>Danh Sách Đơn Hàng Đã Đặt</h1>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Mã Đơn Hàng</th>
+                <th>Thời Gian Đặt Hàng</th>
+                <th>Họ Tên</th>
+                <th>Sách</th>
+                <th>Tổng Tiền</th>
+                <th>Trạng Thái Đơn Hàng</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order : ${orders}">
+                <td th:text="${order.orderId}"></td>
+                <td th:text="${formatDateTime.format(order.createDate)}"></td>
+                <td th:text="${order.receiverName}"></td>
+                <td>
+                    <span th:each="entry : ${orderBookNamesMap}" th:if="${entry.key.getOrderId() == order.getOrderId()}">
+                        <p th:each="bookName, quantity : ${entry.value}">
+                            <span th:text="${bookName.key} + '  (' + ${quantity.current.value} + ')'"></span>
+                        </p>
+                    </span>
+                </td>
+                <td th:text="${formatter.formatCurrency(order.totalPrice)}"></td>
+                <td>
+                    <span th:text="${order.status.getDisplayName()}"
+                          th:class="${order.status.getColor()}">
+                    </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div th:if="${message}"
+              th:text="${message}"
+              class="alert alert-info" role="alert">
+        </div>
+    </div>
+    <!-- list_order -->
+    <!-- footer -->
+    <div class="footer" th:replace="/layout/footer :: footer"></div>
+    <!-- footer -->
+</body>
+</html>

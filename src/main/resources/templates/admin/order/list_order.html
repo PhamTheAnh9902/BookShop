@@ -34,9 +34,11 @@
 
                             <thead>
                                 <tr>
-                                    <th data-field="id" data-sortable="true">ID</th>
-                                    <th>Tổng Tiền</th>
+                                    <th data-field="id" data-sortable="true">Mã Đơn Hàng</th>
                                     <th>Người Dùng</th>
+                                    <th>Thời gian Tạo Đơn</th>
+                                    <th>Thanh Toán</th>
+                                    <th>Tổng Tiền</th>
                                     <th>Trạng Thái</th>
                                     <th>Hành Động</th>
                                 </tr>
@@ -44,9 +46,11 @@
                             <tbody>
                                 <tr th:each="order : ${orders}">
                                     <td th:text="${order.getOrderId()}">id</td>
-                                    <td th:text="${formatter.formatCurrency(order.getTotalPrice())}"></td>
                                     <td th:text="${order.getUser().getFull_name()}"></td>
-                                    <td th:text="${order.getStatus()}"></td>
+                                    <td th:text="${formatDateTime.format(order.getCreateDate())}"></td>
+                                    <td th:text="${order.getStatusPayment()}"></td>
+                                    <td th:text="${formatter.formatCurrency(order.getTotalPrice())}"></td>
+                                    <td th:text="${order.getStatus().getDisplayName()}"></td>
                                     <td class="form-group">
                                         <a th:href="@{/admin/order/update/{id}(id=${order.getOrderId()})}" class="btn btn-primary">
                                             <i class="glyphicon glyphicon-pencil"></i>

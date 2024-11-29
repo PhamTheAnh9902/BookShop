@@ -47,6 +47,7 @@ public class OrderService {
         Order currentOrder = this.getOrderById(id);
         if (currentOrder != null){
             currentOrder.setStatus(order.getStatus());
+            currentOrder.setStatusPayment(order.getStatusPayment());
         }
         return orderRepository.save(currentOrder);
     }
@@ -60,5 +61,13 @@ public class OrderService {
             }
         }
         orderRepository.deleteById(id);
+    }
+
+    public List<Order> getOrderByUserId(long id) {
+        return orderRepository.findOrderByUserId(id);
+    }
+
+    public List<OrderDetail> getOrderDetailByOrderId(Long id) {
+        return orderDetailRepository.findOrderDetailByOrderOrderId(id);
     }
 }

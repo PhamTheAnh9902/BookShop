@@ -1,6 +1,7 @@
 package com.shop.bookshop.services;
 
 import com.shop.bookshop.domain.*;
+import com.shop.bookshop.domain.Dto.PromotionDTO;
 import com.shop.bookshop.repository.*;
 import com.shop.bookshop.util.constant.StatusEnum;
 import jakarta.persistence.EntityNotFoundException;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -173,18 +175,19 @@ public class BookService {
 
 
     //ORDER
-    public boolean placeOrder(User user, HttpSession session,
+    public Order placeOrder(User user, HttpSession session,
                            String receiverName, String receiverAdress,
                            String receiverEmail, String receiverPhone,
                            Promotion promotion){
         //create orderDetail
         Cart cart = cartRepository.findByUser(user);
+        LocalDateTime localDateTime = LocalDateTime.now();
+        Order order = new Order();
         if(cart != null){
             List<CartDetail> cartDetails = cart.getCartDetails();
 
             if(cartDetails != null){
                 //create order
-                Order order = new Order();
                 order.setUser(user);
                 order.setReceiverName(receiverName);
                 order.setReceiverAddress(receiverAdress);
@@ -192,6 +195,8 @@ public class BookService {
                 order.setReceiverEmail(receiverEmail);
                 order.setStatus(StatusEnum.PENDING);
                 order.setDiscountValue(0);
+                order.setStatusPayment("Chưa thanh toán");
+                order.setCreateDate(localDateTime);
                 double sum = 0;
                 for (CartDetail cartDetail : cartDetails){
                     sum += (cartDetail.getPrice() * cartDetail.getQuantity());
@@ -212,7 +217,7 @@ public class BookService {
                         sum *= (1 - discountRate);
                     }
                     else {
-                        return false;
+                        return null;
                     }
                     order.setDiscountValue(promotion.getDiscountRate() * 100);
                 }
@@ -226,6 +231,11 @@ public class BookService {
                     orderDetail.setPrice(cd.getPrice());
                     orderDetail.setQuantity(cd.getQuantity());
                     orderDetailRepository.save(orderDetail);
+
+                    //Update QuantityStock
+                    Book book = cd.getBook();
+                    book.setQuantityInStock((int) (book.getQuantityInStock() - cd.getQuantity()));
+                    bookRespository.save(book);
                 }
             }
 
@@ -239,7 +249,84 @@ public class BookService {
             // update session
             session.setAttribute("sum", 0);
         }
-        return true;
+        return order;
+    }
+
+    public Order placeOrderVnPay(User user, HttpSession session,
+                                 String receiverName, String receiverAdress,
+                                 String receiverEmail, String receiverPhone,
+                                 PromotionDTO promotion){
+        //create orderDetail
+        Cart cart = cartRepository.findByUser(user);
+        LocalDateTime localDateTime = LocalDateTime.now();
+        Order order = new Order();
+        if(cart != null){
+            List<CartDetail> cartDetails = cart.getCartDetails();
+
+            if(cartDetails != null){
+                //create order
+                order.setUser(user);
+                order.setReceiverName(receiverName);
+                order.setReceiverAddress(receiverAdress);
+                order.setReceiverPhone(receiverPhone);
+                order.setReceiverEmail(receiverEmail);
+                order.setStatus(StatusEnum.PENDING);
+                order.setDiscountValue(0);
+                order.setStatusPayment("Đã thanh toán");
+                order.setCreateDate(localDateTime);
+                double sum = 0;
+                for (CartDetail cartDetail : cartDetails){
+                    sum += (cartDetail.getPrice() * cartDetail.getQuantity());
+                }
+                if (promotion != null) {
+                    System.out.println("Promotion found: " + promotion.getCode());
+
+                    boolean isFirstOrder = orderRepository.countByUser(user) == 0;
+                    boolean isOrderTotalAboveThreshold = sum > 100_000;
+                    if (promotion.getCode().equals("FIRST_ORDER") && isFirstOrder) {
+                        double discountRate = promotion.getDiscountRate() / 100.0;
+                        sum *= (1 - discountRate);
+                    } else if (promotion.getCode().equals("OVER_100K") && isOrderTotalAboveThreshold) {
+                        double discountRate = promotion.getDiscountRate() / 100.0;
+                        sum *= (1 - discountRate);
+                    } else if (promotion.getCode().equals("DISCOUNT10")) {
+                        double discountRate = promotion.getDiscountRate() / 100.0;
+                        sum *= (1 - discountRate);
+                    }
+                    else {
+                        return null;
+                    }
+                    order.setDiscountValue(promotion.getDiscountRate() * 100);
+                }
+                order.setTotalPrice(sum);
+                orderRepository.save(order);
+
+                for (CartDetail cd : cartDetails ){
+                    OrderDetail orderDetail = new OrderDetail();
+                    orderDetail.setOrder(order);
+                    orderDetail.setBook(cd.getBook());
+                    orderDetail.setPrice(cd.getPrice());
+                    orderDetail.setQuantity(cd.getQuantity());
+                    orderDetailRepository.save(orderDetail);
+
+                    //Update QuantityStock
+                    Book book = cd.getBook();
+                    book.setQuantityInStock((int) (book.getQuantityInStock() - cd.getQuantity()));
+                    bookRespository.save(book);
+                }
+            }
+
+            //delete cart_detail and cart
+            for (CartDetail cd : cartDetails){
+                cartDetailRepository.deleteById(cd.getCartDetailId());
+            }
+
+            cartRepository.deleteById(cart.getCartId());
+
+            // update session
+            session.setAttribute("sum", 0);
+        }
+        return order;
     }
 
 
@@ -257,5 +344,36 @@ public class BookService {
                 cartDetailRepository.save(currentCartDetail);
             }
         }
+    }
+
+    public double calculateOrderAmount(User currentUser, Promotion promotion) {
+        Cart cart = cartRepository.findByUser(currentUser);
+        if (cart != null){
+            List<CartDetail> cartDetails = cart.getCartDetails();
+            if (cartDetails != null){
+                double sum = 0;
+                for (CartDetail cartDetail : cartDetails){
+                    sum += (cartDetail.getPrice() * cartDetail.getQuantity());
+                }
+                if (promotion != null) {
+                    System.out.println("Promotion found: " + promotion.getCode());
+
+                    boolean isFirstOrder = orderRepository.countByUser(currentUser) == 0;
+                    boolean isOrderTotalAboveThreshold = sum > 100_000;
+                    if (promotion.getCode().equals("FIRST_ORDER") && isFirstOrder) {
+                        double discountRate = promotion.getDiscountRate() / 100.0;
+                        sum *= (1 - discountRate);
+                    } else if (promotion.getCode().equals("OVER_100K") && isOrderTotalAboveThreshold) {
+                        double discountRate = promotion.getDiscountRate() / 100.0;
+                        sum *= (1 - discountRate);
+                    } else if (promotion.getCode().equals("DISCOUNT10")) {
+                        double discountRate = promotion.getDiscountRate() / 100.0;
+                        sum *= (1 - discountRate);
+                    }
+                }
+                return sum;
+            }
+        }
+        return 0;
     }
 }

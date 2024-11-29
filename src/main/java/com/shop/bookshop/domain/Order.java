@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -22,6 +23,8 @@ public class Order {
     private String receiverEmail;
     private double totalPrice;
     private double discountValue;
+    private String statusPayment;
+    private LocalDateTime createDate;
 
     @Enumerated(EnumType.STRING)
     private StatusEnum status;

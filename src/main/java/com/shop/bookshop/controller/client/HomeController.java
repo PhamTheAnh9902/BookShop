@@ -11,20 +11,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import com.shop.bookshop.domain.User;
 import com.shop.bookshop.domain.Dto.UserRegistrationDto;
 import com.shop.bookshop.services.UserService;
 
 import jakarta.validation.Valid;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Collections;
 import java.util.List;
@@ -41,7 +40,8 @@ public class HomeController {
     private BookService bookService;
     @Autowired
     private FormatterUtil formatterUtil;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     // HOME
     @GetMapping("/")
     public String homepage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
@@ -50,17 +50,51 @@ public class HomeController {
         Collections.shuffle(books);
         List<Book> bestSellerBooks = books.stream().limit(6).collect(Collectors.toList());
         List<Book> suggestBook = books.stream().limit(4).collect(Collectors.toList());
+        model.addAttribute("categories",categories);
+        model.addAttribute("bestSellerBooks", bestSellerBooks);
+        model.addAttribute("suggestBook", suggestBook);
+        model.addAttribute("books",books);
+        model.addAttribute("formatter", formatterUtil);
         if (userDetails != null) {
             model.addAttribute("userEmail", userDetails.getUsername());
-            model.addAttribute("categories",categories);
-            model.addAttribute("bestSellerBooks", bestSellerBooks);
-            model.addAttribute("suggestBook", suggestBook);
-            model.addAttribute("books",books);
-            model.addAttribute("formatter", formatterUtil);
         } else {
             model.addAttribute("userEmail", null);
         }
         return "index";
+    }
+
+    //ACCOUNT
+    @GetMapping("/account")
+    public String getAccountPage(@AuthenticationPrincipal UserDetails userDetails,Model model){
+        User user = userService.getUserByEmail(userDetails.getUsername());
+        if (userDetails != null){
+            model.addAttribute("userEmail", userDetails.getUsername());
+            model.addAttribute("user",user);
+        }
+        else {
+            model.addAttribute("userEmail", null);
+        }
+        return "account";
+    }
+
+    @PostMapping("/change-password")
+    public String updatePassword(@AuthenticationPrincipal UserDetails userDetails, Model model,
+                                 @RequestParam("currentPassword") String currentPassword,
+                                 @RequestParam("newPassword") String newPassword,
+                                 @RequestParam("confirmPassword") String confirmPassword,
+                                 RedirectAttributes redirectAttributes){
+        User user = userService.getUserByEmail(userDetails.getUsername());
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())){
+            redirectAttributes.addFlashAttribute("error", "Mật khẩu hiện tại không đúng.");
+            return "redirect:/account";
+        }
+        if (!newPassword.equals(confirmPassword)) {
+            redirectAttributes.addFlashAttribute("error", "Mật khẩu mới và xác nhận không khớp.");
+            return "redirect:/account";
+        }
+        userService.updatePassword(user,newPassword);
+            redirectAttributes.addFlashAttribute("success", "Đổi mật khẩu thành công");
+        return "redirect:/account";
     }
 
     // REGISTER

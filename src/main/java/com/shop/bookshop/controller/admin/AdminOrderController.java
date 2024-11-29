@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,10 +28,14 @@ public class AdminOrderController {
 
         Page<Order> page = orderService.getAllOrderPaging(pageNum);
         List<Order> orders = page.getContent();
+        DateTimeFormatter formatDateTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
         model.addAttribute("currentPage", pageNum);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("orders", orders);
         model.addAttribute("formatter", formatterUtil);
+        model.addAttribute("formatDateTime",formatDateTime);
+
         return "admin/order/list_order";
     }
 

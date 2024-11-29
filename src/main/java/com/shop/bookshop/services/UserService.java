@@ -113,4 +113,18 @@ public class UserService {
     public User getUserByEmail(String email){
         return userRepository.findByEmail(email);
     }
+
+    public void updatePassword(User user, String newPassword) {
+         User currentUser = this.getUserById(user.getId());
+         if (currentUser != null){
+             currentUser.setFull_name(user.getFull_name());
+             currentUser.setAddress(user.getAddress());
+             currentUser.setBirth_date(user.getBirth_date());
+             currentUser.setEmail(user.getEmail());
+             currentUser.setGender(user.getGender());
+             currentUser.setPhone_number(user.getPhone_number());
+             currentUser.setPassword(passwordEncoder.encode(newPassword));
+         }
+         userRepository.save(currentUser);
+    }
 }

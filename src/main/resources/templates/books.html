@@ -77,8 +77,8 @@
                         <div class="home-filter">
                              <span class="home-filter__label">Sắp xếp:</span>
                             <div class="select-input">
-                                <span class="select-input__label">
-                                    Mặc định
+                                <span class="select-input__label" >
+                                    <label th:text="${sortBy}"></label>
                                     <i class="fa-solid fa-chevron-down"></i>
                                 </span>
                                 <ul class="select-input__list">
@@ -135,39 +135,39 @@
                                 </div>
                             </div>
                         </div>
-                        <ul class="pagination product__pagination">
-                            <li class="pagination-item">
-                                <a href="" class="pagination-item__link">
-                                    <i class="pagination-item__icon fa-solid fa-angle-left"></i>
-                                </a>
-                            </li>
-                            <li class="pagination-item pagination-item--active">
-                                <a href="" class="pagination-item__link ">1</a>
-                            </li>
-                            <li class="pagination-item">
-                                <a href="" class="pagination-item__link">2</a>
-                            </li>
-                            <li class="pagination-item">
-                                <a href="" class="pagination-item__link">3</a>
-                            </li>
-                            <li class="pagination-item">
-                                <a href="" class="pagination-item__link">4</a>
-                            </li>
-                            <li class="pagination-item">
-                                <a href="" class="pagination-item__link">5</a>
-                            </li>
-                            <li class="pagination-item">
-                                <a href="" class="pagination-item__link">...</a>
-                            </li>
-                            <li class="pagination-item">
-                                <a href="" class="pagination-item__link">14</a>
-                            </li>
-                            <li class="pagination-item">
-                                <a href="" class="pagination-item__link">
-                                    <i class="pagination-item__icon fa-solid fa-angle-right"></i>
-                                </a>
-                            </li>
-                        </ul>
+<!--                        <ul class="pagination product__pagination">-->
+<!--                            <li class="pagination-item">-->
+<!--                                <a href="" class="pagination-item__link">-->
+<!--                                    <i class="pagination-item__icon fa-solid fa-angle-left"></i>-->
+<!--                                </a>-->
+<!--                            </li>-->
+<!--                            <li class="pagination-item pagination-item&#45;&#45;active">-->
+<!--                                <a href="" class="pagination-item__link ">1</a>-->
+<!--                            </li>-->
+<!--                            <li class="pagination-item">-->
+<!--                                <a href="" class="pagination-item__link">2</a>-->
+<!--                            </li>-->
+<!--                            <li class="pagination-item">-->
+<!--                                <a href="" class="pagination-item__link">3</a>-->
+<!--                            </li>-->
+<!--                            <li class="pagination-item">-->
+<!--                                <a href="" class="pagination-item__link">4</a>-->
+<!--                            </li>-->
+<!--                            <li class="pagination-item">-->
+<!--                                <a href="" class="pagination-item__link">5</a>-->
+<!--                            </li>-->
+<!--                            <li class="pagination-item">-->
+<!--                                <a href="" class="pagination-item__link">...</a>-->
+<!--                            </li>-->
+<!--                            <li class="pagination-item">-->
+<!--                                <a href="" class="pagination-item__link">14</a>-->
+<!--                            </li>-->
+<!--                            <li class="pagination-item">-->
+<!--                                <a href="" class="pagination-item__link">-->
+<!--                                    <i class="pagination-item__icon fa-solid fa-angle-right"></i>-->
+<!--                                </a>-->
+<!--                            </li>-->
+<!--                        </ul>-->
                     </div>
                 </div>
             </div>

@@ -57,6 +57,15 @@
                                         <p th:text="${formatter.formatCurrency(order.getTotalPrice())}"></p>
                                     </div>
                                     <div class="form-group">
+                                        <label>Trạng thái thanh toán</label>
+                                        <select required  class="form-control"
+                                                th:field="*{statusPayment}">
+                                            <option value="" disabled selected>Chọn Trạng Thái</option>
+                                            <option value="Chưa Thanh toán">Chưa Thanh toán</option>
+                                            <option value="Đã thanh toán">Đã thanh toán</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
                                         <label >Trạng Thái Đơn Hàng</label>
                                         <select required  class="form-control"
                                                 th:field="*{status}">
