@@ -38,6 +38,7 @@
                 <th>Sách</th>
                 <th>Tổng Tiền</th>
                 <th>Trạng Thái Đơn Hàng</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -57,6 +58,14 @@
                     <span th:text="${order.status.getDisplayName()}"
                           th:class="${order.status.getColor()}">
                     </span>
+                </td>
+                <td th:if="${order.getStatus().name() == 'SHIPPING'}">
+                    <button class="btn btn-primary">
+                        <a th:href="@{/update-status/{id}(id=${order.getOrderId()})}"
+                           class="text-white text-decoration-none">
+                            Đã nhận hàng
+                        </a>
+                    </button>
                 </td>
             </tr>
             </tbody>

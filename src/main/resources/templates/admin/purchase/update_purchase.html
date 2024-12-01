@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" >
+<head th:replace="admin/layout/head :: head"></head>
+
+<body>
+    <!-- nav -->
+    <nav th:replace="admin/layout/nav :: nav"></nav>
+    <!-- nav -->
+    <!-- side -->
+    <div th:replace="admin/layout/sidebar :: sidebar"></div>
+    <!-- side -->
+    <!-- container -->
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+		<div class="row">
+			<ol class="breadcrumb">
+                <li><a href="#"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
+                <li><a th:href="@{/admin/purchase/1}">Quản lý phiếu nhập kho</a></li>
+				<li class="active">Thêm phiếu nhập kho</li>
+			</ol>
+		</div><!--/.row-->
+
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="page-header">Cập nhật phiếu nhập kho</h1>
+			</div>
+        </div><!--/.row-->
+        <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <form role="form" th:action="@{/admin/purchase/update/{id}(id = ${purchaseOrder.getPurchaseOrderId()})}" th:object="${purchaseOrder}"  method="post" enctype="multipart/form-data">
+                            <div class="panel-body">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Nhà cung cấp</label>
+                                        <select th:field="*{publisher}" class="form-control">
+                                            <option th:each="p : ${publishers}"
+                                                    th:value="${p.getPublisherId()}"
+                                                    th:text="${p.getPublisherName()}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Người tạo</label>
+<!--                                        <input th:field="*{enteredBy}" type="text" th:value="${username}" required-->
+<!--                                               name="enteredBy" class="form-control">-->
+                                        <p th:field="*{enteredBy}" th:value="${user.getId()}">
+                                            <span th:text="${user.getEmail()}"></span>
+                                        </p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Ghi chú</label>
+                                        <textarea th:field="*{notes}" class="form-control"
+                                                  rows="3" placeholder="Nhập ghi chú"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div id="bookDetailsContainer" th:each="detail, stat : ${purchaseOrder.getPurchaseOrderDetails()}">
+                                        <div class="book-detail">
+                                            <div class="form-group">
+                                                <label>Chi tiết sách</label>
+                                                <select th:field="*{purchaseOrderDetails[__${stat.index}__].book}" class="form-control" required>
+                                                    <option th:each="book : ${books}"
+                                                            th:value="${book.bookId}"
+                                                            th:text="${book.title}"
+                                                            th:selected="${book.bookId == detail.book.bookId}">></option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Số lượng</label>
+                                                <input th:field="*{purchaseOrderDetails[__${stat.index}__].quantity}"
+                                                       required type="number" class="form-control"
+                                                       placeholder="Số lượng">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Giá nhập</label>
+                                                <input th:field="*{purchaseOrderDetails[__${stat.index}__].unitPrice}"
+                                                       required type="number" step="0.01" class="form-control"
+                                                       placeholder="Giá nhập">
+                                            </div>
+                                            <button type="button" class="btn btn-danger remove-book">Xóa</button>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-primary add-book">Thêm sách</button>
+                                        <button type="submit" class="btn btn-success">Cập nhật</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <!-- container -->
+    <!-- script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Nút "Thêm sách"
+            const addBookButton = document.querySelector('.add-book');
+            // Container chứa danh sách chi tiết sách
+            const container = document.getElementById('bookDetailsContainer');
+
+            addBookButton.addEventListener('click', function () {
+                // Lấy phần tử chi tiết sách đầu tiên làm mẫu
+                const firstBookDetail = container.querySelector('.book-detail');
+
+                if (firstBookDetail) {
+                    // Tạo một bản sao của chi tiết sách
+                    const newBookDetail = firstBookDetail.cloneNode(true);
+
+                    // Lấy số lượng phần tử hiện tại trong container để xác định index mới
+                    const newIndex = container.querySelectorAll('.book-detail').length;
+
+                    // Cập nhật lại chỉ số index động cho các trường trong bản sao
+                    newBookDetail.querySelectorAll('input, select').forEach(field => {
+                        if (field.name) {
+                            // Cập nhật chỉ số index trong thuộc tính name
+                            field.name = field.name.replace(/\[\d+\]/, `[${newIndex}]`);
+                        }
+                        field.value = ''; // Reset giá trị
+                    });
+
+                    // Gắn sự kiện xóa cho nút "Xóa" trong bản sao
+                    const removeButton = newBookDetail.querySelector('.remove-book');
+                    removeButton.addEventListener('click', function () {
+                        newBookDetail.remove(); // Xóa bản sao
+                    });
+
+                    // Thêm bản sao vào container
+                    container.appendChild(newBookDetail);
+                }
+            });
+
+            // Sự kiện xóa cho các chi tiết sách hiện tại
+            container.addEventListener('click', function (event) {
+                if (event.target.classList.contains('remove-book')) {
+                    const bookDetail = event.target.closest('.book-detail');
+                    if (bookDetail) {
+                        bookDetail.remove(); // Xóa chi tiết sách
+                    }
+                }
+            });
+        });
+    </script>
+    <!-- script -->
+</body>
+</html>

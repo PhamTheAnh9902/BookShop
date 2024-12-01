@@ -14,8 +14,8 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <img src="" style="width: 200px">
-                    <h2 class="card-title">Tạo Đơn Hàng</h2>
+                    <img th:src="@{/assets/img/vnpay-logo.jpg}" style="width: 200px">
+<!--                    <h2 class="card-title">Tạo Đơn Hàng</h2>-->
                     <form th:action="@{/submitOrder}" method="post">
                         <div class="form-group">
                             <label for="amount">Số tiền:</label>

@@ -50,7 +50,7 @@ public class AdminOrderController {
 
     @PostMapping("/order/update/{id}")
     public String updateOrder(@PathVariable("id") Long id, @ModelAttribute("order") Order order) {
-        Order createdOrder = orderService.updateUser(id,order);
+        Order createdOrder = orderService.updateOrder(id,order);
 
         if (createdOrder != null) {
             return "redirect:/admin/order/1";

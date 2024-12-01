@@ -48,8 +48,7 @@ public class UserService {
     // DELETE
     public boolean deleteUser(long id) {
         try {
-            User user = userRepository.findById(id)
-                    .orElseThrow(() -> new EntityNotFoundException("User not found"));
+            User user = userRepository.findById(id);
             user.getRoles().clear();
             userRepository.deleteById(id);
             return true;

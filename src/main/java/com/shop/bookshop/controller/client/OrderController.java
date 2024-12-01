@@ -7,15 +7,18 @@ import com.shop.bookshop.services.CategoryService;
 import com.shop.bookshop.services.OrderService;
 import com.shop.bookshop.services.PromotionService;
 import com.shop.bookshop.util.constant.FormatterUtil;
+import com.shop.bookshop.util.constant.StatusEnum;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -164,5 +167,12 @@ public class OrderController {
             model.addAttribute("userEmail", null);
         }
         return "list_order";
+    }
+
+    @GetMapping("/update-status/{id}")
+    public String updateStatusOrder(@PathVariable("id") long id, RedirectAttributes redirectAttributes){
+        Order order = orderService.updateStatus(id);
+
+        return "redirect:/list_order";
     }
 }

@@ -6,6 +6,7 @@ import com.shop.bookshop.domain.Promotion;
 import com.shop.bookshop.repository.OrderDetailRepository;
 import com.shop.bookshop.repository.OrderRepository;
 import com.shop.bookshop.repository.PromotionRepository;
+import com.shop.bookshop.util.constant.StatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,7 +44,7 @@ public class OrderService {
         return null;
     }
 
-    public Order updateUser(Long id, Order order) {
+    public Order updateOrder(Long id, Order order) {
         Order currentOrder = this.getOrderById(id);
         if (currentOrder != null){
             currentOrder.setStatus(order.getStatus());
@@ -69,5 +70,13 @@ public class OrderService {
 
     public List<OrderDetail> getOrderDetailByOrderId(Long id) {
         return orderDetailRepository.findOrderDetailByOrderOrderId(id);
+    }
+
+    public Order updateStatus(long id) {
+        Order order = this.getOrderById(id);
+        order.setStatusPayment("Đã thanh toán");
+        order.setStatus(StatusEnum.COMPLETE);
+        orderRepository.save(order);
+        return order;
     }
 }

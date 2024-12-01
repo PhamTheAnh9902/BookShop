@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head th:replace="admin/layout/head :: head"></head>
+
+<body>
+    <!-- nav -->
+    <nav th:replace="admin/layout/nav :: nav"></nav>
+    <!-- nav -->
+    <!-- sidebar -->
+    <div th:replace="admin/layout/sidebar :: sidebar"></div>
+    <!-- sidebar -->
+    <!-- container -->
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+        <div class="row">
+            <ol class="breadcrumb">
+                <li><a th:href="@{/admin}"><svg class="glyph stroked home">
+                            <use xlink:href="#stroked-home"></use>
+                        </svg></a></li>
+                <li class="active">Quản lý phiếu nhập kho</li>
+            </ol>
+        </div><!--/.row-->
+        <div id="toolbar" class="btn-group">
+            <a th:href="@{/admin/purchase/add}" class="btn btn-success">
+                <i class="glyphicon glyphicon-plus"></i> Thêm phiếu nhập kho
+            </a>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Quản lý phiếu nhập kho</h1>
+            </div>
+        </div><!--/.row-->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <table data-toolbar="#toolbar" data-toggle="table">
+                            <div th:if="${message}"
+                                 th:text="${message}"
+                                 class="alert alert-danger" role="alert">
+                            </div>
+                            <thead>
+                                <tr>
+                                    <th data-field="id" data-sortable="true">Mã Phiếu</th>
+                                    <th>Ngày Tạo</th>
+                                    <th>Tổng SL Nhập</th>
+                                    <th>Tổng Giá Trị</th>
+                                    <th>Người Lập Phiếu</th>
+                                    <th>Ghi chú</th>
+                                    <th>Hành Động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="purchase : ${purchaseOrders}">
+                                    <td th:text="${purchase.getPurchaseOrderId()}">id</td>
+                                    <td th:text="${purchase.getImportDate()}"></td>
+                                    <td th:text="${purchase.getTotalQuantity()}"></td>
+                                    <td th:text="${formatter.formatCurrency(purchase.getTotalValue())}"></td>
+                                    <td th:text="${purchase.getEnteredBy().getEmail()}"></td>
+                                    <td th:text="${purchase.getNotes()}"></td>
+                                    <td class="form-group">
+                                        <a th:href="@{/admin/purchase/update/{id}(id = ${purchase.getPurchaseOrderId()})}" class="btn btn-primary">
+                                            <i class="glyphicon glyphicon-pencil"></i>
+                                        </a>
+                                        <a th:href="@{/admin/purchase/delete/{id}(id = ${purchase.getPurchaseOrderId()})}"
+                                           onclick="return confirm('Bạn chắc chắn không?')" class="btn btn-danger">
+                                            <i class="glyphicon glyphicon-remove"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="panel-footer">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <li class="page-item">
+                                    <a th:if="${currentPage > 1 }" th:href="@{'/admin/purchase/'+${currentPage - 1}}" class="page-link">&laquo;</a>
+                                    <span th:unless="${currentPage > 1 }">&laquo;</span>
+                                </li>
+                                <li class="page-item">
+                                    <span th:each=" i : ${#numbers.sequence(1,totalPages)}">
+                                        <a th:if="${currentPage != i}" th:href="@{'/admin/purchase/' + ${i}}" class="page-link">[[${i}]]</a>
+                                        <span th:unless="${currentPage != i }">[[${i}]]</span>
+                                    </span>
+                                </li>
+                                <li class="page-item">
+                                    <a th:if="${currentPage < totalPages }" th:href="@{'/admin/purchase/'+${totalPages}}" class="page-link">&raquo;</a>
+                                    <span th:unless="${currentPage < totalPages }">&raquo;</span>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div><!--/.row-->
+    </div>
+    <!-- container -->
+    <!-- script -->
+    <script th:src="@{/admin_assets/js/jquery-1.11.1.min.js}"></script>
+    <script th:src="@{/admin_assets/js/bootstrap.min.js}"></script>
+    <script th:src="@{/admin_assets/js/bootstrap-table.js}"></script>
+    <!-- script -->
+</body>
+
+</html>
