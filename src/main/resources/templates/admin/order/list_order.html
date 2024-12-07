@@ -40,6 +40,7 @@
                                     <th>Thanh Toán</th>
                                     <th>Tổng Tiền</th>
                                     <th>Trạng Thái</th>
+                                    <th>Ghi chú</th>
                                     <th>Hành Động</th>
                                 </tr>
                             </thead>
@@ -51,6 +52,7 @@
                                     <td th:text="${order.getStatusPayment()}"></td>
                                     <td th:text="${formatter.formatCurrency(order.getTotalPrice())}"></td>
                                     <td th:text="${order.getStatus().getDisplayName()}"></td>
+                                    <td th:text="${order.getDescription()}"></td>
                                     <td class="form-group">
                                         <a th:href="@{/admin/order/update/{id}(id=${order.getOrderId()})}" class="btn btn-primary">
                                             <i class="glyphicon glyphicon-pencil"></i>

@@ -178,7 +178,7 @@ public class BookService {
     public Order placeOrder(User user, HttpSession session,
                            String receiverName, String receiverAdress,
                            String receiverEmail, String receiverPhone,
-                           Promotion promotion){
+                           String description,Promotion promotion){
         //create orderDetail
         Cart cart = cartRepository.findByUser(user);
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -194,6 +194,7 @@ public class BookService {
                 order.setReceiverPhone(receiverPhone);
                 order.setReceiverEmail(receiverEmail);
                 order.setStatus(StatusEnum.PENDING);
+                order.setDescription(description);
                 order.setDiscountValue(0);
                 order.setStatusPayment("Chưa thanh toán");
                 order.setCreateDate(localDateTime);
@@ -221,7 +222,7 @@ public class BookService {
                     }
                     order.setDiscountValue(promotion.getDiscountRate() * 100);
                 }
-                order.setTotalPrice(sum);
+                order.setTotalPrice(sum + 50000);
                 orderRepository.save(order);
 
                 for (CartDetail cd : cartDetails ){
@@ -255,7 +256,7 @@ public class BookService {
     public Order placeOrderVnPay(User user, HttpSession session,
                                  String receiverName, String receiverAdress,
                                  String receiverEmail, String receiverPhone,
-                                 PromotionDTO promotion){
+                                 String description,PromotionDTO promotion){
         //create orderDetail
         Cart cart = cartRepository.findByUser(user);
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -271,6 +272,7 @@ public class BookService {
                 order.setReceiverPhone(receiverPhone);
                 order.setReceiverEmail(receiverEmail);
                 order.setStatus(StatusEnum.PENDING);
+                order.setDescription(description);
                 order.setDiscountValue(0);
                 order.setStatusPayment("Đã thanh toán");
                 order.setCreateDate(localDateTime);
@@ -293,9 +295,9 @@ public class BookService {
                         double discountRate = promotion.getDiscountRate() / 100.0;
                         sum *= (1 - discountRate);
                     }
-                    else {
-                        return null;
-                    }
+//                    else {
+//                        return null;
+//                    }
                     order.setDiscountValue(promotion.getDiscountRate() * 100);
                 }
                 order.setTotalPrice(sum);

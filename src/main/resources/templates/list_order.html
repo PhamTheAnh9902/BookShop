@@ -49,20 +49,22 @@
                 <td>
                     <span th:each="entry : ${orderBookNamesMap}" th:if="${entry.key.getOrderId() == order.getOrderId()}">
                         <p th:each="bookName, quantity : ${entry.value}">
-                            <span th:text="${bookName.key} + '  (' + ${quantity.current.value} + ')'"></span>
+                            <span th:text="${bookName.key} + '  (SL: ' + ${quantity.current.value} + ')'"></span>
                         </p>
                     </span>
                 </td>
                 <td th:text="${formatter.formatCurrency(order.totalPrice)}"></td>
                 <td>
                     <span th:text="${order.status.getDisplayName()}"
-                          th:class="${order.status.getColor()}">
+                          th:class="${order.status.getColor()}"
+                          style="font-size: 1.4rem">
                     </span>
                 </td>
                 <td th:if="${order.getStatus().name() == 'SHIPPING'}">
                     <button class="btn btn-primary">
                         <a th:href="@{/update-status/{id}(id=${order.getOrderId()})}"
-                           class="text-white text-decoration-none">
+                           class="text-white text-decoration-none"
+                            style="font-size: 1.6rem">
                             Đã nhận hàng
                         </a>
                     </button>

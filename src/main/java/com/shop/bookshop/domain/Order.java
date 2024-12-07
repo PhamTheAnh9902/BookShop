@@ -25,6 +25,7 @@ public class Order {
     private double discountValue;
     private String statusPayment;
     private LocalDateTime createDate;
+    private String description;
 
     @Enumerated(EnumType.STRING)
     private StatusEnum status;

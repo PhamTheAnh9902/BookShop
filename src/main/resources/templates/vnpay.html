@@ -18,8 +18,12 @@
 <!--                    <h2 class="card-title">Tạo Đơn Hàng</h2>-->
                     <form th:action="@{/submitOrder}" method="post">
                         <div class="form-group">
-                            <label for="amount">Số tiền:</label>
-                            <input type="number" class="form-control" id="amount" name="amount" required
+                            <label for="amountt">Số tiền:</label>
+                            <input type="text" class="form-control" id="amountt" name="amountt" required
+                                   th:value="${formatter.formatCurrency(totalPrices)}">
+                            <input type="number" class="form-control"
+                                   id="amount" name="amount" required
+                                   style="display: none"
                                    th:value="${totalPrices}">
                         </div>
                         <div class="form-group">

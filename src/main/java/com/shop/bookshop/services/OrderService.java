@@ -1,21 +1,28 @@
 package com.shop.bookshop.services;
 
+import com.shop.bookshop.domain.Book;
+import com.shop.bookshop.domain.Dto.BookStockReport;
 import com.shop.bookshop.domain.Order;
 import com.shop.bookshop.domain.OrderDetail;
 import com.shop.bookshop.domain.Promotion;
+import com.shop.bookshop.repository.BookRespository;
 import com.shop.bookshop.repository.OrderDetailRepository;
 import com.shop.bookshop.repository.OrderRepository;
 import com.shop.bookshop.repository.PromotionRepository;
 import com.shop.bookshop.util.constant.StatusEnum;
+import org.aspectj.runtime.internal.Conversions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -27,6 +34,9 @@ public class OrderService {
 
     @Autowired
     PromotionRepository promotionRepository;
+
+    @Autowired
+    BookRespository bookRespository;
 
 
     public Page<Order> getAllOrderPaging(int pageNum) {
@@ -79,4 +89,54 @@ public class OrderService {
         orderRepository.save(order);
         return order;
     }
+
+    public Map<LocalDate, Double> calculateRevenue(LocalDate startDate, LocalDate endDate) {
+        LocalDateTime start = startDate.atStartOfDay();
+        LocalDateTime end = endDate.atTime(LocalTime.MAX);
+
+        List<Order> orders = orderRepository.findByCreateDateBetween(start, end);
+
+        Map<LocalDate, Double> revenueMap = new HashMap<>();
+        for (Order order : orders) {
+            if ("Đã thanh toán".equals(order.getStatusPayment())) {
+                LocalDate orderDate = order.getCreateDate().toLocalDate();
+                revenueMap.merge(orderDate, order.getTotalPrice(), Double::sum);
+            }
+        }
+
+        return revenueMap;
+    }
+
+    public List<BookStockReport> getStockReport(LocalDate startDate, LocalDate endDate) {
+        LocalDateTime start = startDate.atStartOfDay();
+        LocalDateTime end = endDate.atTime(LocalTime.MAX);
+
+        List<Book> books = bookRespository.findAll();
+//        List<Order> orders = orderRepository.findByCreateDateBetween(start, end);
+        List<Order> orders = orderRepository.findAll();
+
+
+        // Lưu trữ số lượng đã bán
+        Map<String, Long> salesMap = new HashMap<>();
+        for (Order order : orders) {
+            for (OrderDetail detail : order.getOrderDetails()) {
+                    String bookTitle = detail.getBook().getTitle();
+                    Long quantitySold = detail.getQuantity();
+                    salesMap.merge(bookTitle, quantitySold, Long::sum);
+            }
+        }
+
+        List<BookStockReport> stockReport = new ArrayList<>();
+
+        for (Book book : books) {
+            String title = book.getTitle();
+            int quantityInStock = book.getQuantityInStock();
+            long quantitySold = salesMap.getOrDefault(title, 0L);
+
+            stockReport.add(new BookStockReport(title, quantityInStock, quantitySold));
+        }
+
+        return stockReport;
+    }
+
 }

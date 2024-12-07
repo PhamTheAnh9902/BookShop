@@ -6,6 +6,7 @@ import com.shop.bookshop.domain.Promotion;
 import com.shop.bookshop.domain.User;
 import com.shop.bookshop.services.BookService;
 import com.shop.bookshop.services.VNPayService;
+import com.shop.bookshop.util.constant.FormatterUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,12 @@ public class VNPayController {
     private VNPayService vnPayService;
     @Autowired
     private BookService bookService;
+    @Autowired
+    private FormatterUtil formatterUtil;
 
     @GetMapping({"/vnpay"})
-    public String home(){
+    public String home(Model model){
+        model.addAttribute("formatter", formatterUtil);
         return "vnpay";
     }
 
@@ -63,10 +67,11 @@ public class VNPayController {
             String orderReceiverAdress = (String) session.getAttribute("orderReceiverAdress");
             String orderReceiverEmail = (String) session.getAttribute("orderReceiverEmail");
             String orderReceiverPhone = (String) session.getAttribute("orderReceiverPhone");
+            String orderDescription = (String) session.getAttribute("orderDescription");
             Order order = bookService.placeOrderVnPay(currentUser, session,
                                                       orderReceiverName,orderReceiverAdress,
                                                       orderReceiverEmail,orderReceiverPhone,
-                                                      promotion);
+                                                      orderDescription,promotion);
             return "ordersuccess";
         }
         else {

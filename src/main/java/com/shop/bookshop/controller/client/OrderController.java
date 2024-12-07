@@ -81,7 +81,8 @@ public class OrderController {
                       @RequestParam("receiverAdress") String receiverAdress,
                       @RequestParam("receiverPhone") String receiverPhone,
                       @RequestParam(value = "promoCode", required = false) String promoCode,
-                      @RequestParam(value = "payment") String payment){
+                      @RequestParam(value = "payment") String payment,
+                      @RequestParam(value = "description") String description){
 
         User currentUser = new User();
         HttpSession session = request.getSession();
@@ -97,11 +98,12 @@ public class OrderController {
                 return "redirect:/order";
             }
         }
+
         if ("cod".equals(payment)){
             Order orderCheck = bookService.placeOrder(currentUser,session,
                     receiverName,receiverAdress,
                     receiverEmail,receiverPhone,
-                    promotion);
+                    description,promotion);
             if (orderCheck != null) {
                 return "redirect:/";
             } else {
@@ -113,15 +115,21 @@ public class OrderController {
             double amount = bookService.calculateOrderAmount(currentUser,promotion);
             String orderInfo= "Đơn hàng cho " + receiverName + ", Email: " + receiverEmail;
             PromotionDTO promotionDTO = new PromotionDTO();
-            promotionDTO.setCode(promotion.getCode());
-            promotionDTO.setDiscountRate(promotion.getDiscountRate());
-
-            redirectAttributes.addFlashAttribute("totalPrices",amount);
+            if (promotion == null) {
+                promotionDTO.setCode("0");
+                promotionDTO.setDiscountRate(1);
+            }
+            else {
+                promotionDTO.setCode(promotion.getCode());
+                promotionDTO.setDiscountRate(promotion.getDiscountRate());
+            }
+            redirectAttributes.addFlashAttribute("totalPrices",amount + 50000);
             redirectAttributes.addFlashAttribute("orderInfo",orderInfo);
             session.setAttribute("orderReceiverName", receiverName);
             session.setAttribute("orderReceiverEmail", receiverEmail);
             session.setAttribute("orderReceiverAdress", receiverAdress);
             session.setAttribute("orderReceiverPhone", receiverPhone);
+            session.setAttribute("orderDescription",description);
             session.setAttribute("promotion",promotionDTO);
             return "redirect:/vnpay";
         }

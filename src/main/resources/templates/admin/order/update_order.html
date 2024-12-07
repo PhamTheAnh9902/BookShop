@@ -53,6 +53,12 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <label>Danh sách sản phẩm</label>
+                                        <div th:each="detail : ${order.getOrderDetails()}">
+                                            <p th:text="${detail.book.title} + ' (SL: ' + ${detail.quantity} + ' )'"></p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label>Tổng tiền</label>
                                         <p th:text="${formatter.formatCurrency(order.getTotalPrice())}"></p>
                                     </div>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace="admin/layout/head :: head"></head>
+<body>
+<!-- nav -->
+<nav th:replace="admin/layout/nav :: nav"></nav>
+<!-- nav -->
+<!-- sidebar -->
+<div th:replace="admin/layout/sidebar :: sidebar"></div>
+<!-- sidebar -->
+<!-- container -->
+<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a th:href="@{/admin}"><svg class="glyph stroked home">
+                <use xlink:href="#stroked-home"></use>
+            </svg></a></li>
+            <li class="active">Báo cáo thống kê</li>
+        </ol>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Báo Cáo Doanh Thu và Kho Hàng</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel-body">
+                <!-- Lọc theo khoảng thời gian -->
+                <form id="dateRangeForm" class="form-inline mb-4"
+                      th:action="@{/admin/report}" method="get">
+                    <div class="form-group mr-3">
+                        <label for="startDate" class="mr-2">Từ ngày:</label>
+                        <input type="date" class="form-control" id="startDate"
+                               name="startDate">
+                    </div>
+                    <div class="form-group mr-3">
+                        <label for="endDate" class="mr-2">Đến ngày:</label>
+                        <input type="date" class="form-control" id="endDate"
+                               name="endDate">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Lọc</button>
+                </form>
+                <!-- Bảng báo cáo doanh thu -->
+                <h4>Doanh Thu</h4>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Ngày</th>
+                        <th>Doanh Thu</th>
+                    </tr>
+                    </thead>
+                    <tbody id="revenueTable">
+                    <tr th:each="entry : ${dailyRevenue}">
+                        <td th:text="${entry.key}">Ngày</td>
+                        <td th:text="${formatter.formatCurrency(entry.value)}">Doanh Thu</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <!-- Bảng báo cáo kho hàng -->
+                <h4>Kho Hàng</h4>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Tên Sách</th>
+                        <th>Số lượng bán</th>
+                        <th>Số Lượng Tồn</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="entry : ${stockReport}">
+                        <td th:text="${entry.title}">Tên Sách</td>
+                        <td th:text="${entry.quantitySold}">Tên Sách</td>
+                        <td th:text="${entry.quantityInStock}">Số Lượng Tồn</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- container -->
+<!--script-->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!--script-->
+</body>
+</html>
